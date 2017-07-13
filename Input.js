@@ -17,9 +17,21 @@ var mouseY = 0;
 var pressedKey = false;
 
 var keyPressed = function (evt) {
+    console.log("Detecting characters");
+    evt.preventDefault(); // without this, arrow keys scroll the browser!
     keyPressed.data.push(evt.charCode);
     pressedKey = true;
-    evt.preventDefault(); // without this, arrow keys scroll the browser!
+}
+
+function keyDown(evt) {
+    setKeyHoldState(evt.keyCode, true);
+    console.log(holdLeft);
+    console.log("Detecting arrows");
+    evt.preventDefault();
+}
+
+function keyUp(evt) {
+    setKeyHoldState(evt.keyCode, false);
 }
 
 function resetKeypress() {
@@ -32,8 +44,9 @@ function setupInput(){
     keyPressed.data = [];
 
 	//scaledCanvas.addEventListener('mousemove', updateMousePos);
-	document.addEventListener("keypress", keyPressed); //keypress == only character keys!
-	//document.addEventListener("keyup", keyReleased);
+    //document.addEventListener("keypress", keyPressed); //keypress == only character keys!
+    //document.addEventListener("keydown", keyDown);
+	document.addEventListener("keyup", keyUp);
 }
 
 function updateMousePos(evt) {
@@ -45,16 +58,16 @@ function updateMousePos(evt) {
 }
 
 function setKeyHoldState(thisKey, setTo) {
-    if (thisKey == KEY_LEFT_ARROW) {
+    if (thisKey === KEY_LEFT_ARROW) {
         holdLeft = setTo;
     }
-    if (thisKey == KEY_RIGHT_ARROW) {
+    if (thisKey === KEY_RIGHT_ARROW) {
         holdRight = setTo;
     }
-    if (thisKey == KEY_UP_ARROW) {
+    if (thisKey === KEY_UP_ARROW) {
         holdUp = setTo;
     }
-    if (thisKey == KEY_DOWN_ARROW) {
+    if (thisKey === KEY_DOWN_ARROW) {
         holdDown = setTo;
     }
 }

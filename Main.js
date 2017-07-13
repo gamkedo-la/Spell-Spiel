@@ -1,5 +1,4 @@
 
-var inBattle = true;
 var basicFontSize = 36;
 
 const ORIG_WORLD_W = 200;
@@ -49,7 +48,6 @@ function imageLoadingDoneSoStartGame() {
 
 function updateAll() {
 
-    gameController.handleInput();
     //player.handleInput();
     //drawAll();
     gameController.update();
@@ -93,7 +91,7 @@ function drawOnScaled() {
 function clearScreen() {
 
     //colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, "orange"); //In update!
-    canvasContext.drawImage(bgPic, 0, 0);
+    canvasContext.drawImage(gameController.getBackground(), 0, 0);
 }
 function resetFont(){
     scaledContext.font = "normal " + basicFontSize.toString() + "pt" + " Bookman";

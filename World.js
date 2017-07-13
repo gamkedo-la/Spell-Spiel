@@ -1,11 +1,9 @@
-//World and Game State machine
-
-var inBattle = false; //To remove
-
-var defaultState = new BattleState();
+//World and game mini state machine
 
 
 function GameController() {
+
+    this.bg = defaultState.img;
 
     this.handleInput = function () {
         state_.handleInput(); //Delegate the input to the state object! Yay!
@@ -16,32 +14,39 @@ function GameController() {
 
     this.changeState = function (state) {
         if (state != null) {
+            console.log("Changed");
             delete state_; //not sure if it actually deletes...
             state_ = state;
             state_.enter();
         }
     }
 
-    this.setGraphics = function (img) {
-        player.img = img;
+
+    this.getBackground = function () {
+        return this.bg;
+    }
+    this.setBackground = function (img) {
+        this.bg = img;
     }
 
-    var state_ = defaultState; //default state, changes during runtime
+    var state_ = null; //default state, changes during runtime
+    this.changeState(defaultState);
 }
 
 function BattleState() {
 
-    this.img = bgPic;
+    this.img = battlePic;
     this.update = function ()
     {
-        clearScreen();
+        this.handleInput();
+        clearScreen(); //All this is drawn on the small canvas...
         player.draw();
         bat.draw();
-        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled
-        drawOnScaled();
-        endCheck();
+        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
+        endCheck(); //Check if battle is over
     }
-    this.handleInput = function () { //Holy shit that's ugly
+    this.handleInput = function () { //Holy *** that's ugly (censored for a family-friendly Gamkedo Club). IMPORTANT keypresses are looked at in battle, while keydown/up are in overworld (diff. is the first checks only character keys)
         if (keyPressed.data[keyPressed.data.length - 1] == "1".charCodeAt(0)) {
             player.changeSpell(player.availableSpells[0]);
             resetKeypress();
@@ -59,30 +64,57 @@ function BattleState() {
             return;
         }
 
-        if (pressedKey === true) { //If no key pressed, we draw the same spell as last frame
+        if (pressedKey === true) {
             pressedKey = false;
             player.currentSpell.checkLetters();
 
         }
     };
     this.enter = function () {
-        console.log("Started standing");
-        gameController.setGraphics(standingPic);
-        inBattle = true;
+        console.log("Entered battle");
+        document.removeEventListener("keydown", keyDown);
+        document.addEventListener("keypress", keyPressed); //keypress == only character keys!
     }
 }
 function OverworldState() {
 
     this.img = overworldPic;
     this.update = function () {
-        return;
+        this.handleInput();
+        clearScreen(); //All this is drawn on the small canvas...
+        player.move();
+        player.draw();
+        //bat.draw();
+        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        //drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
+        //endCheck(); //Check if battle is over
     }
-    this.handleInput = function () { return };
+    this.handleInput = function () {
+        if (holdLeft) {
+            player.speedX = -MOVE_SPEED;
+        }
+        else if (holdRight) {
+            player.speedX = MOVE_SPEED;
+        }
+        else { player.speedX = 0; }
+        if (holdUp) {
+            player.speedY = -MOVE_SPEED;
+        }
+        else if (holdDown) {
+            player.speedY = MOVE_SPEED;
+        }
+        else { player.speedY = 0; }
+    };
+
     this.enter = function () {
-        console.log("Started standing");
-        gameController.setGraphics(standingPic);
-        inBattle = true;
+        console.log("Entered overworld");
+        document.removeEventListener("keypress", keyPressed);
+        document.addEventListener("keydown", keyDown); //keypress == only character keys!
     }
 }
 
+var battleState = new BattleState();
+var overworldState = new OverworldState();
+//var defaultState = battleState;
+var defaultState = overworldState;
 var gameController = new GameController();

@@ -13,7 +13,7 @@ function Monster() {
     this.useAttack = setInterval(function () {
         i = Math.floor(Math.random() * this.attacks.length);
         chosenAttack = this.attacks[i];
-        console.log(this.name + " used " + chosenAttack.name);
+        //console.log(this.name + " used " + chosenAttack.name);
         //console.log(chosenAttack.power);
         //console.log(chosenAttack.getPower());
         chosenAttack.power = chosenAttack.MAX_POWER;

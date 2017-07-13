@@ -6,7 +6,7 @@ function Spell() {
     this.text = "";
     this.progress = 0;
     this.rightOrWrong = [];
-    this.usedByAI = false;
+    this.usedByAI = false; //TBD
 
     this.MAX_POWER = 100;
     this.power = this.MAX_POWER;
@@ -58,7 +58,7 @@ function Spell() {
     this.basicCast = function (target) { //Deal damage based on power
         var toDeal;
         //Remove shield
-        if (target.shield != 0) {
+        if (target.shieldHP != 0) {
 
             toDeal = -1 * (target.shield - this.power);
             target.shield = target.shield - this.power;
@@ -88,7 +88,7 @@ Pyroblast = function () {
     this.text = "Pyroblast";
     this.MAX_POWER = 50;
 
-    this.cast = function (target) { //Note: checkProgress casts this function even if it it's in base Spell class
+    this.cast = function (target) { //Note: checkProgress casts this function even if it's in the base Spell class
         if (this.power >= this.MAX_POWER/2) { battleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER/2) { battleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
@@ -141,17 +141,6 @@ noSpell.name = "No spell";
 
 function drawSpell(spell) {
 
-    //console.log(keyPressed.data);
-
-    if (spell.name == "No spell") { //Do nothing if no spell selected
-        return;
-    }
-
-    if (pressedKey === true) { //If no key pressed, we draw the same spell as last frame
-        pressedKey = false;
-        spell.checkLetters();
-    }
-
     var spellTextStartX = 95;
     var currentTextWidth = 0;
 
@@ -168,5 +157,7 @@ function drawSpell(spell) {
         colorText(spell.text[i], spellTextStartX + currentTextWidth, scaledCanvas.height / 2 - 15, color); //Need to change this
         currentTextWidth += scaledContext.measureText(spell.text[i]).width;
     }
-    spell.checkProgress(); //Checks if finished casting, casts if it is!
+    if (spell.name != "No spell"){
+        spell.checkProgress(); //Checks if finished casting, casts if it is!
+    }
 }

@@ -1,13 +1,19 @@
 
 
+const MOVE_SPEED = 2; //In mini canvas pixels!
+
 function Character() { //"Character" == anything that can fight
 
     this.name = "Character";
     this.x = 40;
     this.y = 125;
-    this.img = fillerPic;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.img = null;
 
-    this.shield = 0;
+    this.shieldHP = 0;
+
+    //RELATED TO BATTLES
 
     //Eh, implement status effects later
     this.ticks = [
@@ -39,7 +45,16 @@ function Character() { //"Character" == anything that can fight
     //Status effects
     this.isPoisoned = function () {
         this.ticks[0]["poison"] = 5;
-        console.log(this.ticks[0]["poison"]);
+        //console.log(this.ticks[0]["poison"]);
+    }
+
+
+    //RELATED TO OVERWORLD
+
+    this.move = function () {
+        console.log(this.speedX);
+        this.x += this.speedX;
+        this.y += this.speedY;
     }
 }
 function Player() { //Defines the player object
@@ -60,27 +75,9 @@ function Player() { //Defines the player object
         this.battleMsg.y = this.y * PIXEL_SCALE_UP + scaledCanvas.height / 17;
     }
 
-    this.handleInput = function () {
-
-        //Find a way to change this
-        //console.log(keyPressed.data[keyPressed.data.length-1]); //get last array element and check if valid to change
-        if (keyPressed.data[keyPressed.data.length - 1] == "1".charCodeAt(0)) {
-            this.changeSpell(this.availableSpells[0]);
-            resetKeypress();
-        }
-        if (keyPressed.data[keyPressed.data.length - 1] == "2".charCodeAt(0)) {
-            this.changeSpell(this.availableSpells[1]);
-            resetKeypress();
-        }
-        if (keyPressed.data[keyPressed.data.length - 1] == "3".charCodeAt(0)) {
-            this.changeSpell(this.availableSpells[2]);
-            resetKeypress();
-        }
-    }
-
-    var state_ = defaultState; //default state, changes during runtime
+    //var state_ = defaultState; //default state, changes during runtime
 
 }
-Player.prototype = new Character();
+Player.prototype = new Character(); //Inheritance in JS
 
 var player = new Player();
