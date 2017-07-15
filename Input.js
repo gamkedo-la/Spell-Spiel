@@ -17,7 +17,6 @@ var mouseY = 0;
 var pressedKey = false;
 
 var keyPressed = function (evt) {
-    console.log("Detecting characters");
     evt.preventDefault(); // without this, arrow keys scroll the browser!
     keyPressed.data.push(evt.charCode);
     pressedKey = true;
@@ -25,8 +24,6 @@ var keyPressed = function (evt) {
 
 function keyDown(evt) {
     setKeyHoldState(evt.keyCode, true);
-    console.log(holdLeft);
-    console.log("Detecting arrows");
     evt.preventDefault();
 }
 
@@ -42,10 +39,7 @@ function resetKeypress() {
 function setupInput(){
 	
     keyPressed.data = [];
-
 	//scaledCanvas.addEventListener('mousemove', updateMousePos);
-    //document.addEventListener("keypress", keyPressed); //keypress == only character keys!
-    //document.addEventListener("keydown", keyDown);
 	document.addEventListener("keyup", keyUp);
 }
 

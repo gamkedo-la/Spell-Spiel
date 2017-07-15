@@ -12,7 +12,7 @@ function Spell() {
     this.power = this.MAX_POWER;
 
     this.reset = function () {
-        console.log("Resetting " + this.text);
+        console.log("Resetting " + this.name);
         this.rightOrWrong = ArrayWithZeros(this.text.length);
         this.progress = 0;
         if (typeof player === "object") { //Big hack, checks if player exists because of script ordering...
@@ -21,14 +21,14 @@ function Spell() {
     }
 
     this.checkLetters = function () {
-        if (keyPressed.data.indexOf(this.text.charCodeAt(this.progress)) != -1) {
+        if (keyPressed.data.indexOf(this.text.charCodeAt(this.progress)) != -1) { //-1 means undefined
             this.rightOrWrong[this.progress] = 1;
         }
         else {
             this.rightOrWrong[this.progress] = -1;
         }
         this.progress += 1;
-        keyPressed.data = [];
+        keyPressed.data = []; //Hopefully this isn't a mortal sin
     }
 
     this.checkProgress = function () {
@@ -60,10 +60,10 @@ function Spell() {
         //Remove shield
         if (target.shieldHP != 0) {
 
-            toDeal = -1 * (target.shield - this.power);
-            target.shield = target.shield - this.power;
-            if (target.shield <= 0) {
-                target.shield = 0;
+            toDeal = this.power - target.shieldHP;
+            target.shieldHP = target.shieldHP - this.power;
+            if (target.shieldHP <= 0) {
+                target.shieldHP = 0;
             }
         }
         else { toDeal = this.power };
@@ -83,62 +83,6 @@ function Spell() {
     }
 }
 
-Pyroblast = function () {
-    this.name = "Pyroblast";
-    this.text = "Pyroblast";
-    this.MAX_POWER = 50;
-
-    this.cast = function (target) { //Note: checkProgress casts this function even if it's in the base Spell class
-        if (this.power >= this.MAX_POWER/2) { battleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); }
-        else if (this.power < this.MAX_POWER/2) { battleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
-        this.basicCast(target);
-        this.playSound();
-        this.spawnParticles();
-    }
-    this.reset();
-}
-Pyroblast.prototype = new Spell();
-pyroblast = new Pyroblast();
-
-Lightning = function () {
-    this.name = "Lightning";
-    this.text = "Lightning pulverise";
-    this.MAX_POWER = 85;
-
-    this.cast = function (target) {
-        if (this.power >= this.MAX_POWER / 2) { battleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
-        else if (this.power < this.MAX_POWER / 2) { battleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
-        this.basicCast(target);
-        this.playSound();
-        this.spawnParticles();
-    }
-    this.reset();
-}
-Lightning.prototype = new Spell();
-lightning = new Lightning();
-
-Blizzard = function () {
-    this.name = "Blizzard";
-    this.text = "Blizzard";
-    this.MAX_POWER = 50;
-
-    this.cast = function (target) { //Note: checkProgress casts this function even if it it's in base Spell class
-        if (this.power >= this.MAX_POWER / 2) { battleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        else if (this.power < this.MAX_POWER / 2) { battleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
-        this.basicCast(target);
-        this.playSound();
-        this.spawnParticles();
-    }
-    this.reset();
-}
-Blizzard.prototype = new Spell();
-blizzard = new Blizzard();
-
-//Fills the spot when no spell selected
-noSpell = new Spell();
-noSpell.name = "No spell";
-
-
 function drawSpell(spell) {
 
     var spellTextStartX = 95;
@@ -157,7 +101,65 @@ function drawSpell(spell) {
         colorText(spell.text[i], spellTextStartX + currentTextWidth, scaledCanvas.height / 2 - 15, color); //Need to change this
         currentTextWidth += scaledContext.measureText(spell.text[i]).width;
     }
-    if (spell.name != "No spell"){
+    if (spell.name != "No spell") {
         spell.checkProgress(); //Checks if finished casting, casts if it is!
     }
 }
+
+
+//Make spells here
+Pyroblast = function () {
+    this.name = "Pyroblast";
+    this.text = "Pyroblast";
+    this.MAX_POWER = 50;
+
+    this.cast = function (target) { //Notice: checkProgress casts this function
+        if (this.power >= this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
+        else if (this.power < this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
+        this.basicCast(target);
+        this.playSound();
+        this.spawnParticles();
+    }
+    this.reset();
+}
+Pyroblast.prototype = new Spell();
+pyroblast = new Pyroblast();
+
+Lightning = function () {
+    this.name = "Lightning";
+    this.text = "Lightning strike of doom";
+    this.MAX_POWER = 200;
+
+    this.cast = function (target) {
+        if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
+        else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
+        this.basicCast(target);
+        this.playSound();
+        this.spawnParticles();
+    }
+    this.reset();
+}
+Lightning.prototype = new Spell();
+lightning = new Lightning();
+
+Blizzard = function () {
+    this.name = "Blizzard";
+    this.text = "Blizzard";
+    this.MAX_POWER = 50;
+
+    this.cast = function (target) { //Note: checkProgress casts this function even if it it's in base Spell class
+        if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
+        else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
+        this.basicCast(target);
+        this.playSound();
+        this.spawnParticles();
+    }
+    this.reset();
+}
+Blizzard.prototype = new Spell();
+blizzard = new Blizzard();
+
+//Fills the spot when no spell selected
+noSpell = new Spell();
+noSpell.name = "No spell";
+

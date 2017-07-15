@@ -20,13 +20,14 @@ function Message() {
 
     this.draw = function () {
         colorText(this.text, this.x, this.y, this.color);
-        if (this.box != undefined) {
+
+        if (this.box != undefined) { //Text wrapping still needs to be implemented
             colorRect(100, 100, 100 / PIXEL_SCALE_UP, 100 / PIXEL_SCALE_UP, "white");
             colorRect(this.x / PIXEL_SCALE_UP, this.y / PIXEL_SCALE_UP, 100 / PIXEL_SCALE_UP, 100 / PIXEL_SCALE_UP, "white");
         }
     }
     this.fontOn = function () {
-        scaledContext.font = "normal " + basicFontSize.toString() + "pt" + " Bookman"; //Would be different in a message
+        scaledContext.font = "normal " + basicFontSize.toString() + "pt" + " Bookman"; //To change with whatever font desired
     }
     this.fontOff = function (){
         scaledContext.font = "normal " + basicFontSize.toString() + "pt" + " Bookman";
@@ -34,6 +35,7 @@ function Message() {
 
 }
 
+//If someone knows a better way to create these kinds of things outside of hard code, do share!
 var msgNeutralGood = [
     "Take that!",
     "Eat this!",
@@ -90,15 +92,15 @@ var msgIceBad = [
     "Walking on thin ice..."
 ];
 
-function battleMsg(msg, msgArray) {
+function displayBattleMsg(msg, msgArray) {
     msg.framesLeft = msg.DURATION;
     msg.text = msgArray[Math.floor(Math.random() * msgArray.length)]; //Pick one at random
     //Push if not in array
     if (msgOnDisplay.indexOf(msg) == -1) {
         msgOnDisplay.push(msg);
     }
-    console.log(msgOnDisplay.indexOf(msg));
-    console.log(msgOnDisplay.length);
+    //console.log(msgOnDisplay.indexOf(msg));
+    //console.log(msgOnDisplay.length);
 }
 
 /*var testMsg = new Message();
@@ -106,8 +108,9 @@ testMsg.text = "Test";
 testMsg.DURATION = 300;
 testMsg.x = 300;
 testMsg.y = 300;
-battleMsg(testMsg, msgNeutralGood, 300);
+displayBattleMsg(testMsg, msgNeutralGood, 300);
 */
+
 var playerBattleMsg = new Message();
 playerBattleMsg.fontOn = function () {
     scaledContext.font = "normal 26pt Bookman";

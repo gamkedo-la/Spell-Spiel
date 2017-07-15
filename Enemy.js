@@ -1,5 +1,5 @@
 
-function Monster() {
+function Enemy() {
 
     this.x = 155;
     this.y = 125;
@@ -10,23 +10,22 @@ function Monster() {
     this.MAX_HP = 200;
     this.hp = this.MAX_HP;
 
-    this.useAttack = setInterval(function () {
-        i = Math.floor(Math.random() * this.attacks.length);
-        chosenAttack = this.attacks[i];
-        //console.log(this.name + " used " + chosenAttack.name);
-        //console.log(chosenAttack.power);
-        //console.log(chosenAttack.getPower());
-        chosenAttack.power = chosenAttack.MAX_POWER;
-        chosenAttack.cast(this.opponent);
-    }.bind(this), 3000); //Bind so that it takes "this" from the Monster namespace
-
+    this.useAttack = function () {
+        this.attack = setInterval(function () {
+            i = Math.floor(Math.random() * this.attacks.length);
+            chosenAttack = this.attacks[i];
+            chosenAttack.power = chosenAttack.MAX_POWER;
+            chosenAttack.cast(this.opponent);
+        }.bind(this), 3000); //Bind so that it takes "this" from the Enemy namespace
+    }
+    //The whole enemy AI will be more complex than this, the setInterval is just placeholder
 }
-Monster.prototype = new Character();
+Enemy.prototype = new Character();
 var enemyDefs = [
    { "name": "dragon", "hp": "100" },
    {}
 ];
-var bat = new Monster();
+var bat = new Enemy();
 bat.name = "Bat";
-bat.opponent = player;
+bat.opponent = player; //Eventually, enemies will be assigned when entering the battle state, after being created!
 player.opponent = bat;

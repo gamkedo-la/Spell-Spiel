@@ -1,8 +1,5 @@
 
-
-const MOVE_SPEED = 2; //In mini canvas pixels!
-
-function Character() { //"Character" == anything that can fight
+function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
     this.x = 40;
@@ -22,6 +19,14 @@ function Character() { //"Character" == anything that can fight
 
     this.opponent = null;
 
+    this.reset = function () {
+        this.hp = this.MAX_HP;
+        if (typeof this.attack !== "undefined") {
+            clearInterval(this.attack);
+            console.log("Stopped attacking!");
+        }
+    }
+
     //Graphics
     this.setGraphics = function (img) {
         this.img = img;
@@ -30,7 +35,9 @@ function Character() { //"Character" == anything that can fight
         canvasContext.drawImage(this.img, this.x - this.img.width / 2, this.y - this.img.height);
         scaledContext.font = "normal 20pt Bookman";
         resetFont();
-        colorRect(this.x - this.img.width / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
+    }
+    this.drawBattle = function () {
+        colorRect(this.x - this.img.width / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red")
     }
     this.drawScaled = function () { //On scaled canvas
         colorText(this.hp, (this.x - this.img.width / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 10) * PIXEL_SCALE_UP, "red");
@@ -52,11 +59,12 @@ function Character() { //"Character" == anything that can fight
     //RELATED TO OVERWORLD
 
     this.move = function () {
-        console.log(this.speedX);
         this.x += this.speedX;
         this.y += this.speedY;
     }
 }
+
+const MOVE_SPEED = 2; //In mini canvas pixels!
 function Player() { //Defines the player object
 
     this.name = "Beam";
@@ -67,7 +75,7 @@ function Player() { //Defines the player object
     this.hp = this.MAX_HP;
 
     this.availableSpells = [pyroblast, blizzard, lightning];
-    this.spellCooldowns = ArrayWithZeros(this.availableSpells.length);
+    this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;
 
     this.init = function () {
@@ -78,6 +86,6 @@ function Player() { //Defines the player object
     //var state_ = defaultState; //default state, changes during runtime
 
 }
-Player.prototype = new Character(); //Inheritance in JS
+Player.prototype = new Character(); //Note: prototype == inheritance in JS
 
 var player = new Player();

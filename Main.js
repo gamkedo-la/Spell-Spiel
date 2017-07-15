@@ -29,7 +29,7 @@ window.onload = function () {
     canvasContext.textAlign = "left";
 
     colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, 'purple') //Doesn't work with the whole scaled canvas shenanigans...
-    colorText('LOADING IMAGES', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange')
+    colorText('LOADING', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange') //Also looks weird now :P
 
     loadImages();
 
@@ -40,16 +40,12 @@ function imageLoadingDoneSoStartGame() {
     var framesPerSecond = 30;
     setInterval(updateAll, 1000 / framesPerSecond);
 
-    colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, "orange");
-
     setupInput();
     player.init();
 }
 
 function updateAll() {
 
-    //player.handleInput();
-    //drawAll();
     gameController.update();
 }
 
@@ -57,16 +53,6 @@ function moveAll() {
 
 
 }
-
-/*function drawAll() {
-
-    clearScreen();
-    player.draw();
-    bat.draw();
-    scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled
-    drawOnScaled();
-    endCheck();
-}*/
 
 function drawOnScaled() {
     player.drawScaled(); //UI text for each character
@@ -95,30 +81,4 @@ function clearScreen() {
 }
 function resetFont(){
     scaledContext.font = "normal " + basicFontSize.toString() + "pt" + " Bookman";
-}
-
-function endCheck() {
-    if (player.hp == 0 || player.opponent.hp == 0) {
-        endBattle();
-    }
-}
-
-function endBattle() {
-    if (player.hp != 0 && player.opponent.hp != 0) { //safety check
-        return;
-    }
-    inBattle = false;
-    if (player.hp == 0) {
-        scaledContext.textAlign = "center";
-        colorText("Game Over!", scaledCanvas.width / 2, 200, "black");
-        scaledContext.textAlign = "left";
-    }
-
-    else if (player.opponent.hp == 0) {
-        scaledContext.textAlign = "center";
-        colorText("You won!", scaledCanvas.width / 2, 200, "black");
-        //setTimeout(colorText, 2000, "I waited", scaledCanvas.width / 2, 200, "black")
-        scaledContext.textAlign = "left";
-    }
-
 }
