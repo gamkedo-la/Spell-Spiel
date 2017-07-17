@@ -6,6 +6,10 @@ function Spell() {
     this.text = "";
     this.progress = 0;
     this.rightOrWrong = [];
+    var countdown; //Reference to the setTimeout
+    this.timeElapsed = 0; //Time passed in millseconds
+    this.MAX_CAST_WINDOW = 5000;
+    this.currentCastWindow = 5000; //in milliseconds
     this.usedByAI = false; //TBD
 
     this.MAX_POWER = 100;
@@ -15,6 +19,7 @@ function Spell() {
         console.log("Resetting " + this.name);
         this.rightOrWrong = ArrayWithZeros(this.text.length);
         this.progress = 0;
+        this.timeElapsed = 0;
         if (typeof player === "object") { //Big hack, checks if player exists because of script ordering...
             player.currentSpell = noSpell;
         }
@@ -36,8 +41,22 @@ function Spell() {
             this.power = this.getPower();
             if (this.usedByAI) { this.cast(player);}
             if (!this.usedByAI) { this.cast(player.opponent); } //Yay! :D
+            this.currentCastWindow -= 1000;
+            this.stopCountdown();
             this.reset();
+            player.casting = false;
         }
+    }
+    this.spellFailed = function () {
+        this.reset();
+        console.log("Not quick enough!");
+    }
+
+    this.startCountdown = function () {
+        this.countdown = setTimeout(this.spellFailed.bind(this), this.currentCastWindow);
+    }
+    this.stopCountdown = function () {
+        clearTimeout(this.countdown);
     }
 
     this.getPower = function () { //Called at the end to check how many right/wrong
@@ -106,6 +125,16 @@ function drawSpell(spell) {
     }
 }
 
+function rechargeAllExceptCurrent() {
+    for (i = 0; i < player.availableSpells.length; i++) {
+        toBoost = player.availableSpells[i];
+        if (toBoost === player.currentSpell) { continue;}
+        toBoost.currentCastWindow += 3;
+        if (toBoost.currentCastWindow > toBoost.MAX_CAST_WINDOW) {
+            toBoost.currentCastWindow = toBoost.MAX_CAST_WINDOW;
+        }
+    }
+}
 
 //Make spells here
 Pyroblast = function () {

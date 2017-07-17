@@ -1,6 +1,5 @@
 //World and game mini state machine
 
-
 function GameController() {
 
     this.handleInput = function () {
@@ -33,6 +32,14 @@ function BattleState() {
     this.img = battlePic;
     this.update = function ()
     {
+        date = new Date();
+        lastTime = currentTime;
+        currentTime = date.getTime();
+        deltaTime = currentTime - lastTime;
+        player.currentSpell.timeElapsed += deltaTime;
+   
+        rechargeAllExceptCurrent();
+
         this.handleInput();
         clearScreen(); //Everything under this is drawn on the small canvas...
         player.draw();
@@ -64,6 +71,7 @@ function BattleState() {
         if (pressedKey === true) {
             pressedKey = false;
             player.currentSpell.checkLetters();
+            player.casting = true;
 
         }
     }

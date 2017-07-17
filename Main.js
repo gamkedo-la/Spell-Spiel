@@ -1,6 +1,11 @@
 
 var basicFontSize = 36;
 
+var date;
+var lastTime;
+var currentTime;
+var deltaTime;
+
 const ORIG_WORLD_W = 200;
 const ORIG_WORLD_H = 150;
 const PIXEL_SCALE_UP = 4;

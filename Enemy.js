@@ -7,8 +7,12 @@ function Enemy() {
 
     this.attacks = [bite, poisonSpit];
 
-    this.MAX_HP = 200;
+    this.MAX_HP = 400;
     this.hp = this.MAX_HP;
+
+    this.drawBattle = function () {
+        colorRect(this.x - this.img.width / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
+    }
 
     this.useAttack = function () {
         this.attack = setInterval(function () {
