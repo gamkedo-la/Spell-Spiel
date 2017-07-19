@@ -8,7 +8,7 @@ function Bite() {
     this.cast = function (target) {
         this.basicCast(target);
         this.playSound();
-        this.spawnParticles(PARTICLE_FIREBALL,true); // FIXME
+        this.spawnParticles(PARTICLE_SMOKE,true);
     }
 }
 Bite.prototype = new Spell();
@@ -23,7 +23,7 @@ function PoisonSpit() {
         this.basicCast(target);
         //target.isPoisoned();
         this.playSound();
-        this.spawnParticles(PARTICLE_ICEBALL,true); // FIXME
+        this.spawnParticles(PARTICLE_POISON,true);
     }
 }
 

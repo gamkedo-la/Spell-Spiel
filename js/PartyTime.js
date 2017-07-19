@@ -10,6 +10,8 @@
 // these constants are which "row" in the spritesheet to use
 const PARTICLE_FIREBALL = 0;
 const PARTICLE_ICEBALL = 1;
+const PARTICLE_SMOKE = 2;
+const PARTICLE_POISON = 3;
 
 var particles_enabled = true;
 var particle_timestamp = (new Date()).getTime();
