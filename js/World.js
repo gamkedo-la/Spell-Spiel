@@ -63,6 +63,10 @@ function BattleState() {
             player.changeSpell(player.availableSpells[2]);
             resetKeypress();
         }
+        if (keyPressed.data[keyPressed.data.length - 1] == "4".charCodeAt(0)) {
+            player.changeSpell(player.availableSpells[3]);
+            resetKeypress();
+        }
 
         if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
             return;

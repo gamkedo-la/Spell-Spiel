@@ -39,8 +39,8 @@ function Spell() {
     this.checkProgress = function () {
         if (this.progress === this.text.length) {
             this.power = this.getPower();
-            if (this.usedByAI) { this.cast(player);}
-            if (!this.usedByAI) { this.cast(player.opponent); } //Yay! :D
+            if (this.type === "Attack") { this.cast(player.opponent);}
+            if (this.type === "Shield" || this.type === "Buff") { this.cast(player); } //Yay! :D
             this.currentCastWindow -= 1000;
             this.stopCountdown();
             this.reset();
@@ -75,21 +75,33 @@ function Spell() {
         return; //To override in subclasses
     }
     this.basicCast = function (target) { //Deal damage based on power
-        var toDeal;
-        //Remove shield
-        if (target.shieldHP != 0) {
+        if (this.type === "Attack") {
+            var toDeal;
+            //Remove shield
+            if (target.shieldHP != 0) {
 
-            toDeal = this.power - target.shieldHP;
-            target.shieldHP = target.shieldHP - this.power;
-            if (target.shieldHP <= 0) {
-                target.shieldHP = 0;
+                toDeal = this.power - target.shieldHP;
+                if (toDeal < 0) {
+                    toDeal = 0;
+                }
+                target.shieldHP = target.shieldHP - this.power;
+                if (target.shieldHP < 0) {
+                    target.shieldHP = 0;
+                }
+            }
+            else { toDeal = this.power };
+            //Remove hp
+            target.hp -= toDeal;
+            if (target.hp <= 0) {
+                target.hp = 0;
             }
         }
-        else { toDeal = this.power };
-        //Remove hp
-        target.hp -= toDeal;
-        if (target.hp <= 0) {
-            target.hp = 0;
+        if (this.type === "Shield") {
+            var toShield = this.power;
+            target.shieldHP = toShield;
+        }
+        if (this.type === "Buff") { //To do
+            return;
         }
     }
 
@@ -109,15 +121,15 @@ function drawSpell(spell) {
 
     for (i = 0; i < spell.rightOrWrong.length; i++) {
         if (spell.rightOrWrong[i] == 0) {
-            color = "black";
+            color = "#0a1566";
         }
         else if (spell.rightOrWrong[i] == 1) {
-            color = "green";
+            color = "#0b4709";
         }
         else if (spell.rightOrWrong[i] == -1) {
             color = "red";
         }
-        colorText(spell.text[i], spellTextStartX + currentTextWidth, scaledCanvas.height / 2 - 15, color); //Need to change this
+        colorText(spell.text[i], spellTextStartX + currentTextWidth, scaledCanvas.height / 2 - 60, color); //Need to change this
         currentTextWidth += scaledContext.measureText(spell.text[i]).width;
     }
     if (spell.name != "No spell") {
@@ -140,6 +152,7 @@ function rechargeAllExceptCurrent() {
 Pyroblast = function () {
     this.name = "Pyroblast";
     this.text = "Pyroblast";
+    this.type = "Attack";
     this.MAX_POWER = 50;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
@@ -157,6 +170,7 @@ pyroblast = new Pyroblast();
 Lightning = function () {
     this.name = "Lightning";
     this.text = "Lightning strike of doom";
+    this.type = "Attack";
     this.MAX_POWER = 200;
 
     this.cast = function (target) {
@@ -174,9 +188,10 @@ lightning = new Lightning();
 Blizzard = function () {
     this.name = "Blizzard";
     this.text = "Blizzard";
+    this.type = "Attack";
     this.MAX_POWER = 50;
 
-    this.cast = function (target) { //Note: checkProgress casts this function even if it it's in base Spell class
+    this.cast = function (target) { 
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
@@ -187,6 +202,24 @@ Blizzard = function () {
 }
 Blizzard.prototype = new Spell();
 blizzard = new Blizzard();
+
+Shield1 = function () {
+    this.name = "Shield1";
+    this.text = "Protect";
+    this.type = "Shield";
+    this.MAX_POWER = 250;
+
+    this.cast = function (target) {
+        //if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
+        //else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
+        this.basicCast(target);
+        this.playSound();
+        this.spawnParticles();
+    }
+    this.reset();
+}
+Shield1.prototype = new Spell();
+shield1 = new Shield1();
 
 //Fills the spot when no spell selected
 noSpell = new Spell();
