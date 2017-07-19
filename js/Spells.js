@@ -112,7 +112,15 @@ function Spell() {
     this.playSound = function () {
         return;
     }
-    this.spawnParticles = function () {
+    
+    this.spawnParticles = function (particletype,fromEnemy) {
+
+        // run an 8 frame spritesheet animation and move it
+        if (!fromEnemy) // assume left to right (ie player cast)
+            party(45,90,particletype,70,90); 
+        else
+            party(150,90,particletype,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
+
         return;
     }
 }
@@ -163,7 +171,7 @@ Pyroblast = function () {
         else if (this.power < this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        this.spawnParticles();
+        this.spawnParticles(PARTICLE_FIREBALL);
     }
     this.reset();
 }
@@ -181,7 +189,7 @@ Lightning = function () {
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        this.spawnParticles();
+        this.spawnParticles(PARTICLE_ICEBALL); // FIXME
     }
     this.reset();
 }
@@ -199,7 +207,7 @@ Blizzard = function () {
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        this.spawnParticles();
+        this.spawnParticles(PARTICLE_ICEBALL);
     }
     this.reset();
 }
@@ -217,7 +225,7 @@ Shield1 = function () {
         //else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        this.spawnParticles();
+        this.spawnParticles(PARTICLE_FIREBALL); // FIXME
     }
     this.reset();
 }

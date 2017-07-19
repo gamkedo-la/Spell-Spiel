@@ -46,6 +46,9 @@ function BattleState() {
         player.drawBattle();
         bat.draw();
         bat.drawBattle();
+        
+        draw_particles();
+
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
         endCheck(); //Check if battle is over
@@ -117,6 +120,9 @@ function OverworldState() {
         clearScreen(); //All this is drawn on the small canvas...
         player.move();
         player.draw();
+
+        draw_particles();
+
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
@@ -201,6 +207,7 @@ function BattleEndState() {
         player.drawBattle();
         bat.draw();
         bat.drawBattle();
+        draw_particles();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     }

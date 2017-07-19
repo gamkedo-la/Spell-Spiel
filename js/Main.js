@@ -53,7 +53,8 @@ function updateAll() {
 
     gameController.update();
     updateScreenshake();
-    
+    updateParticles();
+
 }
 
 function moveAll() {
