@@ -52,6 +52,7 @@ function imageLoadingDoneSoStartGame() {
 function updateAll() {
 
     gameController.update();
+    updateScreenshake();
 }
 
 function moveAll() {

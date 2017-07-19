@@ -76,6 +76,9 @@ function Spell() {
     }
     this.basicCast = function (target) { //Deal damage based on power
         if (this.type === "Attack") {
+
+            screenshake(10);
+
             var toDeal;
             //Remove shield
             if (target.shieldHP != 0) {
