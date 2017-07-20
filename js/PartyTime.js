@@ -40,8 +40,8 @@ function party(x, y, particleType, destX, destY, delayFrames, startScale, endSca
 
 	if (!delayFrames) delayFrames = 0; // deal with undefined
 
-	if (startScale==undefined) startScale = 1;
-	if (endScale==undefined) endScale = 1;
+	if (startScale === undefined) startScale = 1;
+	if (endScale === undefined) endScale = 1;
 
 	var p, pnum, pcount;
 	if (!particleType) particleType = 0;
@@ -109,6 +109,7 @@ function clearParticles() {
  * steps the particle effects simulation
  */
 var active_particle_count = 0; // how many we updated last frame
+
 function updateParticles()
 {
 	if (!particles_enabled)	return;

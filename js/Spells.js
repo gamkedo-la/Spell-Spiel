@@ -77,7 +77,7 @@ function Spell() {
     this.basicCast = function (target) { //Deal damage based on power
         if (this.type === "Attack") {
 
-            screenshake(10);
+            //screenshake(10);
 
             var toDeal;
             //Remove shield
@@ -165,11 +165,13 @@ Pyroblast = function () {
     this.text = "Pyroblast";
     this.type = "Attack";
     this.MAX_POWER = 50;
+    this.ANIM_FRAMES = 30;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         if (this.power >= this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
         else if (this.power < this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
+        screenshake(10,this.ANIM_FRAMES);
         this.playSound();
         this.spawnParticles(PARTICLE_FIREBALL);
     }
@@ -182,12 +184,14 @@ Lightning = function () {
     this.name = "Lightning";
     this.text = "Lightning strike of doom";
     this.type = "Attack";
+    this.ANIM_FRAMES = 30;
     this.MAX_POWER = 200;
 
     this.cast = function (target) {
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
         this.basicCast(target);
+        screenshake(10, this.ANIM_FRAMES);
         this.playSound();
         this.spawnParticles(PARTICLE_ICEBALL); // FIXME
     }
@@ -200,12 +204,14 @@ Blizzard = function () {
     this.name = "Blizzard";
     this.text = "Blizzard";
     this.type = "Attack";
+    this.ANIM_FRAMES = 30;
     this.MAX_POWER = 50;
 
     this.cast = function (target) { 
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
+        screenshake(10, this.ANIM_FRAMES);
         this.playSound();
         this.spawnParticles(PARTICLE_ICEBALL);
     }
