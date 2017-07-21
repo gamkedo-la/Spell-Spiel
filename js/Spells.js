@@ -23,7 +23,7 @@ function Spell() {
         if (typeof player === "object") { //Big hack, checks if player exists because of script ordering...
             player.currentSpell = noSpell;
         }
-    }
+    };
 
     this.checkLetters = function () {
         if (keyPressed.data.indexOf(this.text.charCodeAt(this.progress)) != -1) { //-1 means undefined
@@ -34,7 +34,7 @@ function Spell() {
         }
         this.progress += 1;
         keyPressed.data = []; //Hopefully this isn't a mortal sin
-    }
+    };
 
     this.checkProgress = function () {
         if (this.progress === this.text.length) {
@@ -46,18 +46,18 @@ function Spell() {
             this.reset();
             player.casting = false;
         }
-    }
+    };
     this.spellFailed = function () {
         this.reset();
         console.log("Not quick enough!");
-    }
+    };
 
     this.startCountdown = function () {
         this.countdown = setTimeout(this.spellFailed.bind(this), this.currentCastWindow);
-    }
+    };
     this.stopCountdown = function () {
         clearTimeout(this.countdown);
-    }
+    };
 
     this.getPower = function () { //Called at the end to check how many right/wrong
         var tally = 0;
@@ -69,11 +69,11 @@ function Spell() {
         }
         //console.log(tally);
         return Math.round(this.MAX_POWER * (tally / this.rightOrWrong.length));
-    }
+    };
 
     this.cast = function (target) {
         return; //To override in subclasses
-    }
+    };
     this.basicCast = function (target) { //Deal damage based on power
         if (this.type === "Attack") {
 
@@ -92,7 +92,7 @@ function Spell() {
                     target.shieldHP = 0;
                 }
             }
-            else { toDeal = this.power };
+            else { toDeal = this.power; }
             //Remove hp
             target.hp -= toDeal;
             if (target.hp <= 0) {
@@ -106,23 +106,23 @@ function Spell() {
         if (this.type === "Buff") { //To do
             return;
         }
-    }
+    };
 
     //These functions have yet to be made. Will be attached to sound/graphics components in place of subclasses
     this.playSound = function () {
         return;
-    }
-    
+    };
+
     this.spawnParticles = function (particletype,fromEnemy) {
 
         // run an 8 frame spritesheet animation and move it
         if (!fromEnemy) // assume left to right (ie player cast)
-            party(45,90,particletype,70,90); 
+            party(45,90,particletype,70,90);
         else
             party(150,90,particletype,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
 
         return;
-    }
+    };
 }
 
 function drawSpell(spell) {
@@ -174,9 +174,9 @@ Pyroblast = function () {
         screenshake(10,this.ANIM_FRAMES);
         this.playSound();
         this.spawnParticles(PARTICLE_FIREBALL);
-    }
+    };
     this.reset();
-}
+};
 Pyroblast.prototype = new Spell();
 pyroblast = new Pyroblast();
 
@@ -194,9 +194,9 @@ Lightning = function () {
         screenshake(10, this.ANIM_FRAMES);
         this.playSound();
         this.spawnParticles(PARTICLE_ICEBALL); // FIXME
-    }
+    };
     this.reset();
-}
+};
 Lightning.prototype = new Spell();
 lightning = new Lightning();
 
@@ -207,16 +207,16 @@ Blizzard = function () {
     this.ANIM_FRAMES = 30;
     this.MAX_POWER = 50;
 
-    this.cast = function (target) { 
+    this.cast = function (target) {
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         screenshake(10, this.ANIM_FRAMES);
         this.playSound();
         this.spawnParticles(PARTICLE_ICEBALL);
-    }
+    };
     this.reset();
-}
+};
 Blizzard.prototype = new Spell();
 blizzard = new Blizzard();
 
@@ -232,9 +232,9 @@ Shield1 = function () {
         this.basicCast(target);
         this.playSound();
         this.spawnParticles(PARTICLE_FIREBALL); // FIXME
-    }
+    };
     this.reset();
-}
+};
 Shield1.prototype = new Spell();
 shield1 = new Shield1();
 
