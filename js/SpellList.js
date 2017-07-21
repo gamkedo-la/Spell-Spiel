@@ -1,13 +1,10 @@
-{
+var spellList = `{
     "Pyroblast": {
         "name": "Pyroblast",
         "text": "Pyroblast",
-        "type": "Attack",
-        "max_power": 50,
+        "type": "Attack", "max_power": 50,
         "anim_frames": 30,
-        "particles": {
-            "fireball"
-        }
+        "particles": ["fireball"]
     },
     "Lightning": {
         "name": "Lightning",
@@ -15,9 +12,7 @@
         "type": "Attack",
         "max_power": 200,
         "anim_frames": 30,
-        "particles": {
-            "iceball"
-        }
+        "particles": ["iceball"]
     },
     "Blizzard": {
         "name": "Blizzard",
@@ -25,17 +20,14 @@
         "type": "Attack",
         "max_power": 50,
         "anim_frames": 30,
-        "particles": {
-            "iceball"
-        }
+        "particles": ["iceball"]
     },
     "Shield1": {
         "name": "Shield1",
         "text": "Protect",
         "type": "Shield",
         "max_power": 250,
-        "particles": {
-            "fireball"
-        }
+        "particles": ["fireball"]
     }
-}
+}`;
+

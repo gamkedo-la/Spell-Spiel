@@ -33,12 +33,12 @@ window.onload = function () {
     resetFont();
     canvasContext.textAlign = "left";
 
-    colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, 'purple') //Doesn't work with the whole scaled canvas shenanigans...
-    colorText('LOADING', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange') //Also looks weird now :P
+    colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, 'purple'); //Doesn't work with the whole scaled canvas shenanigans...
+    colorText('LOADING', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange'); //Also looks weird now :P
 
     loadImages();
 
-}
+};
 
 function imageLoadingDoneSoStartGame() {
     console.log("Started");
