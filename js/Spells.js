@@ -231,7 +231,7 @@ Shield1 = function () {
         //else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        this.spawnParticles(PARTICLE_FIREBALL); // FIXME
+        //this.spawnParticles(PARTICLE_FIREBALL); // FIXME
     };
     this.reset();
 };

@@ -36,6 +36,9 @@ function Character() { //"Character" == base class for anything that can fight
     }
     this.draw = function () { //On canvas
         canvasContext.drawImage(this.img, this.x - this.img.width / 2, this.y - this.img.height);
+        if (this.shieldHP !== 0) {
+            canvasContext.drawImage(shieldPic, this.x - this.img.width - 2, this.y - this.img.height - 21);
+        }
         scaledContext.font = "normal 20pt Bookman";
         resetFont();
     }

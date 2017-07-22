@@ -5,6 +5,8 @@ var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
 var overworldPic = document.createElement("img");
 
+var shieldPic = document.createElement("img");
+
 var picsToLoad = 0; //set automatically in loadImages()
 
 function countLoadedImagesAndLaunchIfReady(){
@@ -28,7 +30,8 @@ function loadImages(){
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "bgResized.png" },
         { varName: overworldPic, theFile: "study.png" },
-        { varName: batPic, theFile: "bat.png" }
+        { varName: batPic, theFile: "bat.png" },
+        { varName: shieldPic, theFile: "shield1.png"}
     ]
 
     picsToLoad = imageList.length; //This method avoids a race condition
