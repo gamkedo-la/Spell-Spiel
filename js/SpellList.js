@@ -31,3 +31,5 @@ var spellList = `{
     }
 }`;
 
+var spells = JSON.parse(spellList);
+

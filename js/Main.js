@@ -33,16 +33,13 @@ window.onload = function () {
     resetFont();
     canvasContext.textAlign = "left";
 
-    t = new Trie();
-    words = ["apple","baboon","cat","dog","elephant","frog","goat","horse","hat"];
-    for(let i = 0; i < words.length; i++) {
-        t.insert(words);
+    var t = createTrie();
+    for(var spell in spells) {
+        t.insert(spells[spell].name);
     }
 
-    ret = t.getAllWords();
-    for(let i = 0; i < ret.length; i++) {
-        console.log("word: " + ret[i]);
-    }
+    console.log(t.autoComplete(""));
+    console.log(t.autoComplete("Lig"));
 
     colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, 'purple'); //Doesn't work with the whole scaled canvas shenanigans...
     colorText('LOADING', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange'); //Also looks weird now :P
