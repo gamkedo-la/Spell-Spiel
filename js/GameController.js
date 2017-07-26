@@ -44,10 +44,11 @@ function BattleState() {
         clearScreen(); //Everything under this is drawn on the small canvas...
         player.draw();
         player.drawBattle();
-        bat.draw();
-        bat.drawBattle();
+        player.opponent.draw();
+        player.opponent.drawBattle();
         
-        draw_particles();
+        drawParticles();
+        //draw_particles();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
@@ -108,7 +109,7 @@ function BattleState() {
 
         player.x = 40;
         player.y = 125;
-        player.opponent.useAttack();
+        //player.opponent.useAttack();
     }
 }
 
@@ -205,8 +206,8 @@ function BattleEndState() {
         clearScreen(); //Everything under this is drawn on the small canvas...
         player.draw();
         player.drawBattle();
-        bat.draw();
-        bat.drawBattle();
+        player.opponent.draw();
+        player.opponent.drawBattle();
         draw_particles();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas

@@ -11,6 +11,7 @@ function Spell() {
     this.MAX_CAST_WINDOW = 5000;
     this.currentCastWindow = 5000; //in milliseconds
     this.usedByAI = false; //TBD
+    this.particle;
 
     this.MAX_POWER = 100;
     this.power = this.MAX_POWER;
@@ -116,8 +117,9 @@ function Spell() {
     this.spawnParticles = function (particletype,fromEnemy) {
 
         // run an 8 frame spritesheet animation and move it
-        if (!fromEnemy) // assume left to right (ie player cast)
-            party(45,90,particletype,70,90);
+        if (!fromEnemy && this.particle) // assume left to right (ie player cast)
+            //party(45, 90, particletype, 70, 90);
+            this.particle.party();
         else
             party(150,90,particletype,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
 
@@ -148,7 +150,7 @@ function drawSpell(spell) {
     }
 }
 
-function rechargeAllExceptCurrent() {
+function rechargeAllExceptCurrent() { //Refills the cooldowns of inactive spells each frame
     for (i = 0; i < player.availableSpells.length; i++) {
         toBoost = player.availableSpells[i];
         if (toBoost === player.currentSpell) { continue;}
@@ -165,6 +167,7 @@ Pyroblast = function () {
     this.text = "Pyroblast";
     this.type = "Attack";
     this.MAX_POWER = 50;
+    this.particle = fireballParty;
     this.ANIM_FRAMES = 30;
 
     this.cast = function (target) { //Notice: checkProgress casts this function

@@ -32,4 +32,10 @@ var enemyDefs = [
 var bat = new Enemy();
 bat.name = "Bat";
 bat.opponent = player; //Eventually, enemies will be assigned when entering the battle state, after being created!
-player.opponent = bat;
+//player.opponent = bat;
+
+var zombie = new Enemy();
+zombie.name = "Zombie";
+zombie.opponent = player;
+zombie.img = zombiePic;
+player.opponent = zombie;

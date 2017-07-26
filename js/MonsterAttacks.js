@@ -30,6 +30,5 @@ function PoisonSpit() {
         this.spawnParticles(PARTICLE_POISON,true);
     }
 }
-
 PoisonSpit.prototype = new Spell();
 poisonSpit = new PoisonSpit();

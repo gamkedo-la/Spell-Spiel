@@ -1,10 +1,20 @@
 
+//Characters
 var standingPic = document.createElement("img");
 var batPic = document.createElement("img");
+var zombiePic = document.createElement("img");
+
+//Environments
 var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
 var overworldPic = document.createElement("img");
 
+//Spell VFX
+var fireballSheet = document.createElement("img");
+var lightningSheet = document.createElement("img");
+var biteSheet = document.createElement("img");
+
+var iceSpikePic = document.createElement("img");
 var shieldPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
@@ -30,7 +40,13 @@ function loadImages(){
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "bgResized.png" },
         { varName: overworldPic, theFile: "study.png" },
+
         { varName: batPic, theFile: "bat.png" },
+        { varName: zombiePic, theFile: "zombie2.png" },
+
+        { varName: fireballSheet, theFile: "fireball.png" },
+        { varName: iceSpikePic, theFile: "iceSpike.png" },
+        { varName: lightningSheet, theFile: "lightning.png" },
         { varName: shieldPic, theFile: "shield1.png"}
     ]
 
