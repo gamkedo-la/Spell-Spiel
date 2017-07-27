@@ -8,174 +8,131 @@ var FAR_AWAY = -999999;
 
 function Particle() {
 
-    var frameCount;
-    var spriteWidth;
-    var spriteHeight;
+    this.particleFPS = 1;
+    this.particleFrameMs = 1000 / 1;
+    this.frameCount = 4;
+    this.spriteWidth = 0;
+    this.spriteHeight = 0;
 
-    var spritesheet; //Image file
+    this.spritesheet = fillerPic; //Image file
     //var spritesheetFinishedLoading = false;
 
     var framesLeft = 0;
     var currentFrame = 0;
-    var frameDelays = ArrayWithZeros(this.frameCount); //Array with delay for each frame
+    //var frameDelays = ArrayWithZeros(this.frameCount); //Array with delay for each frame
     var currentTimestamp = (new Date()).getTime();
-    var nextTimestamp = (new Date()).getTime() + PARTICLE_FRAME_MS;
+    var nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
 
+    this.startX = 45;
+    this.startY = 90;
     var x = 45;
     var y = 90;
-    var xVelocity = 0;
-    var yVelocity = 0;
+    this.destX = 155;
+    this.destY = 90;
+    this.speedX = (this.destX - this.startX) / (this.frameCount * this.particleFrameMs * 30 / 1000); //30/1000 is game's fps in msecond
+    this.speedY = (this.destY - this.startY) / this.frameCount;
 
     this.isAlive = false;
+    this.isMoving = true; //could also just mark destX = x etc.
+    
+    this.init = function () {
+        this.particleFrameMs = 1000 / this.particleFPS;
+        x = this.startX;
+        y = this.startY;
+        this.speedX = (this.destX - this.startX) / (this.frameCount * this.particleFrameMs * 30 / 1000); //30/1000 is game's fps in msecond
+        this.speedY = (this.destY - this.startY) / this.frameCount;
+        nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
+    }
 
     this.party = function () {
         //if (!isAlive) { return; }
         //if (!spritesheetFinishedLoading) { return; }
-        if (!frameDelays) frameDelays = ArrayWithZeros(this.frameCount); // deal with undefined
-
-
-        /*
+        //if (!frameDelays) frameDelays = ArrayWithZeros(this.frameCount); // deal with undefined
+       
         var p, pnum, pcount;
         for (pnum = 0, pcount = particles.length; pnum < pcount; pnum++) {
             p = particles[pnum];
-            if (p && isAlive) {
+            if (p && p.isAlive) {
                 break;
             }
-        }*/
+        }
+
         this.isAlive = true;
-        nextTimestamp = (new Date()).getTime() + PARTICLE_FRAME_MS;
+        nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
         particles.push(this);
-        console.log("Joined the party");
+        console.log("Joined the party!");
         console.log(particles);
         
-
-        /*
-        // we need a new particle!
-        if (!p || !p.inactive) {
-            //console.log('No inactive particles. Adding particle #' + pcount);
-            var particle = { x: FAR_AWAY, y: FAR_AWAY, inactive: true };
-            // remember this new particle in our system and reuse
-            particles.push(particle);
-            p = particle;
-        }*/
     }
-
+    
     this.update = function() {
-
-        //if (!particles_enabled) return;
 
         // get the current time
         currentTimestamp = (new Date()).getTime();
-        console.log(currentTimestamp, nextTimestamp);
-        console.log(currentFrame);
-
-        //activeParticleCount = 0;
 
         // animate the particles
         if (this.isAlive) {
 
-            //activeParticleCount++;
+             // add delays functionality here if desired
+        {
+            //p.anim_last_tick = particle_timestamp; // not actually used OPTI
 
-            if (frameDelays[currentFrame] > 0) {
-                //log('delaying particle: ' + p.delayFrames)
-                frameDelays[currentFrame]--;
+            // moving particles
+            if (this.isMoving) {
+                console.log("We're movin");
+                x += this.speedX;
+                y += this.speedY;
+                if (x >= this.destX) { x = this.destX; }
             }
-            else // no more delay for this sprite:
-            {
-                //p.anim_last_tick = particle_timestamp; // not actually used OPTI
 
-                // moving particles
-                /*if (p.moving) {
-                    p.x += p.speedX;
-                    p.y += p.speedY;
-                }*/
+            if (currentFrame >= this.frameCount) {
+                this.isAlive = false;
+                x = this.startX;
+                y = this.startY;
+                currentFrame = 0;
+            }
+            else {
 
-                if (currentFrame >= this.frameCount) {
-                    //console.log('particle anim ended');
-                    //x = y = FAR_AWAY; // throw offscreen DOESNTTTTTTTTTTTT ACTUALLLLYY WORKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-                    this.isAlive = false;
-                    currentFrame = 0;
-                }
-                else {
-
-                    if (currentTimestamp >= nextTimestamp) {
-                        console.log("Gonna boost the frames now");
-                        nextTimestamp = currentTimestamp + PARTICLE_FRAME_MS;
-                        currentFrame++; // TODO: ping pong anims?
-                        }
-
+                if (currentTimestamp >= nextTimestamp) {
+                    nextTimestamp = currentTimestamp + this.particleFrameMs;
+                    currentFrame++; // TODO: ping pong anims?
                     }
+
                 }
             }
-/*
-    if ((active_particle_count > 0)
-		&& (prev_active_particle_count != active_particle_count)) {
-        // console.log('Active particles: ' + active_particle_count);
-        prev_active_particle_count = active_particle_count;
         }
-*/
+
     }
-    /*
-    this.clear = function() { //TODO
-        console.log('clearParticles');
-        particles.forEach(function (p) {
-            p.x = p.y = FAR_AWAY; // throw offscreen
-            p.inactive = true;
-        });
-    }*/
 
     this.draw = function (cameraX, cameraY) {
-        //console.log('draw_particles');
+        
         if (!cameraX) cameraX = 0;
         if (!cameraY) cameraY = 0;
-                if (this.isAlive) // and visible in screen bbox
-                {
-                    //console.log(currentFrame);
-                    if (window.canvasContext) // sanity check
-                    {
-                        console.log(currentFrame);
-                        canvasContext.drawImage(this.spritesheet,
-                        currentFrame * this.spriteWidth, 0,
-                        this.spriteWidth, this.spriteHeight,
-                        x - cameraX + (-1 * Math.round(this.spriteWidth / 2)), y - cameraY + (-1 * Math.round(this.spriteHeight / 2)),
-                        this.spriteWidth, this.spriteHeight);
-                    }
-                }
+        if (this.isAlive) // and visible in screen bbox
+        {
+            //console.log(currentFrame);
+            if (window.canvasContext) // sanity check
+            {
+                console.log("We're drawing");
+                canvasContext.drawImage(this.spritesheet,
+                currentFrame * this.spriteWidth, 0,
+                this.spriteWidth, this.spriteHeight,
+                x - cameraX + (-1 * Math.round(this.spriteWidth / 2)), y - cameraY + (-1 * Math.round(this.spriteHeight / 2)),
+                this.spriteWidth, this.spriteHeight);
+                
             }
-}
-
-//var activeParticleCount = 0; // how many we updated last frame
-
-//var prev_active_particle_count = 0;
-
-/*
-function init_particles() {
-    console.log('init_particles...');
-    spritesheet_image = new Image();
-    spritesheet_image.src = 'images/particles.png';
-    spritesheet_image.onload = function () {
-        console.log('particles.png loaded.');
-        spritesheet_image_finished_loading = true;
-    }
-    spritesheet_image.onerror = function () {
-        console.log('Failed to download particles.png.');
+        }
     }
 }
-
-init_particles(); // immediately
-*/
-
-function clearParticles() {
-    console.log('clearParticles');
-    particles.forEach(function (p) {
-        p.x = p.y = FAR_AWAY; // throw offscreen
-        p.isAlive = false;
-    });
-}
-
 function updateParticles() {
     for (i = 0; i < particles.length; i++) {
         particles[i].update();
+    }
+    for (i = particles.length -1; i >=0 ; i--){
+        if (particles[i].isAlive == false){
+            particles.splice(i,1);
+            console.log("Particle expired \n", "Particles remaining: " + particles.length);
+        }
     }
 }
 function drawParticles() {
@@ -187,6 +144,27 @@ function drawParticles() {
 
 fireballParty = new Particle();
 fireballParty.frameCount = 4;
+fireballParty.particleFPS = 4;
 fireballParty.spritesheet = fireballSheet;
 fireballParty.spriteWidth = 20;
 fireballParty.spriteHeight = 10;
+fireballParty.init();
+
+lightningParty = new Particle();
+lightningParty.frameCount = 6;
+lightningParty.particleFPS = 6;
+lightningParty.isMoving = false;
+lightningParty.spritesheet = lightningSheet;
+lightningParty.spriteWidth = 384 / 6;
+lightningParty.spriteHeight = 110;
+lightningParty.startX = 155;
+lightningParty.init();
+
+iceSpikeParty = new Particle();
+iceSpikeParty.frameCount = 1;
+iceSpikeParty.particleFPS = 1;
+iceSpikeParty.isMoving = true;
+iceSpikeParty.spritesheet = iceSpikePic;
+iceSpikeParty.spriteWidth = 40;
+iceSpikeParty.spriteHeight = 20;
+iceSpikeParty.init();

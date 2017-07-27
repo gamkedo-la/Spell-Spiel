@@ -85,7 +85,7 @@ function BattleState() {
     }
     this.drawOnScaled = function () {
         player.drawScaled(); //UI text for each character
-        bat.drawScaled();
+        player.opponent.drawScaled();
         drawSpell(player.currentSpell);
         //Display messages (ie the ones that are timed and kept in a queue)
         for (i = 0; i < msgOnDisplay.length; i++) {

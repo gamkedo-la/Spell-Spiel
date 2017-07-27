@@ -39,3 +39,4 @@ zombie.name = "Zombie";
 zombie.opponent = player;
 zombie.img = zombiePic;
 player.opponent = zombie;
+//player.opponent = bat;

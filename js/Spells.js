@@ -78,9 +78,8 @@ function Spell() {
     this.basicCast = function (target) { //Deal damage based on power
         if (this.type === "Attack") {
 
-            //screenshake(10);
-
             var toDeal;
+
             //Remove shield
             if (target.shieldHP != 0) {
 
@@ -114,14 +113,14 @@ function Spell() {
         return;
     };
 
-    this.spawnParticles = function (particletype,fromEnemy) {
+    this.spawnParticles = function (fromEnemy) {
 
         // run an 8 frame spritesheet animation and move it
         if (!fromEnemy && this.particle) // assume left to right (ie player cast)
             //party(45, 90, particletype, 70, 90);
             this.particle.party();
         else
-            party(150,90,particletype,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
+            return; //party(150,90,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
 
         return;
     };
@@ -188,6 +187,7 @@ Lightning = function () {
     this.text = "Lightning strike of doom";
     this.type = "Attack";
     this.ANIM_FRAMES = 30;
+    this.particle = lightningParty;
     this.MAX_POWER = 200;
 
     this.cast = function (target) {
@@ -196,7 +196,7 @@ Lightning = function () {
         this.basicCast(target);
         screenshake(10, this.ANIM_FRAMES);
         this.playSound();
-        this.spawnParticles(PARTICLE_ICEBALL); // FIXME
+        this.spawnParticles();
     };
     this.reset();
 };
@@ -208,6 +208,7 @@ Blizzard = function () {
     this.text = "Blizzard";
     this.type = "Attack";
     this.ANIM_FRAMES = 30;
+    this.particle = iceSpikeParty;
     this.MAX_POWER = 50;
 
     this.cast = function (target) {
@@ -216,7 +217,7 @@ Blizzard = function () {
         this.basicCast(target);
         screenshake(10, this.ANIM_FRAMES);
         this.playSound();
-        this.spawnParticles(PARTICLE_ICEBALL);
+        this.spawnParticles();
     };
     this.reset();
 };

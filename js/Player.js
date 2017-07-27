@@ -46,7 +46,7 @@ function Character() { //"Character" == base class for anything that can fight
         return;
     }
     this.drawScaled = function () { //On scaled canvas
-        colorText("HP: "+this.hp, (this.x - this.img.width / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 10) * PIXEL_SCALE_UP, "red");
+        colorText("HP: " + this.hp, (this.x - this.img.width / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 10) * PIXEL_SCALE_UP, "red");
         if (this.shieldHP !== 0) {
             colorText("Shield: " + this.shieldHP, (this.x - this.img.width / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
         }
