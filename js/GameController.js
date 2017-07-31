@@ -4,10 +4,10 @@ function GameController() {
 
     this.handleInput = function () {
         state_.handleInput(); //Delegate the input to the state object! Yay!
-    }
+    };
     this.update = function () {
         state_.update();
-    }
+    };
 
     this.changeState = function (state) {
         if (state != null) {
@@ -16,12 +16,12 @@ function GameController() {
             state_ = state;
             state_.enter();
         }
-    }
+    };
 
 
     this.getBackground = function () {
         return state_.img; //Eventually we can expand this so states can have a variety of bg images
-    }
+    };
 
     var state_ = null; //default state, changes during runtime
     this.changeState(defaultState); //Initialize at default
@@ -37,7 +37,7 @@ function BattleState() {
         currentTime = date.getTime();
         deltaTime = currentTime - lastTime;
         player.currentSpell.timeElapsed += deltaTime;
-   
+
         rechargeAllExceptCurrent();
 
         this.handleInput();
@@ -46,15 +46,37 @@ function BattleState() {
         player.drawBattle();
         player.opponent.draw();
         player.opponent.drawBattle();
-        
+
         drawParticles();
         //draw_particles();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
         endCheck(); //Check if battle is over
-    }
+    };
+
+    this.lastLen = 0; // length of input array at last check
+    this.currentSpell = "";
     this.handleInput = function () { //Holy *** that's ugly (censored for a family-friendly Gamkedo Club). IMPORTANT keypresses are looked at in battle, while keydown/up are in overworld (diff. is the first checks only character keys)
+        if(keyPressed.data.length == this.lastLen) return;
+        this.lastLen++;
+
+        // Checks if the pressed key is alphanumeric. If it is, we query the trie
+        var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
+        if(key.match(/[a-z]/i)) {
+            if(spellTrie.autoComplete(this.currentSpell+key).length) {
+                this.currentSpell += key;
+                console.log(this.currentSpell);
+                // console.log(player.availableSpells.this.currentSpell);
+                return;
+            }
+        }
+        return;
+        // console.log("arraY:" + keyPressed.data[keyPressed.data.length-1].fromCharCode(10).match(/[a-z]/i));
+        // if(keyPressed.data[keyPressed.data.length - 1].match(/[a-z]/i)){
+        //     console.log("an alphanumeric key was pressedd!");
+        //     return;
+        // }
         if (keyPressed.data[keyPressed.data.length - 1] == "1".charCodeAt(0)) {
             player.changeSpell(player.availableSpells[0]);
             resetKeypress();

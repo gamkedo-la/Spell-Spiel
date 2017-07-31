@@ -5,6 +5,7 @@ var date;
 var lastTime;
 var currentTime;
 var deltaTime;
+var spellTrie;
 
 const ORIG_WORLD_W = 200;
 const ORIG_WORLD_H = 150;
@@ -33,13 +34,13 @@ window.onload = function () {
     resetFont();
     canvasContext.textAlign = "left";
 
-    var t = createTrie();
+    spellTrie = createTrie();
     for(var spell in spells) {
-        t.insert(spells[spell].name);
+        spellTrie.insert(spells[spell].name);
     }
 
-    console.log(t.autoComplete(""));
-    console.log(t.autoComplete("Lig"));
+    console.log(spellTrie.autoComplete(""));
+    console.log(spellTrie.autoComplete("Lig"));
 
     colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, 'purple'); //Doesn't work with the whole scaled canvas shenanigans...
     colorText('LOADING', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange'); //Also looks weird now :P
