@@ -56,25 +56,29 @@ function BattleState() {
 
     this.currentSpell = "";
     this.lastLen = 0;
-    // TODO
-    this.handleInput = function () { //Holy *** that's ugly (censored for a family-friendly Gamkedo Club). IMPORTANT keypresses are looked at in battle, while keydown/up are in overworld (diff. is the first checks only character keys)
+    this.handleInput = function () {
+        console.log("called this function");
         if(keyPressed.data.length === 0) {
             this.lastLen = 0;
             return;
         }
         if(keyPressed.data.length === this.lastLen) return;
         this.lastLen++;
+        console.log("made it here");
 
-        // Checks if the pressed key is alphanumeric. If it is, we query the trie
+        // Checks if the pressed key is in the alphabet. If it is, we query the trie
+        // Non-letter input can be used for pausing, etc.
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
         if(key.match(/[a-z]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell+key);
+            console.log(completion);
             if(completion.length) {
                 this.currentSpell += key;
                 player.changeSpell(player.availableSpells[completion]);
                 resetKeypress();
             } else {
                 // Play a sound
+                this.currentSpell += key;
 
             }
         } else {
@@ -85,6 +89,7 @@ function BattleState() {
             return;
         }
 
+        player.currentSpell.checkLetters();
         player.casting = true;
     };
     this.drawOnScaled = function () {

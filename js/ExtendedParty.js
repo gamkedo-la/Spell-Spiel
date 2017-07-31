@@ -34,7 +34,7 @@ function Particle() {
 
     this.isAlive = false;
     this.isMoving = true; //could also just mark destX = x etc.
-    
+
     this.init = function () {
         this.particleFrameMs = 1000 / this.particleFPS;
         x = this.startX;
@@ -42,13 +42,13 @@ function Particle() {
         this.speedX = (this.destX - this.startX) / (this.frameCount * this.particleFrameMs * 30 / 1000); //30/1000 is game's fps in msecond
         this.speedY = (this.destY - this.startY) / this.frameCount;
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
-    }
+    };
 
     this.party = function () {
         //if (!isAlive) { return; }
         //if (!spritesheetFinishedLoading) { return; }
         //if (!frameDelays) frameDelays = ArrayWithZeros(this.frameCount); // deal with undefined
-       
+
         var p, pnum, pcount;
         for (pnum = 0, pcount = particles.length; pnum < pcount; pnum++) {
             p = particles[pnum];
@@ -62,9 +62,9 @@ function Particle() {
         particles.push(this);
         console.log("Joined the party!");
         console.log(particles);
-        
-    }
-    
+
+    };
+
     this.update = function() {
 
         // get the current time
@@ -79,7 +79,7 @@ function Particle() {
 
             // moving particles
             if (this.isMoving) {
-                console.log("We're movin");
+                // console.log("We're movin");
                 x += this.speedX;
                 y += this.speedY;
                 if (x >= this.destX) { x = this.destX; }
@@ -102,10 +102,10 @@ function Particle() {
             }
         }
 
-    }
+    };
 
     this.draw = function (cameraX, cameraY) {
-        
+
         if (!cameraX) cameraX = 0;
         if (!cameraY) cameraY = 0;
         if (this.isAlive) // and visible in screen bbox
@@ -113,16 +113,16 @@ function Particle() {
             //console.log(currentFrame);
             if (window.canvasContext) // sanity check
             {
-                console.log("We're drawing");
+                // console.log("We're drawing");
                 canvasContext.drawImage(this.spritesheet,
                 currentFrame * this.spriteWidth, 0,
                 this.spriteWidth, this.spriteHeight,
                 x - cameraX + (-1 * Math.round(this.spriteWidth / 2)), y - cameraY + (-1 * Math.round(this.spriteHeight / 2)),
                 this.spriteWidth, this.spriteHeight);
-                
+
             }
         }
-    }
+    };
 }
 function updateParticles() {
     for (i = 0; i < particles.length; i++) {

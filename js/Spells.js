@@ -11,7 +11,7 @@ function Spell() {
     this.MAX_CAST_WINDOW = 5000;
     this.currentCastWindow = 5000; //in milliseconds
     this.usedByAI = false; //TBD
-    this.particle;
+    this.particle = null;
 
     this.MAX_POWER = 100;
     this.power = this.MAX_POWER;
@@ -46,6 +46,7 @@ function Spell() {
             this.stopCountdown();
             this.reset();
             player.casting = false;
+            battleState.currentSpell = "";
         }
     };
     this.spellFailed = function () {
