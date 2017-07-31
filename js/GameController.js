@@ -31,8 +31,7 @@ function BattleState() {
 
     this.img = battlePic;
     this.update = function ()
-    {
-        date = new Date();
+    { date = new Date();
         lastTime = currentTime;
         currentTime = date.getTime();
         deltaTime = currentTime - lastTime;
@@ -55,10 +54,15 @@ function BattleState() {
         endCheck(); //Check if battle is over
     };
 
-    this.lastLen = 0; // length of input array at last check
     this.currentSpell = "";
+    this.lastLen = 0;
+    // TODO
     this.handleInput = function () { //Holy *** that's ugly (censored for a family-friendly Gamkedo Club). IMPORTANT keypresses are looked at in battle, while keydown/up are in overworld (diff. is the first checks only character keys)
-        if(keyPressed.data.length == this.lastLen) return;
+        if(keyPressed.data.length === 0) {
+            this.lastLen = 0;
+            return;
+        }
+        if(keyPressed.data.length === this.lastLen) return;
         this.lastLen++;
 
         // Checks if the pressed key is alphanumeric. If it is, we query the trie
@@ -69,25 +73,20 @@ function BattleState() {
                 this.currentSpell += key;
                 player.changeSpell(player.availableSpells[completion]);
                 resetKeypress();
-                return;
             } else {
                 // Play a sound
+
             }
         } else {
             // Play a sound
         }
-        return;
+
         if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
             return;
         }
 
-        if (pressedKey === true) {
-            pressedKey = false;
-            player.currentSpell.checkLetters();
-            player.casting = true;
-
-        }
-    }
+        player.casting = true;
+    };
     this.drawOnScaled = function () {
         player.drawScaled(); //UI text for each character
         player.opponent.drawScaled();
@@ -106,7 +105,7 @@ function BattleState() {
             //console.log("Frames left: ", toDraw.framesLeft);
             toDraw.fontOff();
         }
-    }
+    };
     this.enter = function () {
         console.log("Entered battle");
         document.removeEventListener("keydown", keyDown);
@@ -115,7 +114,7 @@ function BattleState() {
         player.x = 40;
         player.y = 125;
         //player.opponent.useAttack();
-    }
+    };
 }
 
 function OverworldState() {
@@ -132,7 +131,7 @@ function OverworldState() {
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
-    }
+    };
     this.handleInput = function () {
         if (holdLeft) {
             player.speedX = -MOVE_SPEED;
@@ -149,19 +148,19 @@ function OverworldState() {
             player.speedY = MOVE_SPEED;
         }
         else { player.speedY = 0; }
-    }
+    };
 
     this.drawOnScaled = function () {
         return;
-    }
+    };
 
     this.enter = function () {
-        if (endingBattle === true) { endingBattle = false }
+        if (endingBattle === true) { endingBattle = false; }
         if (typeof player !== "undefined") { player.opponent.reset(); }
         console.log("Entered overworld");
         document.removeEventListener("keypress", keyPressed);
         document.addEventListener("keydown", keyDown); //keypress == only character keys!
-    }
+    };
 }
 
 var battleState = new BattleState();
@@ -190,7 +189,7 @@ function BattleEndState() {
 
     this.handleInput = function () {
         return;
-    }
+    };
 
     this.drawOnScaled = function () {
         if (this.win == true) {
@@ -204,7 +203,7 @@ function BattleEndState() {
             colorText("You lose...", scaledCanvas.width / 2, 200, "black");
             scaledContext.textAlign = "left";
         }
-    }
+    };
 
     this.update = function () {
         this.handleInput();
@@ -216,13 +215,13 @@ function BattleEndState() {
         draw_particles();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
-    }
+    };
     this.enter = function () {
         setTimeout(gameController.changeState, 3000, overworldState);
         console.log("Timeout set!");
-        if (player.hp == 0) { this.win = false }
-        else if (player.opponent.hp == 0) { this.win = true }
-    }
+        if (player.hp == 0) { this.win = false;}
+        else if (player.opponent.hp == 0) { this.win = true; }
+    };
 }
 battleEndState = new BattleEndState();
 
