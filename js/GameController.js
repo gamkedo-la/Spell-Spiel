@@ -67,10 +67,8 @@ function BattleState() {
             var completion = spellTrie.autoComplete(this.currentSpell+key);
             if(completion.length) {
                 this.currentSpell += key;
-                console.log(this.currentSpell);
-
-                console.log(completion);
-                // console.log("completion" + player.availableSpells.completion);
+                player.changeSpell(player.availableSpells[completion]);
+                resetKeypress();
                 return;
             } else {
                 // Play a sound
@@ -79,28 +77,6 @@ function BattleState() {
             // Play a sound
         }
         return;
-        // console.log("arraY:" + keyPressed.data[keyPressed.data.length-1].fromCharCode(10).match(/[a-z]/i));
-        // if(keyPressed.data[keyPressed.data.length - 1].match(/[a-z]/i)){
-        //     console.log("an alphanumeric key was pressedd!");
-        //     return;
-        // }
-        if (keyPressed.data[keyPressed.data.length - 1] == "1".charCodeAt(0)) {
-            player.changeSpell(player.availableSpells[0]);
-            resetKeypress();
-        }
-        if (keyPressed.data[keyPressed.data.length - 1] == "2".charCodeAt(0)) {
-            player.changeSpell(player.availableSpells[1]);
-            resetKeypress();
-        }
-        if (keyPressed.data[keyPressed.data.length - 1] == "3".charCodeAt(0)) {
-            player.changeSpell(player.availableSpells[2]);
-            resetKeypress();
-        }
-        if (keyPressed.data[keyPressed.data.length - 1] == "4".charCodeAt(0)) {
-            player.changeSpell(player.availableSpells[3]);
-            resetKeypress();
-        }
-
         if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
             return;
         }

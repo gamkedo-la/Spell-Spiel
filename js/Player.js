@@ -54,9 +54,13 @@ function Character() { //"Character" == base class for anything that can fight
 
     //Spell mechanics
     this.changeSpell = function (spell) {
-        this.currentSpell.stopCountdown();
-        spell.startCountdown();
-        spell.reset();
+        if(spell != this.currentSpell) {
+            console.log("inside the if");
+            this.currentSpell.stopCountdown();
+            spell.startCountdown();
+            spell.reset();
+        }
+        console.log("called and outside");
         this.currentSpell = spell;
     };
 
