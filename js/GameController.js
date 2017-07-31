@@ -64,12 +64,19 @@ function BattleState() {
         // Checks if the pressed key is alphanumeric. If it is, we query the trie
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
         if(key.match(/[a-z]/i)) {
-            if(spellTrie.autoComplete(this.currentSpell+key).length) {
+            var completion = spellTrie.autoComplete(this.currentSpell+key);
+            if(completion.length) {
                 this.currentSpell += key;
                 console.log(this.currentSpell);
-                // console.log(player.availableSpells.this.currentSpell);
+
+                console.log(completion);
+                // console.log("completion" + player.availableSpells.completion);
                 return;
+            } else {
+                // Play a sound
             }
+        } else {
+            // Play a sound
         }
         return;
         // console.log("arraY:" + keyPressed.data[keyPressed.data.length-1].fromCharCode(10).match(/[a-z]/i));
