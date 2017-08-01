@@ -71,27 +71,27 @@ function BattleState() {
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
         if(key.match(/[a-z]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell+key);
-            console.log(completion);
             if(completion.length) {
+                completion = completion[0];
                 this.currentSpell += key;
                 player.changeSpell(player.availableSpells[completion]);
+                player.currentSpell.updateResults(true);
                 resetKeypress();
             } else {
-                // Play a sound
-                this.currentSpell += key;
-
+                // Play a sound, do not advance
+                player.currentSpell.updateResults(true);
             }
         } else {
-            // Play a sound
+            // Pausing, other input?
         }
 
         if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
             return;
         }
 
-        player.currentSpell.checkLetters();
-        player.casting = true;
+        // player.casting = true;
     };
+
     this.drawOnScaled = function () {
         player.drawScaled(); //UI text for each character
         player.opponent.drawScaled();

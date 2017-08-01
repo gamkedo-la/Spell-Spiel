@@ -26,14 +26,12 @@ function Spell() {
         }
     };
 
-    this.checkLetters = function () {
-        if (keyPressed.data.indexOf(this.text.charCodeAt(this.progress)) != -1) { //-1 means undefined
-            this.rightOrWrong[this.progress] = 1;
-        }
-        else {
+    this.updateResults = function (res) {
+        if (res) {
+            this.rightOrWrong[this.progress++] = 1;
+        } else {
             this.rightOrWrong[this.progress] = -1;
         }
-        this.progress += 1;
         keyPressed.data = []; //Hopefully this isn't a mortal sin
     };
 

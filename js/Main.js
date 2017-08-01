@@ -36,7 +36,7 @@ window.onload = function () {
 
     spellTrie = createTrie();
     for(var spell in spells) {
-        spellTrie.insert(spells[spell].name);
+        spellTrie.insert(spells[spell].text);
     }
 
     console.log(spellTrie.autoComplete(""));
