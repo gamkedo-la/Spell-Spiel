@@ -6,6 +6,7 @@ function Spell() {
     this.text = "";
     this.progress = 0;
     this.rightOrWrong = [];
+    this.numWrong = 0;
     var countdown; //Reference to the setTimeout
     this.timeElapsed = 0; //Time passed in millseconds
     this.MAX_CAST_WINDOW = 5000;
@@ -31,6 +32,7 @@ function Spell() {
             this.rightOrWrong[this.progress++] = 1;
         } else {
             this.rightOrWrong[this.progress] = -1;
+            this.numWrong++; // Used to calculate effect
         }
         keyPressed.data = []; //Hopefully this isn't a mortal sin
     };
@@ -49,6 +51,7 @@ function Spell() {
     };
     this.spellFailed = function () {
         this.reset();
+        battleState.currentSpell = "";
         console.log("Not quick enough!");
     };
 

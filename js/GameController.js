@@ -57,19 +57,17 @@ function BattleState() {
     this.currentSpell = "";
     this.lastLen = 0;
     this.handleInput = function () {
-        console.log("called this function");
         if(keyPressed.data.length === 0) {
             this.lastLen = 0;
             return;
         }
         if(keyPressed.data.length === this.lastLen) return;
         this.lastLen++;
-        console.log("made it here");
 
         // Checks if the pressed key is in the alphabet. If it is, we query the trie
         // Non-letter input can be used for pausing, etc.
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
-        if(key.match(/[a-z]/i)) {
+        if(key.match(/[a-z ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell+key);
             if(completion.length) {
                 completion = completion[0];
@@ -79,7 +77,10 @@ function BattleState() {
                 resetKeypress();
             } else {
                 // Play a sound, do not advance
-                player.currentSpell.updateResults(true);
+                if(player.currentSpell.name != "No spell") {
+                    player.currentSpell.updateResults(false);
+                    console.log(player.currentSpell.numWrong);
+                }
             }
         } else {
             // Pausing, other input?
