@@ -6,12 +6,13 @@ function Spell() {
     this.text = "";
     this.progress = 0;
     this.rightOrWrong = [];
+    this.numWrong = 0;
     var countdown; //Reference to the setTimeout
     this.timeElapsed = 0; //Time passed in millseconds
     this.MAX_CAST_WINDOW = 5000;
     this.currentCastWindow = 5000; //in milliseconds
     this.usedByAI = false; //TBD
-    this.particle;
+    this.particle = null;
 
     this.MAX_POWER = 100;
     this.power = this.MAX_POWER;
@@ -26,14 +27,13 @@ function Spell() {
         }
     };
 
-    this.checkLetters = function () {
-        if (keyPressed.data.indexOf(this.text.charCodeAt(this.progress)) != -1) { //-1 means undefined
-            this.rightOrWrong[this.progress] = 1;
-        }
-        else {
+    this.updateResults = function (res) {
+        if (res) {
+            this.rightOrWrong[this.progress++] = 1;
+        } else {
             this.rightOrWrong[this.progress] = -1;
+            this.numWrong++; // Used to calculate effect
         }
-        this.progress += 1;
         keyPressed.data = []; //Hopefully this isn't a mortal sin
     };
 
@@ -46,10 +46,12 @@ function Spell() {
             this.stopCountdown();
             this.reset();
             player.casting = false;
+            battleState.currentSpell = "";
         }
     };
     this.spellFailed = function () {
         this.reset();
+        battleState.currentSpell = "";
         console.log("Not quick enough!");
     };
 
