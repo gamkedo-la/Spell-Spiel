@@ -63,15 +63,7 @@ function Spell() {
     };
 
     this.getPower = function () { //Called at the end to check how many right/wrong
-        var tally = 0;
-        for (i = 0; i < this.rightOrWrong.length; i++) {
-            tally += this.rightOrWrong[i];
-        }
-        if (tally < 0) {
-            tally = 0;
-        }
-        //console.log(tally);
-        return Math.round(this.MAX_POWER * (tally / this.rightOrWrong.length));
+        return Math.round(this.MAX_POWER * (this.numWrong / this.rightOrWrong.length));
     };
 
     this.cast = function (target) {
@@ -121,7 +113,7 @@ function Spell() {
             //party(45, 90, particletype, 70, 90);
             console.log(this.particle);
             particle.party();
-            
+
         }
         else
             return; //party(150,90,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
@@ -220,7 +212,7 @@ Blizzard = function () {
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10, this.particle.duration*30/1000)
+        screenshake(10, this.particle.duration*30/1000);
         //this.spawnParticles();
         this.particle.party();
     };
