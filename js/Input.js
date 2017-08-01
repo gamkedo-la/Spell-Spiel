@@ -20,7 +20,7 @@ var keyPressed = function (evt) {
     evt.preventDefault(); // without this, arrow keys scroll the browser!
     keyPressed.data.push(evt.charCode);
     pressedKey = true;
-}
+};
 
 function keyDown(evt) {
     setKeyHoldState(evt.keyCode, true);
@@ -37,18 +37,18 @@ function resetKeypress() {
 }
 
 function setupInput(){
-	
+
     keyPressed.data = [];
-	//scaledCanvas.addEventListener('mousemove', updateMousePos);
-	document.addEventListener("keyup", keyUp);
+    //scaledCanvas.addEventListener('mousemove', updateMousePos);
+    document.addEventListener("keyup", keyUp);
 }
 
 function updateMousePos(evt) {
-	var rect = scaledCanvas.getBoundingClientRect();
-	var root = document.documentElement;
+    var rect = scaledCanvas.getBoundingClientRect();
+    var root = document.documentElement;
 
-	mouseX = evt.clientX - rect.left - root.scrollLeft;
-	mouseY = evt.clientY - rect.top - root.scrollTop;
+    mouseX = evt.clientX - rect.left - root.scrollLeft;
+    mouseY = evt.clientY - rect.top - root.scrollTop;
 }
 
 function setKeyHoldState(thisKey, setTo) {
@@ -68,3 +68,4 @@ function setKeyHoldState(thisKey, setTo) {
         holdSpacebar = setTo;
     }
 }
+

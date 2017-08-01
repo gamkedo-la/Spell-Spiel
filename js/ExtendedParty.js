@@ -30,7 +30,7 @@ function Particle() {
 
     this.isAlive = false;
     this.isMoving = true; //could also just mark destX = x etc.
-    
+
     this.init = function () {
         this.particleFrameMs = 1000 / this.particleFPS;
         this.duration = this.frameCount * this.particleFrameMs; //In milliseconds
@@ -39,9 +39,10 @@ function Particle() {
         this.speedX = (this.destX - this.startX) / (this.duration * 30 / 1000); //30 frames per second
         this.speedY = (this.destY - this.startY) / (this.frameCount * this.particleFrameMs * 30 / 1000);
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
-    }
+    };
 
     this.party = function () {
+
         this.isAlive = true;
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
         particle = this;
@@ -59,6 +60,7 @@ function Particle() {
 
             // add delays functionality here if desired
             // moving particles
+
                 x += this.speedX;
                 y += this.speedY;
                 if (y >= this.destY + 1) { y = this.destY; }
@@ -75,10 +77,11 @@ function Particle() {
                     currentFrame++;
             }
         }
-    }
+
+    };
 
     this.draw = function (cameraX, cameraY) {
-        
+
         if (!cameraX) cameraX = 0;
         if (!cameraY) cameraY = 0;
         if (this.isAlive) // and visible in screen bbox
@@ -90,10 +93,10 @@ function Particle() {
                 this.spriteWidth, this.spriteHeight,
                 x - cameraX + (-1 * Math.round(this.spriteWidth / 2)), y - cameraY + (-1 * Math.round(this.spriteHeight / 2)),
                 this.spriteWidth, this.spriteHeight);
-                
+
             }
         }
-    }
+    };
 }
 function updateParticles() {
     for (i = 0; i < particles.length; i++) {
@@ -138,7 +141,6 @@ iceSpikeParty.spritesheet = iceSpikePic;
 iceSpikeParty.spriteWidth = 40;
 iceSpikeParty.spriteHeight = 20;
 iceSpikeParty.init();
-
 
 ///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
 createParticle = function (party) {
@@ -203,3 +205,4 @@ var partyList = `{
 }`
 var parties = JSON.parse(partyList);
 parties.fireballParty = createParticle(parties.fireballParty);
+
