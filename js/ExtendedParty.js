@@ -1,10 +1,7 @@
 
-//var particles_enabled = true;
-var particles = []; // a SpriteList containing all of them
+var particles = []; //array containing particles to display
 
-var PARTICLE_FPS = 8/2;
-var PARTICLE_FRAME_MS = 1000 / PARTICLE_FPS; // 15 = 60fps - looks fine much slower too
-var FAR_AWAY = -999999;
+var FAR_AWAY = -999999; //to hide particles
 
 function Particle() {
 
@@ -15,11 +12,10 @@ function Particle() {
     this.spriteHeight = 0;
 
     this.spritesheet = fillerPic; //Image file
-    //var spritesheetFinishedLoading = false;
 
     var framesLeft = 0;
     var currentFrame = 0;
-    //var frameDelays = ArrayWithZeros(this.frameCount); //Array with delay for each frame
+    this.duration = 0;
     var currentTimestamp = (new Date()).getTime();
     var nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
 
@@ -37,31 +33,19 @@ function Particle() {
     
     this.init = function () {
         this.particleFrameMs = 1000 / this.particleFPS;
+        this.duration = this.frameCount * this.particleFrameMs; //In milliseconds
         x = this.startX;
         y = this.startY;
-        this.speedX = (this.destX - this.startX) / (this.frameCount * this.particleFrameMs * 30 / 1000); //30/1000 is game's fps in msecond
-        this.speedY = (this.destY - this.startY) / this.frameCount;
+        this.speedX = (this.destX - this.startX) / (this.duration * 30 / 1000); //30 frames per second
+        this.speedY = (this.destY - this.startY) / (this.frameCount * this.particleFrameMs * 30 / 1000);
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
     }
 
     this.party = function () {
-        //if (!isAlive) { return; }
-        //if (!spritesheetFinishedLoading) { return; }
-        //if (!frameDelays) frameDelays = ArrayWithZeros(this.frameCount); // deal with undefined
-       
-        var p, pnum, pcount;
-        for (pnum = 0, pcount = particles.length; pnum < pcount; pnum++) {
-            p = particles[pnum];
-            if (p && p.isAlive) {
-                break;
-            }
-        }
-
         this.isAlive = true;
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
-        particles.push(this);
-        console.log("Joined the party!");
-        console.log(particles);
+        particle = this;
+        particles.push(particle);
         
     }
     
@@ -73,17 +57,12 @@ function Particle() {
         // animate the particles
         if (this.isAlive) {
 
-             // add delays functionality here if desired
-        {
-            //p.anim_last_tick = particle_timestamp; // not actually used OPTI
-
+            // add delays functionality here if desired
             // moving particles
-            if (this.isMoving) {
-                console.log("We're movin");
                 x += this.speedX;
                 y += this.speedY;
-                if (x >= this.destX) { x = this.destX; }
-            }
+                if (y >= this.destY + 1) { y = this.destY; }
+                if (x >= this.destX) { x = this.destX; } //Major hack. Couldn't figure out why it would overshoot at higher fps, so froze it and it actually makes it seamless...
 
             if (currentFrame >= this.frameCount) {
                 this.isAlive = false;
@@ -91,17 +70,11 @@ function Particle() {
                 y = this.startY;
                 currentFrame = 0;
             }
-            else {
-
-                if (currentTimestamp >= nextTimestamp) {
+            else if (currentTimestamp >= nextTimestamp) {
                     nextTimestamp = currentTimestamp + this.particleFrameMs;
-                    currentFrame++; // TODO: ping pong anims?
-                    }
-
-                }
+                    currentFrame++;
             }
         }
-
     }
 
     this.draw = function (cameraX, cameraY) {
@@ -110,10 +83,8 @@ function Particle() {
         if (!cameraY) cameraY = 0;
         if (this.isAlive) // and visible in screen bbox
         {
-            //console.log(currentFrame);
             if (window.canvasContext) // sanity check
             {
-                console.log("We're drawing");
                 canvasContext.drawImage(this.spritesheet,
                 currentFrame * this.spriteWidth, 0,
                 this.spriteWidth, this.spriteHeight,
@@ -129,14 +100,13 @@ function updateParticles() {
         particles[i].update();
     }
     for (i = particles.length -1; i >=0 ; i--){
-        if (particles[i].isAlive == false){
+        if (particles[i].isAlive === false){
             particles.splice(i,1);
             console.log("Particle expired \n", "Particles remaining: " + particles.length);
         }
     }
 }
 function drawParticles() {
-    //console.log("Drawing particles now");
     for (i = 0; i < particles.length; i++) {
         particles[i].draw();
     }
@@ -144,7 +114,7 @@ function drawParticles() {
 
 fireballParty = new Particle();
 fireballParty.frameCount = 4;
-fireballParty.particleFPS = 4;
+fireballParty.particleFPS = 12;
 fireballParty.spritesheet = fireballSheet;
 fireballParty.spriteWidth = 20;
 fireballParty.spriteHeight = 10;
@@ -168,3 +138,68 @@ iceSpikeParty.spritesheet = iceSpikePic;
 iceSpikeParty.spriteWidth = 40;
 iceSpikeParty.spriteHeight = 20;
 iceSpikeParty.init();
+
+
+///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
+createParticle = function (party) {
+
+    party.prototype = new Particle();
+    
+
+    if (party.start == "self") {
+        party.startX = 40;
+        party.startY = 90;
+    }
+    else if (party.start == "opponent") {
+        party.startX = 155;
+        party.startY = 90;
+    }
+    else if (party.start.isArray() && typeof party.start[0] === "number") {
+        if (party.start.length == 2) {
+            party.startX = party.start[0];
+            party.startY = party.start[1];
+        }
+        else {
+            console.log("Error: 'start' array must have two numbers for x,y");
+            party.startX = FAR_AWAY;
+            party.startY = FAR_AWAY;
+        }
+    }
+
+    if (party.end === "self") {
+        party.destX = 40;
+        party.destY = 90;
+    }
+    else if (party.end == "opponent") {
+        party.destX = 155;
+        party.destY = 90;
+    }
+    else if (party.end.isArray() && typeof party.end[0] === "number") {
+        if (party.end.length == 2) {
+            party.destX = party.end[0];
+            party.destY = party.end[1];
+        }
+        else {
+            console.log("Error: 'end' array must have two numbers for x,y");
+            party.destX = FAR_AWAY;
+            party.destY = FAR_AWAY;
+        }
+    }
+    console.log(party.spritesheet.slice(0, -4) + "Sheet");
+    party.spritesheet = window[party.spritesheet.slice(0, -4) + "Sheet"];
+
+    return party;
+}
+
+var partyList = `{
+    "fireballParty" : {
+        "name" : "Fireball",
+        "spritesheet": "fireball.png",
+        "number_images": 4,
+        "speed": "medium",
+        "start": "self",
+        "end": "opponent"
+        }
+}`
+var parties = JSON.parse(partyList);
+parties.fireballParty = createParticle(parties.fireballParty);

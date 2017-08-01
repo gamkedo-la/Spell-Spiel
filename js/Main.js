@@ -60,8 +60,6 @@ function imageLoadingDoneSoStartGame() {
 function updateAll() {
 
     gameController.update();
-    updateScreenshake();
-    updateParticles();
 
 }
 

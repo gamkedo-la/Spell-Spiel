@@ -75,14 +75,13 @@ function Spell() {
     this.cast = function (target) {
         return; //To override in subclasses
     };
+
     this.basicCast = function (target) { //Deal damage based on power
         if (this.type === "Attack") {
 
             var toDeal;
-
             //Remove shield
             if (target.shieldHP != 0) {
-
                 toDeal = this.power - target.shieldHP;
                 if (toDeal < 0) {
                     toDeal = 0;
@@ -113,12 +112,15 @@ function Spell() {
         return;
     };
 
-    this.spawnParticles = function (fromEnemy) {
+    this.spawnParticles = function (particle, fromEnemy) {
 
         // run an 8 frame spritesheet animation and move it
-        if (!fromEnemy && this.particle) // assume left to right (ie player cast)
+        if (!fromEnemy && this.particle) { // assume left to right (ie player cast)
             //party(45, 90, particletype, 70, 90);
-            this.particle.party();
+            console.log(this.particle);
+            particle.party();
+            
+        }
         else
             return; //party(150,90,125,90);  // FIXME - we may need "MIRROR_BITMAP" in drawParticles()?
 
@@ -167,15 +169,16 @@ Pyroblast = function () {
     this.type = "Attack";
     this.MAX_POWER = 50;
     this.particle = fireballParty;
-    this.ANIM_FRAMES = 30;
+    console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         if (this.power >= this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
         else if (this.power < this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10,this.ANIM_FRAMES);
+        screenshake(10, this.particle.duration*30/1000);
         this.playSound();
-        this.spawnParticles(PARTICLE_FIREBALL);
+        //this.spawnParticles();
+        this.particle.party();
     };
     this.reset();
 };
@@ -186,7 +189,6 @@ Lightning = function () {
     this.name = "Lightning";
     this.text = "Lightning strike of doom";
     this.type = "Attack";
-    this.ANIM_FRAMES = 30;
     this.particle = lightningParty;
     this.MAX_POWER = 200;
 
@@ -194,9 +196,11 @@ Lightning = function () {
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10, this.ANIM_FRAMES);
+        console.log(this.particle.duration);
+        screenshake(10, this.particle.duration * 30 / 1000);
         this.playSound();
-        this.spawnParticles();
+        //this.particle.party();
+        this.spawnParticles(this.particle);
     };
     this.reset();
 };
@@ -207,7 +211,6 @@ Blizzard = function () {
     this.name = "Blizzard";
     this.text = "Blizzard";
     this.type = "Attack";
-    this.ANIM_FRAMES = 30;
     this.particle = iceSpikeParty;
     this.MAX_POWER = 50;
 
@@ -215,9 +218,9 @@ Blizzard = function () {
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
         else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10, this.ANIM_FRAMES);
-        this.playSound();
-        this.spawnParticles();
+        screenshake(10, this.particle.duration*30/1000)
+        //this.spawnParticles();
+        this.particle.party();
     };
     this.reset();
 };

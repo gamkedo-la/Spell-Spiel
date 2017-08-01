@@ -23,12 +23,29 @@ function GameController() {
         return state_.img; //Eventually we can expand this so states can have a variety of bg images
     }
 
+    this.startGauntletBattle = function () {
+        enemy = gauntletOrder[gauntletProgress];
+        player.opponent = enemy;
+        enemy.opponent = player;
+        battleState.battleType = "Gauntlet";
+        gameController.changeState(battleState);
+    }
+    this.startRandomBattle = function () {
+        var random = Math.floor(Math.random() * allEnemies.length);
+        enemy = allEnemies[random];
+        player.opponent = enemy;
+        enemy.opponent = player;
+        battleState.battleType = "Random";
+        gameController.changeState(battleState);
+    }
+
     var state_ = null; //default state, changes during runtime
     this.changeState(defaultState); //Initialize at default
 }
 
 function BattleState() {
 
+    this.battleType = "Gauntlet";
     this.img = battlePic;
     this.update = function ()
     {
@@ -48,11 +65,13 @@ function BattleState() {
         player.opponent.drawBattle();
         
         drawParticles();
+        updateScreenshake();
+        updateParticles();
         //draw_particles();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
-        endCheck(); //Check if battle is over
+        this.endCheck(); //Check if battle is over
     }
     this.handleInput = function () { //Holy *** that's ugly (censored for a family-friendly Gamkedo Club). IMPORTANT keypresses are looked at in battle, while keydown/up are in overworld (diff. is the first checks only character keys)
         if (keyPressed.data[keyPressed.data.length - 1] == "1".charCodeAt(0)) {
@@ -83,6 +102,13 @@ function BattleState() {
 
         }
     }
+
+    this.endCheck = function () {
+        if (player.hp == 0 || player.opponent.hp == 0) {
+            gameController.changeState(battleEndState);
+        }
+    }
+
     this.drawOnScaled = function () {
         player.drawScaled(); //UI text for each character
         player.opponent.drawScaled();
@@ -116,6 +142,7 @@ function BattleState() {
 function OverworldState() {
 
     this.img = overworldPic;
+
     this.update = function () {
         this.handleInput();
         clearScreen(); //All this is drawn on the small canvas...
@@ -144,6 +171,10 @@ function OverworldState() {
             player.speedY = MOVE_SPEED;
         }
         else { player.speedY = 0; }
+
+        if (holdSpacebar) {
+            gameController.startRandomBattle();
+        }
     }
 
     this.drawOnScaled = function () {
@@ -164,46 +195,54 @@ var overworldState = new OverworldState();
 //var defaultState = battleState;
 var defaultState = overworldState;
 var gameController = new GameController();
+
 var endingBattle = false;
 
-function endCheck() {
-    if (player.hp == 0 || player.opponent.hp == 0) {
-        endBattle();
-    }
-}
-
-function endBattle() {
-    if (player.hp != 0 && player.opponent.hp != 0) { //safety check
-        return;
-    }
-    gameController.changeState(battleEndState);
-
-}
-
 function BattleEndState() {
+        
+    var flicker = true;
+    var flickerDuration = 15; //in frames
+    var currentFlicker = 0;
+    var changing;
     this.img = battleState.img;
 
     this.handleInput = function () {
-        return;
+        if (pressedKey) {
+            gameController.changeState(overworldState);
+            resetBattle();
+            player.shieldHP = 0;
+            if (!this.win) {
+                player.hp = player.MAX_HP;
+            }
+        }
     }
 
     this.drawOnScaled = function () {
         if (this.win == true) {
-            console.log("Display text");
             scaledContext.textAlign = "center";
             colorText("You win!", scaledCanvas.width / 2, 200, "black");
+            if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }
             scaledContext.textAlign = "left";
         }
         else if (this.win == false) {
             scaledContext.textAlign = "center";
             colorText("You lose...", scaledCanvas.width / 2, 200, "black");
+            if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }
             scaledContext.textAlign = "left";
         }
     }
-
+    this.updateFlicker = function () {
+        currentFlicker++;
+        if (currentFlicker >= flickerDuration) {
+            currentFlicker = 0;
+            if (flicker) { flicker = false;}
+            else if (!flicker) { flicker = true;}
+        }
+    }
     this.update = function () {
-        this.handleInput();
+
         clearScreen(); //Everything under this is drawn on the small canvas...
+        this.updateFlicker();
         player.draw();
         player.drawBattle();
         player.opponent.draw();
@@ -211,19 +250,58 @@ function BattleEndState() {
         draw_particles();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
+        this.handleInput(); //can trigger a state change
+
     }
     this.enter = function () {
-        setTimeout(gameController.changeState, 3000, overworldState);
-        console.log("Timeout set!");
+        this.currentFlicker = 0;
         if (player.hp == 0) { this.win = false }
         else if (player.opponent.hp == 0) { this.win = true }
+        if (this.win) {
+            if (battleState.battleType === "Gauntlet") {
+                gauntletProgress++;
+                if (gauntletProgress >= gauntletOrder.length) {
+                    gameController.changeState(endgameState);
+                }
+            }
+        }
     }
 }
 battleEndState = new BattleEndState();
 
+function EndgameState() {
+
+    this.img = null;
+
+    this.update = function () {
+
+        colorRect(0, 0, canvas.width, canvas.height, "black");
+        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
+    }
+
+    this.drawOnScaled = function () {
+        scaledContext.textAlign = "center";
+        colorText("Congratulations!", scaledCanvas.width / 2, 200, "white");
+        colorText("You've completed the game!", scaledCanvas.width / 2, 285, "white");
+        scaledContext.textAlign = "left";
+    }
+
+    this.enter = function () {
+        return;
+    }
+}
+endgameState = new EndgameState();
+
 function checkDoor() { //Demo only
     if (player.x < 190 && player.x+5 > 165 &&
         player.y < 52  && player.y+5 > 12) {
-        gameController.changeState(battleState);
+        gameController.startGauntletBattle();
     }
+}
+
+function resetBattle() {
+    particles = [];
+    msgOnDisplay = [];
+    braceYourselves = [];
 }

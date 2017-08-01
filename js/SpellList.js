@@ -33,3 +33,5 @@ var spellList = `{
 
 var spells = JSON.parse(spellList);
 
+console.log("Type: " + typeof parties.fireballParty.spritesheet);
+//console.log(spells[0].name);

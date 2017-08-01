@@ -7,7 +7,7 @@ function Enemy() {
 
     this.attacks = [bite, poisonSpit];
 
-    this.MAX_HP = 400;
+    this.MAX_HP = 10;
     this.hp = this.MAX_HP;
 
     this.drawBattle = function () {
@@ -25,14 +25,10 @@ function Enemy() {
     //The whole enemy AI will be more complex than this, the setInterval is just placeholder
 }
 Enemy.prototype = new Character();
-var enemyDefs = [
-   { "name": "dragon", "hp": "100" },
-   {}
-];
+
 var bat = new Enemy();
 bat.name = "Bat";
 bat.opponent = player; //Eventually, enemies will be assigned when entering the battle state, after being created!
-//player.opponent = bat;
 
 var zombie = new Enemy();
 zombie.name = "Zombie";
@@ -40,3 +36,9 @@ zombie.opponent = player;
 zombie.img = zombiePic;
 player.opponent = zombie;
 //player.opponent = bat;
+
+
+var gauntletOrder = [bat, zombie];
+var gauntletProgress = 0;
+
+var allEnemies = [bat, zombie]; //to use in random battles
