@@ -16,7 +16,7 @@ function goto(o,wp){
 var endSym = Symbol.for('end');
 
 var TrieProto = {
-    insert(w){
+    insert: function(w){
         var point = this.tree;
 
         w.split('').forEach(function(e,i){
@@ -30,7 +30,7 @@ var TrieProto = {
         });
     },
 
-    autoComplete(wp){
+    autoComplete: function(wp){
         var point = goto(this.tree, wp);
         var stack = [];
 
