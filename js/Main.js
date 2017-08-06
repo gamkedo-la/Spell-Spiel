@@ -55,7 +55,6 @@ function imageLoadingDoneSoStartGame() {
     setInterval(updateAll, 1000 / framesPerSecond);
 
     setupInput();
-    player.init();
 }
 
 function updateAll() {
@@ -67,26 +66,6 @@ function updateAll() {
 function moveAll() {
 
 
-}
-
-function drawOnScaled() {
-    player.drawScaled(); //UI text for each character
-    bat.drawScaled();
-    drawSpell(player.currentSpell);
-    //Display messages (ie the ones that are timed and kept in a queue)
-    for (i = 0; i < msgOnDisplay.length; i++) {
-        var toDraw = msgOnDisplay[i];
-        if (toDraw instanceof Message) {
-            toDraw.fontOn();
-            toDraw.framesLeft -= 1;
-            if (toDraw.framesLeft <= 0) {
-                msgOnDisplay.splice(i, 1); //If over, remove
-            }
-        }
-        toDraw.draw();
-        //console.log("Frames left: ", toDraw.framesLeft);
-        toDraw.fontOff();
-    }
 }
 
 function clearScreen() {

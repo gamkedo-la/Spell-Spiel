@@ -2,8 +2,8 @@
 function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
-    this.x = 40;
-    this.y = 125;
+    this.x = 180;
+    this.y = 85;
     this.speedX = 0;
     this.speedY = 0;
     this.img = null;
@@ -34,6 +34,9 @@ function Character() { //"Character" == base class for anything that can fight
             clearInterval(this.attack);
             console.log("Stopped attacking!");
         }
+        if (!this.cycleImage) {
+            currentImg = 0;
+        }
     };
 
     //Graphics
@@ -57,6 +60,7 @@ function Character() { //"Character" == base class for anything that can fight
         if (this.shieldHP !== 0) {
             colorText("Shield: " + this.shieldHP, (this.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
         }
+        colorText(this.name, (this.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.y - this.img.height -25) * PIXEL_SCALE_UP, "orange");
     };
 
     this.cycleTick = function () {
@@ -116,13 +120,8 @@ function Player() { //Defines the player object
         "Lightning strike of doom": lightning,
         "Protect": shield1,
     };
-    this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
+    //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;
-
-    this.init = function () {
-        this.battleMsg.x = this.x * PIXEL_SCALE_UP - scaledCanvas.width / 16; //EEHH. Numbers have no meaning, just placing on screen
-        this.battleMsg.y = this.y * PIXEL_SCALE_UP + scaledCanvas.height / 17;
-    };
 
     //var state_ = defaultState; //default state, changes during runtime
 

@@ -25,9 +25,11 @@ function GameController() {
 
     this.startGauntletBattle = function () {
         enemy = gauntletOrder[gauntletProgress];
+        enemy.reset();
         player.opponent = enemy;
         enemy.opponent = player;
         battleState.battleType = "Gauntlet";
+        console.log("Enemy: " + player.opponent.img);
         gameController.changeState(battleState);
     }
     this.startRandomBattle = function () {
@@ -335,4 +337,3 @@ function resetBattle() {
     msgOnDisplay = [];
     braceYourselves = [];
 }
-

@@ -7,7 +7,7 @@ function Enemy() {
 
     this.attacks = [bite, poisonSpit];
 
-    this.MAX_HP = 150;
+    this.MAX_HP = 200;
     this.hp = this.MAX_HP;
 
     this.drawBattle = function () {
@@ -27,15 +27,15 @@ function Enemy() {
 Enemy.prototype = new Character();
 
 var bat = new Enemy();
-bat.name = "Bat";
+bat.name = "Echo Mouse";
 bat.img = batPic;
 
 var zombie = new Enemy();
-zombie.name = "Zombie";
+zombie.name = "Green Stroller";
 zombie.img = zombiePic;
 
 var jellyfish = new Enemy();
-jellyfish.name = "Jellyfish";
+jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
 jellyfish.imgNumber = 2;
 jellyfish.cycleImage = true;

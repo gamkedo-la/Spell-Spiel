@@ -200,7 +200,7 @@ Lightning = function () {
     this.text = "Lightning strike of doom";
     this.type = "Attack";
     this.particle = lightningParty;
-    this.MAX_POWER = 200;
+    this.MAX_POWER = 150;
 
     this.cast = function (target) {
         if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
@@ -258,4 +258,3 @@ shield1 = new Shield1();
 //Fills the spot when no spell selected
 noSpell = new Spell();
 noSpell.name = "No spell";
-
