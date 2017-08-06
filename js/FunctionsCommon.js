@@ -7,3 +7,13 @@ function ArrayWithZeros(length) { //Lol this took too much time to find
     }
     return array;
 }
+
+//Self-explanatory!
+function ArraySum(array) {
+    var sum = 0;
+    for (i = 0; i < array.length; i++) {
+        toAdd = array[i];
+        sum += toAdd;
+    }
+    return sum;
+}

@@ -7,11 +7,11 @@ function Enemy() {
 
     this.attacks = [bite, poisonSpit];
 
-    this.MAX_HP = 10;
+    this.MAX_HP = 150;
     this.hp = this.MAX_HP;
 
     this.drawBattle = function () {
-        colorRect(this.x - this.img.width / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
+        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
     }
 
     this.useAttack = function () {
@@ -28,17 +28,25 @@ Enemy.prototype = new Character();
 
 var bat = new Enemy();
 bat.name = "Bat";
-bat.opponent = player; //Eventually, enemies will be assigned when entering the battle state, after being created!
+bat.img = batPic;
 
 var zombie = new Enemy();
 zombie.name = "Zombie";
-zombie.opponent = player;
 zombie.img = zombiePic;
-player.opponent = zombie;
-//player.opponent = bat;
 
+var jellyfish = new Enemy();
+jellyfish.name = "Jellyfish";
+jellyfish.img = jellyfishPic;
+jellyfish.imgNumber = 2;
+jellyfish.cycleImage = true;
 
-var gauntletOrder = [bat, zombie];
+var ghostChicken = new Enemy();
+ghostChicken.name = "Spooky Cacaw";
+ghostChicken.img = ghostChickenPic;
+ghostChicken.imgNumber = 2;
+ghostChicken.cycleImage = true;
+
+var gauntletOrder = [ghostChicken, jellyfish, bat, zombie];
 var gauntletProgress = 0;
 
-var allEnemies = [bat, zombie]; //to use in random battles
+var allEnemies = [bat, zombie, jellyfish, ghostChicken]; //to use in random battles

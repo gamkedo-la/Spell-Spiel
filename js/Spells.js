@@ -37,6 +37,14 @@ function Spell() {
         keyPressed.data = []; //Hopefully this isn't a mortal sin
     };
 
+    //Marks all previous letters as good when switching spells, hence "catching up", and marks progress of previous spell
+    this.catchUp = function (progress) {
+        for (i = 0; i < progress; i++) {
+            this.rightOrWrong[i] = 1;
+        }
+        this.progress = progress;
+    }
+
     this.checkProgress = function () {
         if (this.progress === this.text.length) {
             this.power = this.getPower();

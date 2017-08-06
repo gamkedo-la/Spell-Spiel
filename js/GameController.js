@@ -54,6 +54,8 @@ function BattleState() {
         deltaTime = currentTime - lastTime;
         player.currentSpell.timeElapsed += deltaTime;
 
+        updateCycles();
+
         rechargeAllExceptCurrent();
 
         this.handleInput();
@@ -89,11 +91,13 @@ function BattleState() {
         // Non-letter input can be used for pausing, etc.
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
         if(key.match(/[a-z ]/i)) {
-            var completion = spellTrie.autoComplete(this.currentSpell+key);
+            var completion = spellTrie.autoComplete(this.currentSpell + key);
             if(completion.length) {
                 completion = completion[0];
                 this.currentSpell += key;
+                var progress = player.currentSpell.progress;
                 player.changeSpell(player.availableSpells[completion]);
+                player.currentSpell.catchUp(progress);
                 player.currentSpell.updateResults(true);
                 resetKeypress();
             } else {
@@ -259,6 +263,7 @@ function BattleEndState() {
 
         clearScreen(); //Everything under this is drawn on the small canvas...
         this.updateFlicker();
+        updateCycles();
         player.draw();
         player.drawBattle();
         player.opponent.draw();
@@ -313,6 +318,15 @@ function checkDoor() { //Demo only
     if (player.x < 190 && player.x+5 > 165 &&
         player.y < 52  && player.y+5 > 12) {
         gameController.startGauntletBattle();
+    }
+}
+
+function updateCycles() {
+    if (player.cycleImage) {
+        player.cycleTick();
+    }
+    if (player.opponent.cycleImage) {
+        player.opponent.cycleTick();
     }
 }
 

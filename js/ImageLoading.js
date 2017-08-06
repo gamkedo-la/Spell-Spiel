@@ -3,6 +3,8 @@
 var standingPic = document.createElement("img");
 var batPic = document.createElement("img");
 var zombiePic = document.createElement("img");
+var jellyfishPic = document.createElement("img");
+var ghostChickenPic = document.createElement("img");
 
 //Environments
 var fillerPic = document.createElement("img");
@@ -43,6 +45,8 @@ function loadImages(){
 
         { varName: batPic, theFile: "bat.png" },
         { varName: zombiePic, theFile: "zombie2.png" },
+        { varName: jellyfishPic, theFile: "jellyfishIdle.png" }, //this one is a spritesheet animation
+        { varName: ghostChickenPic, theFile: "CGSpritesheet.png" }, //this one is a spritesheet animation
 
         { varName: fireballSheet, theFile: "fireball.png" },
         { varName: iceSpikePic, theFile: "iceSpike.png" },
