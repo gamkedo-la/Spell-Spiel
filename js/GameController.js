@@ -25,6 +25,7 @@ function GameController() {
 
     this.startGauntletBattle = function () {
         enemy = gauntletOrder[gauntletProgress];
+        player.reset();
         enemy.reset();
         player.opponent = enemy;
         enemy.opponent = player;
@@ -35,6 +36,8 @@ function GameController() {
     this.startRandomBattle = function () {
         var random = Math.floor(Math.random() * allEnemies.length);
         enemy = allEnemies[random];
+        player.reset();
+        enemy.reset();
         player.opponent = enemy;
         enemy.opponent = player;
         battleState.battleType = "Random";
@@ -57,6 +60,7 @@ function BattleState() {
         player.currentSpell.timeElapsed += deltaTime;
 
         updateCycles();
+        player.opponent.updateAttack();
 
         rechargeAllExceptCurrent();
 
@@ -75,6 +79,8 @@ function BattleState() {
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
         this.endCheck(); //Check if battle is over
+
+        resetKeypress();
     };
 
     this.currentSpell = "";
@@ -231,6 +237,7 @@ function BattleEndState() {
         if (pressedKey) {
             gameController.changeState(overworldState);
             resetBattle();
+            resetKeypress();
             player.shieldHP = 0;
             if (!this.win) {
                 player.hp = player.MAX_HP;
@@ -239,13 +246,13 @@ function BattleEndState() {
     }
 
     this.drawOnScaled = function () {
-        if (this.win == true) {
+        if (this.win === true) {
             scaledContext.textAlign = "center";
             colorText("You win!", scaledCanvas.width / 2, 200, "black");
             if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }
             scaledContext.textAlign = "left";
         }
-        else if (this.win == false) {
+        else if (this.win === false) {
             scaledContext.textAlign = "center";
             colorText("You lose...", scaledCanvas.width / 2, 200, "black");
             if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }

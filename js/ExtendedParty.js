@@ -36,6 +36,10 @@ function Particle() {
         this.duration = this.frameCount * this.particleFrameMs; //In milliseconds
         x = this.startX;
         y = this.startY;
+        if (!this.isMoving) {
+            this.destX = this.startX;
+            this.destY = this.startY;
+        }
         this.speedX = (this.destX - this.startX) / (this.duration * 30 / 1000); //30 frames per second
         this.speedY = (this.destY - this.startY) / (this.frameCount * this.particleFrameMs * 30 / 1000);
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
@@ -115,6 +119,7 @@ function drawParticles() {
     }
 }
 
+//////////////////////////              Player spells              //////////////////////////
 fireballParty = new Particle();
 fireballParty.frameCount = 4;
 fireballParty.particleFPS = 12;
@@ -141,6 +146,17 @@ iceSpikeParty.spritesheet = iceSpikePic;
 iceSpikeParty.spriteWidth = 40;
 iceSpikeParty.spriteHeight = 20;
 iceSpikeParty.init();
+
+//////////////////////////              Monster Attacks              //////////////////////////
+
+biteParty = new Particle();
+biteParty.frameCount = 4;
+biteParty.particleFPS = 4;
+biteParty.isMoving = false;
+biteParty.spritesheet = bitePic;
+biteParty.spriteWidth = 64;
+biteParty.spriteHeight = 64;
+biteParty.init();
 
 ///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
 createParticle = function (party) {

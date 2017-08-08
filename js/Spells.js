@@ -87,6 +87,7 @@ function Spell() {
     };
 
     this.basicCast = function (target) { //Deal damage based on power
+
         if (this.type === "Attack") {
 
             var toDeal;

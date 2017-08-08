@@ -18,6 +18,9 @@ var biteSheet = document.createElement("img");
 
 var iceSpikePic = document.createElement("img");
 var shieldPic = document.createElement("img");
+var bitePic = document.createElement("img");
+
+
 
 var picsToLoad = 0; //set automatically in loadImages()
 
@@ -44,14 +47,15 @@ function loadImages(){
         { varName: overworldPic, theFile: "study.png" },
 
         { varName: batPic, theFile: "bat.png" },
-        { varName: zombiePic, theFile: "zombie2.png" },
+        { varName: zombiePic, theFile: "zombieIdle.png" },
         { varName: jellyfishPic, theFile: "jellyfishIdle.png" }, //this one is a spritesheet animation
         { varName: ghostChickenPic, theFile: "CGSpritesheet.png" }, //this one is a spritesheet animation
 
         { varName: fireballSheet, theFile: "fireball.png" },
         { varName: iceSpikePic, theFile: "iceSpike.png" },
         { varName: lightningSheet, theFile: "lightning.png" },
-        { varName: shieldPic, theFile: "shield1.png"}
+        { varName: shieldPic, theFile: "shield1.png" },
+        { varName: bitePic, theFile: "bite.png" }
     ]
 
     picsToLoad = imageList.length; //This method avoids a race condition

@@ -110,8 +110,8 @@ displayBattleMsg(testMsg, msgNeutralGood, 300);
 */
 
 var playerBattleMsg = new Message();
-playerBattleMsg.x = 40 * PIXEL_SCALE_UP - scaledCanvas.width / 16;
-playerBattleMsg.y = 125 * PIXEL_SCALE_UP - scaledCanvas.width / 17;
+playerBattleMsg.x = 40 * PIXEL_SCALE_UP - 800 / 16;
+playerBattleMsg.y = 125 * PIXEL_SCALE_UP - 600 / 17;
 playerBattleMsg.x = 40 * 4;
 playerBattleMsg.y = 125 * 4;
 playerBattleMsg.fontOn = function () {

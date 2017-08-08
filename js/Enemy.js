@@ -5,15 +5,24 @@ function Enemy() {
     this.y = 125;
     this.img = batPic;
 
-    this.attacks = [bite, poisonSpit];
+    this.allAttacks = [bite, poisonSpit, block];
+    this.weakAttacks = [poisonSpit];
+    this.mediumAttacks = [bite];
+    this.strongAttacks = [noSpell];
+    this.weakShields = [block];
 
     this.MAX_HP = 200;
     this.hp = this.MAX_HP;
+
+    this.chosenOne = noSpell; //the attack that will be used, as determined by AI
+
+    this.untilNextAttack = 20; //frames
 
     this.drawBattle = function () {
         colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
     }
 
+    /*
     this.useAttack = function () {
         this.attack = setInterval(function () {
             i = Math.floor(Math.random() * this.attacks.length);
@@ -21,8 +30,43 @@ function Enemy() {
             chosenAttack.power = chosenAttack.MAX_POWER;
             chosenAttack.cast(this.opponent);
         }.bind(this), 3000); //Bind so that it takes "this" from the Enemy namespace
+    }*/
+
+    this.updateAttack = function () {
+        this.untilNextAttack--;
+        if (this.untilNextAttack < 0) {
+            this.untilNextAttack = 0; //safety
+        }
+        if (this.untilNextAttack === 0) {
+            this.chooseAttack();
+            if (this.chosenOne.type === "Attack") { this.chosenOne.cast(this.opponent); }
+            else if (this.chosenOne.type === "Shield" || "Buff") { this.chosenOne.cast(this); }
+            this.untilNextAttack += 200;
+            console.log("Attack: " + this.chosenOne.name);
+        }
+        //console.log("Until next: " + this.untilNextAttack);
     }
-    //The whole enemy AI will be more complex than this, the setInterval is just placeholder
+
+    this.chooseAttack = function () {
+        var random = Math.random();
+        var index = 0;
+        if (player.hp < player.MAX_HP * 0.2) {
+            index = Math.floor(Math.random() * this.weakAttacks.length);
+            this.chosenOne = this.weakAttacks[index];
+        }
+        else if (player.hp > player.MAX_HP * 0.8) {
+            index = Math.floor(Math.random() * this.strongAttacks.length);
+            this.chosenOne = this.mediumAttacks[index];
+        }
+        else if (this.hp < this.MAX_HP * 0.5) {
+            index = Math.floor(Math.random() * this.weakShields.length);
+            this.chosenOne = this.weakShields[index];
+        }
+        else {
+            var index = Math.floor(Math.random() * this.allAttacks.length);
+            this.chosenOne = this.allAttacks[index];
+        }
+    }
 }
 Enemy.prototype = new Character();
 
@@ -33,6 +77,8 @@ bat.img = batPic;
 var zombie = new Enemy();
 zombie.name = "Green Stroller";
 zombie.img = zombiePic;
+zombie.imgNumber = 2;
+zombie.cycleImage = true;
 
 var jellyfish = new Enemy();
 jellyfish.name = "Aerial Jelly";

@@ -3,14 +3,14 @@
 function Bite() {
     this.name = "Bite";
     this.type = "Attack";
-    this.ANIM_FRAMES = 30;
-    this.MAX_POWER = 30;
+    this.particle = biteParty;
+    this.power = 50;
 
     this.cast = function (target) {
         this.basicCast(target);
-        screenshake(10, this.ANIM_FRAMES);
+        screenshake(10, this.particle.duration * 30 / 1000);
         this.playSound();
-        this.spawnParticles(PARTICLE_SMOKE,true);
+        this.spawnParticles(this.particle);
     }
 }
 Bite.prototype = new Spell();
@@ -20,7 +20,7 @@ function PoisonSpit() {
     this.name = "Poison Spit";
     this.type = "Attack";
     this.ANIM_FRAMES = 30;
-    this.MAX_POWER = 10;
+    this.power = 15;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -32,3 +32,15 @@ function PoisonSpit() {
 }
 PoisonSpit.prototype = new Spell();
 poisonSpit = new PoisonSpit();
+
+function Block() {
+    this.name = "Block";
+    this.type = "Shield";
+    this.power = 25;
+    this.cast = function (target) {
+        this.basicCast(target);
+        this.playSound();
+    }
+}
+Block.prototype = new Spell();
+block = new Block();

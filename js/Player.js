@@ -60,11 +60,10 @@ function Character() { //"Character" == base class for anything that can fight
         if (this.shieldHP !== 0) {
             colorText("Shield: " + this.shieldHP, (this.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
         }
-        colorText(this.name, (this.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.y - this.img.height -25) * PIXEL_SCALE_UP, "orange");
+        colorText(this.name, (this.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.y - this.img.height -45) * PIXEL_SCALE_UP, "orange");
     };
 
     this.cycleTick = function () {
-        console.log("Tick tock");
         cycleCurrent++;
         if (cycleCurrent >= cycleDuration) {
             cycleCurrent = 0;
