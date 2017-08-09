@@ -76,3 +76,29 @@ function clearScreen() {
 function resetFont(){
     scaledContext.font = "normal " + basicFontSize.toString() + "pt" + " Bookman";
 }
+
+function drawBothBattle() {
+    player.draw();
+    player.drawBattle();
+    player.opponent.draw();
+    player.opponent.drawBattle();
+}
+
+function updateDamage() {
+    //Update on player and enemy
+    //console.log(player.delayedDamage[0][0]);
+    player.delayedDamage.forEach(function (element, index) {
+        element[0]--; // -1 frame
+        if (element[0] <= 0) {
+            player.dealDamage(element[1]);
+            player.delayedDamage.splice(index, 1);
+        }
+    })
+    player.opponent.delayedDamage.forEach(function (element, index) {
+        element[0]--; // -1 frame
+        if (element[0] <= 0) {
+            player.opponent.dealDamage(element[1]);
+            player.opponent.delayedDamage.splice(index, 1);
+        }
+    })     
+}

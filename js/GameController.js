@@ -60,21 +60,18 @@ function BattleState() {
         player.currentSpell.timeElapsed += deltaTime;
 
         updateCycles();
+
         player.opponent.updateAttack();
 
         rechargeAllExceptCurrent();
 
         this.handleInput();
         clearScreen(); //Everything under this is drawn on the small canvas...
-        player.draw();
-        player.drawBattle();
-        player.opponent.draw();
-        player.opponent.drawBattle();
-
+        drawBothBattle();
         drawParticles();
         updateScreenshake();
         updateParticles();
-        //draw_particles();
+        updateDamage();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas

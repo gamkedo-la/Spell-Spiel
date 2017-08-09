@@ -89,25 +89,11 @@ function Spell() {
     this.basicCast = function (target) { //Deal damage based on power
 
         if (this.type === "Attack") {
-
-            var toDeal;
-            //Remove shield
-            if (target.shieldHP != 0) {
-                toDeal = this.power - target.shieldHP;
-                if (toDeal < 0) {
-                    toDeal = 0;
-                }
-                target.shieldHP = target.shieldHP - this.power;
-                if (target.shieldHP < 0) {
-                    target.shieldHP = 0;
-                }
+            var dmgToPush = this.power;
+            if (this.particle) {
+                target.delayedDamage.push([this.particle.duration * 30 / 1000, dmgToPush]);
             }
-            else { toDeal = this.power; }
-            //Remove hp
-            target.hp -= toDeal;
-            if (target.hp <= 0) {
-                target.hp = 0;
-            }
+            else { target.delayedDamage.push([0, dmgToPush]); }
         }
         if (this.type === "Shield") {
             var toShield = this.power;

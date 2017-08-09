@@ -25,6 +25,8 @@ function Character() { //"Character" == base class for anything that can fight
         {poison:0}
     ];
 
+    this.delayedDamage = []; //2D array with [framesLeft, dmg]
+
     this.opponent = null;
 
     this.reset = function () {
@@ -38,7 +40,26 @@ function Character() { //"Character" == base class for anything that can fight
             currentImg = 0;
         }
     };
-
+    this.dealDamage = function (amount) {
+        var toDeal;
+        //Remove shield
+        if (this.shieldHP != 0) {
+            toDeal = amount - this.shieldHP;
+            if (toDeal < 0) {
+                toDeal = 0;
+            }
+            this.shieldHP = this.shieldHP - amount;
+            if (this.shieldHP < 0) {
+                this.shieldHP = 0;
+            }
+        }
+        else { toDeal = amount; }
+        //Remove hp
+        this.hp -= toDeal;
+        if (this.hp <= 0) {
+            this.hp = 0;
+        }
+    }
     //Graphics
     this.setGraphics = function (img) {
         this.img = img;
