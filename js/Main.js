@@ -12,7 +12,12 @@ const ORIG_WORLD_H = 150;
 const PIXEL_SCALE_UP = 4;
 
 window.onload = function () {
-    //Prepping the game canvas. Strategy "borrowed" from the Roman's Adventure source code (ty Oasis Rim and co.)
+    
+	// FIXME: it is impolite to trigger sound right away...
+	// maybe we should wait until one user click, like start game button
+	Sound.play('SpellSpiel_Music_Open');
+	
+	//Prepping the game canvas. Strategy "borrowed" from the Roman's Adventure source code (ty Oasis Rim and co.)
     canvas = document.createElement("canvas");
     canvasContext = canvas.getContext("2d");
     scaledCanvas = document.getElementById('gameCanvas');
