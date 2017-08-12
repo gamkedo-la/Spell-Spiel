@@ -83,6 +83,10 @@ function drawBothBattle() {
     player.opponent.draw();
     player.opponent.drawBattle();
 }
+function setOpponentsBoth(enemy) {
+    player.opponent = enemy;
+    enemy.opponent = player;
+}
 
 function updateDamage() {
     //Update on player and enemy
@@ -101,4 +105,12 @@ function updateDamage() {
             player.opponent.delayedDamage.splice(index, 1);
         }
     })     
+}
+
+function spellTimeLapse() {
+    date = new Date();
+    lastTime = currentTime;
+    currentTime = date.getTime();
+    deltaTime = currentTime - lastTime;
+    player.currentSpell.timeElapsed += deltaTime;
 }

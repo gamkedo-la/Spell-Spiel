@@ -80,6 +80,12 @@ zombie.img = zombiePic;
 zombie.imgNumber = 2;
 zombie.cycleImage = true;
 
+var lizard = new Enemy();
+lizard.name = "Ravenous Reptilian";
+lizard.img = lizardPic;
+lizard.imgNumber = 2;
+lizard.cycleImage = true;
+
 var jellyfish = new Enemy();
 jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
@@ -92,7 +98,7 @@ ghostChicken.img = ghostChickenPic;
 ghostChicken.imgNumber = 2;
 ghostChicken.cycleImage = true;
 
-var gauntletOrder = [ghostChicken, jellyfish, bat, zombie];
+var gauntletOrder = [lizard, ghostChicken, jellyfish, bat, zombie];
 var gauntletProgress = 0;
 
-var allEnemies = [bat, zombie, jellyfish, ghostChicken]; //to use in random battles
+var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken]; //to use in random battles

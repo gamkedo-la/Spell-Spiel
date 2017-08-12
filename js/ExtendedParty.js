@@ -101,14 +101,18 @@ function Particle() {
             }
         }
     };
+    this.reset = function () {
+        this.x = this.startX;
+    }
 }
 function updateParticles() {
     for (i = 0; i < particles.length; i++) {
         particles[i].update();
     }
     for (i = particles.length -1; i >=0 ; i--){
-        if (particles[i].isAlive === false){
-            particles.splice(i,1);
+        if (particles[i].isAlive === false) {
+            particles[i].reset();
+            particles.splice(i, 1);
             console.log("Particle expired \n", "Particles remaining: " + particles.length);
         }
     }
@@ -140,7 +144,7 @@ lightningParty.init();
 
 iceSpikeParty = new Particle();
 iceSpikeParty.frameCount = 1;
-iceSpikeParty.particleFPS = 1;
+iceSpikeParty.particleFPS = 4;
 iceSpikeParty.isMoving = true;
 iceSpikeParty.spritesheet = iceSpikePic;
 iceSpikeParty.spriteWidth = 40;
@@ -151,7 +155,7 @@ iceSpikeParty.init();
 
 biteParty = new Particle();
 biteParty.frameCount = 4;
-biteParty.particleFPS = 4;
+biteParty.particleFPS = 8;
 biteParty.isMoving = false;
 biteParty.spritesheet = bitePic;
 biteParty.spriteWidth = 64;

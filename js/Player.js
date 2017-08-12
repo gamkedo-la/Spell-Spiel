@@ -102,6 +102,7 @@ function Character() { //"Character" == base class for anything that can fight
             spell.startCountdown();
             spell.reset();
         }
+        if (spell.particle) { spell.particle.reset();}
         this.currentSpell = spell;
     };
 
@@ -153,3 +154,5 @@ function Player() { //Defines the player object
 Player.prototype = new Character(); //Note: prototype === inheritance in JS
 
 var player = new Player();
+player.cycleImage = true;
+player.imgNumber = 2;

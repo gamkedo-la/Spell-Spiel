@@ -27,8 +27,7 @@ function GameController() {
         enemy = gauntletOrder[gauntletProgress];
         player.reset();
         enemy.reset();
-        player.opponent = enemy;
-        enemy.opponent = player;
+        setOpponentsBoth(enemy);
         battleState.battleType = "Gauntlet";
         console.log("Enemy: " + player.opponent.img);
         gameController.changeState(battleState);
@@ -38,8 +37,7 @@ function GameController() {
         enemy = allEnemies[random];
         player.reset();
         enemy.reset();
-        player.opponent = enemy;
-        enemy.opponent = player;
+        setOpponentsBoth(enemy);
         battleState.battleType = "Random";
         gameController.changeState(battleState);
     }
@@ -53,22 +51,18 @@ function BattleState() {
     this.battleType = "Gauntlet";
     this.img = battlePic;
     this.update = function ()
-    { date = new Date();
-        lastTime = currentTime;
-        currentTime = date.getTime();
-        deltaTime = currentTime - lastTime;
-        player.currentSpell.timeElapsed += deltaTime;
-
+    {
+        spellTimeLapse();
+        rechargeAllExceptCurrent();
         updateCycles();
-
         player.opponent.updateAttack();
 
-        rechargeAllExceptCurrent();
-
         this.handleInput();
+
         clearScreen(); //Everything under this is drawn on the small canvas...
         drawBothBattle();
         drawParticles();
+
         updateScreenshake();
         updateParticles();
         updateDamage();
@@ -94,10 +88,11 @@ function BattleState() {
 
         // Checks if the pressed key is in the alphabet. If it is, we query the trie
         // Non-letter input can be used for pausing, etc.
-        var key = String.fromCharCode(keyPressed.data[keyPressed.data.length-1]);
+        var key = String.fromCharCode(keyPressed.data[keyPressed.data.length - 1]);
+        console.log(keyPressed.data);
         if(key.match(/[a-z ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell + key);
-            if(completion.length) {
+            if (completion.length) {
                 completion = completion[0];
                 this.currentSpell += key;
                 var progress = player.currentSpell.progress;

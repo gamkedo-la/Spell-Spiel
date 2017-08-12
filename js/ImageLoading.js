@@ -3,6 +3,7 @@
 var standingPic = document.createElement("img");
 var batPic = document.createElement("img");
 var zombiePic = document.createElement("img");
+var lizardPic = document.createElement("img");
 var jellyfishPic = document.createElement("img");
 var ghostChickenPic = document.createElement("img");
 
@@ -41,13 +42,14 @@ function beginLoadingImage(imgVar, fileName){
 function loadImages(){
 
     var imageList = [
-        { varName: standingPic, theFile: "standing.png" },
+        { varName: standingPic, theFile: "beamIdle.png" },
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "bgResized.png" },
         { varName: overworldPic, theFile: "study.png" },
 
         { varName: batPic, theFile: "bat.png" },
         { varName: zombiePic, theFile: "zombieIdle.png" },
+        { varName: lizardPic, theFile: "lizardIdle.png" },
         { varName: jellyfishPic, theFile: "jellyfishIdle.png" }, //this one is a spritesheet animation
         { varName: ghostChickenPic, theFile: "CGSpritesheet.png" }, //this one is a spritesheet animation
 
