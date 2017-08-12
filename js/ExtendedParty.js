@@ -164,7 +164,7 @@ biteParty.init();
 
 poisonSpitParty = new Particle();
 poisonSpitParty.frameCount = 10;
-poisonSpitParty.particleFPS = 10;
+poisonSpitParty.particleFPS = 16;
 poisonSpitParty.isMoving = true;
 poisonSpitParty.spritesheet = poisonSpitPic;
 poisonSpitParty.spriteWidth = 20;

@@ -101,6 +101,7 @@ function BattleState() {
             if (completion.length) {
                 completion = completion[0];
                 this.currentSpell += key;
+                console.log(completion);
                 var progress = player.currentSpell.progress;
                 player.changeSpell(player.availableSpells[completion]);
                 player.currentSpell.catchUp(progress);

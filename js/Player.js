@@ -138,7 +138,7 @@ function Player() { //Defines the player object
     // created from the json?
     this.availableSpells = {
         "Pyroblast": pyroblast,
-        "Blizzard": blizzard,
+        "Ice Spike": iceSpike,
         "Lightning strike of doom": lightning,
         "Protect": shield1,
     };

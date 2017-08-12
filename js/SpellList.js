@@ -14,9 +14,9 @@ var spellList = `{
         "anim_frames": 30,
         "particles": ["iceball"]
     },
-    "Blizzard": {
-        "name": "Blizzard",
-        "text": "Blizzard",
+    "IceSpike": {
+        "name": "Ice Spike",
+        "text": "Ice Spike",
         "type": "Attack",
         "max_power": 50,
         "anim_frames": 30,

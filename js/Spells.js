@@ -204,9 +204,9 @@ Lightning = function () {
 Lightning.prototype = new Spell();
 lightning = new Lightning();
 
-Blizzard = function () {
-    this.name = "Blizzard";
-    this.text = "Blizzard";
+IceSpike = function () {
+    this.name = "Ice Spike";
+    this.text = "Ice Spike";
     this.type = "Attack";
     this.particle = iceSpikeParty;
     this.MAX_POWER = 50;
@@ -221,8 +221,8 @@ Blizzard = function () {
     };
     this.reset();
 };
-Blizzard.prototype = new Spell();
-blizzard = new Blizzard();
+IceSpike.prototype = new Spell();
+iceSpike = new IceSpike();
 
 Shield1 = function () {
     this.name = "Shield1";
