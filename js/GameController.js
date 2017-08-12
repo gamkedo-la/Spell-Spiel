@@ -11,14 +11,18 @@ function GameController() {
 
     this.changeState = function (state) {
         if (state != null) {
+            if (state_ && Sound.isPlaying(state_.music, true)) { Sound.stop(state_.music); }
             console.log("Changed state");
             delete state_; //not sure if it actually deletes...
             state_ = state;
+            if (state_.music) { Sound.play(state_.music); }
             state_.enter();
         }
     };
-
-
+    /*
+    this.startMusicLoop = function () {
+        Sound.play(state_.music);
+    }*/
     this.getBackground = function () {
         return state_.img; //Eventually we can expand this so states can have a variety of bg images
     };
@@ -42,7 +46,7 @@ function GameController() {
         gameController.changeState(battleState);
     }
 
-    var state_ = null; //default state, changes during runtime
+    var state_; //default state, changes during runtime
     this.changeState(defaultState); //Initialize at default
 }
 
@@ -50,6 +54,8 @@ function BattleState() {
 
     this.battleType = "Gauntlet";
     this.img = battlePic;
+    //this.music = "gymLeader";
+
     this.update = function ()
     {
         spellTimeLapse();
@@ -131,7 +137,7 @@ function BattleState() {
         player.opponent.drawScaled();
         drawSpell(player.currentSpell);
         //Display messages (ie the ones that are timed and kept in a queue)
-        for (i = 0; i < msgOnDisplay.length; i++) {
+        /*for (i = 0; i < msgOnDisplay.length; i++) {
             var toDraw = msgOnDisplay[i];
             if (toDraw instanceof Message) {
                 toDraw.fontOn();
@@ -143,7 +149,7 @@ function BattleState() {
             toDraw.draw();
             //console.log("Frames left: ", toDraw.framesLeft);
             toDraw.fontOff();
-        }
+        }*/
     };
     this.enter = function () {
         console.log("Entered battle");
@@ -159,6 +165,7 @@ function BattleState() {
 function OverworldState() {
 
     this.img = overworldPic;
+    this.music = 'SpellSpiel_Music_Open';
 
     this.update = function () {
         this.handleInput();

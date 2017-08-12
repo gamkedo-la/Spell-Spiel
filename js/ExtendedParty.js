@@ -68,8 +68,8 @@ function Particle() {
                 x += this.speedX;
                 y += this.speedY;
                 if (y >= this.destY + 1) { y = this.destY; }
-                if (x >= this.destX) { x = this.destX; } //Major hack. Couldn't figure out why it would overshoot at higher fps, so froze it and it actually makes it seamless...
-
+                if (this.startX <= this.destX) { if (x >= this.destX) { x = this.destX; } } //Major hack. Couldn't figure out why it would overshoot at higher fps, so froze it and it actually makes it seamless...
+                else if (this.startX > this.destX) { if (x <= this.destX) { x = this.destX; } } //My god the hacking!
             if (currentFrame >= this.frameCount) {
                 this.isAlive = false;
                 x = this.startX;
@@ -161,6 +161,17 @@ biteParty.spritesheet = bitePic;
 biteParty.spriteWidth = 64;
 biteParty.spriteHeight = 64;
 biteParty.init();
+
+poisonSpitParty = new Particle();
+poisonSpitParty.frameCount = 10;
+poisonSpitParty.particleFPS = 10;
+poisonSpitParty.isMoving = true;
+poisonSpitParty.spritesheet = poisonSpitPic;
+poisonSpitParty.spriteWidth = 20;
+poisonSpitParty.spriteHeight = 20;
+poisonSpitParty.startX = 155;
+poisonSpitParty.destX = 40;
+poisonSpitParty.init();
 
 ///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
 createParticle = function (party) {

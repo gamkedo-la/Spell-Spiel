@@ -14,7 +14,7 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.cycleImage = false;
     var cycleCurrent = 0;
-    var cycleDuration = 50; //frames
+    this.cycleDuration = 50; //frames
     var currentImg = 0;
     this.imgNumber = 1;
 
@@ -86,7 +86,7 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.cycleTick = function () {
         cycleCurrent++;
-        if (cycleCurrent >= cycleDuration) {
+        if (cycleCurrent >= this.cycleDuration) {
             cycleCurrent = 0;
             currentImg++;
         }
@@ -127,6 +127,7 @@ function Player() { //Defines the player object
 
     this.name = "Beam";
     this.img = standingPic; //player may or may not get a state machine of his own
+    this.cycleDuration = 30;
     this.battleMsg = playerBattleMsg;
 
     this.MAX_HP = 350;
@@ -155,4 +156,4 @@ Player.prototype = new Character(); //Note: prototype === inheritance in JS
 
 var player = new Player();
 player.cycleImage = true;
-player.imgNumber = 1;
+player.imgNumber = 2;

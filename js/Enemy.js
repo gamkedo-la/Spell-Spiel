@@ -7,7 +7,7 @@ function Enemy() {
 
     this.allAttacks = [bite, poisonSpit, block];
     this.weakAttacks = [poisonSpit];
-    this.mediumAttacks = [bite];
+    this.mediumAttacks = [poisonSpit];
     this.strongAttacks = [noSpell];
     this.weakShields = [block];
 
@@ -16,7 +16,7 @@ function Enemy() {
 
     this.chosenOne = noSpell; //the attack that will be used, as determined by AI
 
-    this.untilNextAttack = 20; //frames
+    this.untilNextAttack = 100; //frames
 
     this.drawBattle = function () {
         colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
@@ -81,7 +81,7 @@ zombie.imgNumber = 2;
 zombie.cycleImage = true;
 
 var lizard = new Enemy();
-lizard.name = "Ravenous Reptilian";
+lizard.name = "Rad Reptilian";
 lizard.img = lizardPic;
 lizard.imgNumber = 2;
 lizard.cycleImage = true;

@@ -19,15 +19,15 @@ bite = new Bite();
 function PoisonSpit() {
     this.name = "Poison Spit";
     this.type = "Attack";
-    this.ANIM_FRAMES = 30;
+    this.particle = poisonSpitParty;
     this.power = 15;
 
     this.cast = function (target) {
         this.basicCast(target);
-        screenshake(10, this.ANIM_FRAMES);
+        screenshake(10, this.particle.duration *30/1000);
         //target.isPoisoned();
         this.playSound();
-        this.spawnParticles(PARTICLE_POISON,true);
+        this.spawnParticles(this.particle);
     }
 }
 PoisonSpit.prototype = new Spell();
