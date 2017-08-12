@@ -155,4 +155,4 @@ Player.prototype = new Character(); //Note: prototype === inheritance in JS
 
 var player = new Player();
 player.cycleImage = true;
-player.imgNumber = 2;
+player.imgNumber = 1;
