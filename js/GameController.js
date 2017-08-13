@@ -177,6 +177,7 @@ function BattleState() {
 function NPC() {
         this.name = "NPC";
         this.text = "Text Goes Here";
+        this.img = null;
         /*
         this.x = 0;
         this.y = 0;
@@ -186,13 +187,9 @@ function NPC() {
 
         this.collider; //then each NPC has a collider (the player too)
 
-        this.checkCollision = function() {
-        var colliding = false;
-            if (player.x == this.NPC.x + 2) {
-                colliding = true;
-                if (colliding && pressedKey){
+        this.displayText = function() {
+            if (this.collider.checkCollision == true && keyPressed) {
                     NPC.displayDialogue(this.text);
-                }
             }
         }
     };
