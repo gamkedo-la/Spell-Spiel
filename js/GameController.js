@@ -177,7 +177,6 @@ function BattleState() {
 function NPC() {
         this.name = "NPC";
         this.text = "Text Goes Here";
-        this.img = null;
         /*
         this.x = 0;
         this.y = 0;
@@ -187,12 +186,28 @@ function NPC() {
 
         this.collider; //then each NPC has a collider (the player too)
 
-        this.displayText = function() {
-            if (this.collider.checkCollision == true && keyPressed) {
-                    NPC.displayDialogue(this.text);
-            }
+        //Graphics
+        this.setGraphics = function (img, imgNumber) {
+            this.img = img;
+            this.imgNumber = imgNumber; //# of images in spritesheet
+        };
+        this.draw = function () { //On canvas
+            var spriteWidth = this.img.width / this.imgNumber;
+            canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
+            /*if (this.shieldHP !== 0) {
+                canvasContext.drawImage(shieldPic, this.x - (this.img.width / this.imgNumber) - 2, this.y - this.img.height - 21);
+            }*/ // shield is unneeded in this context
+            scaledContext.font = "normal 20pt Bookman";
+            resetFont();
+        };
+
+        this.displayText = function(collider) {
+            var collideOrNot = this.collider.checkcollision(collider);
+            if (collideOrNot && holdSpacebar) { //eveturally decoupled from startRandomBattle function?
+                    NPC.displayText(this.text); //this seems incorrect...?
         }
-    };
+    }
+};
 
 function Collider(x, y, width, height) {
 
