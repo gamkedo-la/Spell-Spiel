@@ -6,20 +6,20 @@ function Enemy() {
     this.img = batPic;
 
     this.allAttacks = [bite, poisonSpit, block];
-    this.weakAttacks = [poisonSpit];
+    this.weakAttacks = [bite];
     this.mediumAttacks = [poisonSpit];
     this.strongAttacks = [noSpell];
     this.weakShields = [block];
 
-    this.MAX_HP = 200;
-    this.hp = this.MAX_HP;
+    this.maxHP = 200;
+    this.hp = this.maxHP;
 
     this.chosenOne = noSpell; //the attack that will be used, as determined by AI
 
     this.untilNextAttack = 100; //frames
 
     this.drawBattle = function () {
-        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
+        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
     }
 
     /*
@@ -27,7 +27,7 @@ function Enemy() {
         this.attack = setInterval(function () {
             i = Math.floor(Math.random() * this.attacks.length);
             chosenAttack = this.attacks[i];
-            chosenAttack.power = chosenAttack.MAX_POWER;
+            chosenAttack.power = chosenAttack.maxPower;
             chosenAttack.cast(this.opponent);
         }.bind(this), 3000); //Bind so that it takes "this" from the Enemy namespace
     }*/
@@ -50,15 +50,15 @@ function Enemy() {
     this.chooseAttack = function () {
         var random = Math.random();
         var index = 0;
-        if (player.hp < player.MAX_HP * 0.2) {
+        if (player.hp < player.maxHP * 0.2) {
             index = Math.floor(Math.random() * this.weakAttacks.length);
             this.chosenOne = this.weakAttacks[index];
         }
-        else if (player.hp > player.MAX_HP * 0.8) {
+        else if (player.hp > player.maxHP * 0.8) {
             index = Math.floor(Math.random() * this.strongAttacks.length);
             this.chosenOne = this.mediumAttacks[index];
         }
-        else if (this.hp < this.MAX_HP * 0.5) {
+        else if (this.hp < this.maxHP * 0.5) {
             index = Math.floor(Math.random() * this.weakShields.length);
             this.chosenOne = this.weakShields[index];
         }

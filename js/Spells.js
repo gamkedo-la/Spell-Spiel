@@ -14,8 +14,15 @@ function Spell() {
     this.usedByAI = false; //TBD
     this.particle = null;
 
-    this.MAX_POWER = 100;
-    this.power = this.MAX_POWER;
+    this.maxPower = 100;
+    this.power = this.maxPower;
+    this.powerLadder = [0,15,20,35];
+    this.level = 1;
+
+    this.levelUp = function () {
+        this.level++;
+        this.maxPower += this.powerLadder[this.level-1];
+    }
 
     this.reset = function () {
         console.log("Resetting " + this.name);
@@ -79,7 +86,7 @@ function Spell() {
             tally = 0;
         }
         //console.log(tally);
-        return Math.round(this.MAX_POWER * (tally / this.rightOrWrong.length));
+        return Math.round(this.maxPower * (tally / this.rightOrWrong.length));
     };
 
     this.cast = function (target) {
@@ -164,13 +171,13 @@ Pyroblast = function () {
     this.name = "Pyroblast";
     this.text = "Pyroblast";
     this.type = "Attack";
-    this.MAX_POWER = 50;
+    this.maxPower = 50;
     this.particle = fireballParty;
     console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        if (this.power >= this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
-        else if (this.power < this.MAX_POWER/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
+        if (this.power >= this.maxPower/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
+        else if (this.power < this.maxPower/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         screenshake(10, this.particle.duration*30/1000);
         this.playSound();
@@ -187,11 +194,11 @@ Lightning = function () {
     this.text = "Lightning strike of doom";
     this.type = "Attack";
     this.particle = lightningParty;
-    this.MAX_POWER = 150;
+    this.maxPower = 150;
 
     this.cast = function (target) {
-        if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
-        else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
+        if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
+        else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         console.log(this.particle.duration);
         screenshake(10, this.particle.duration * 30 / 1000);
@@ -209,11 +216,11 @@ IceSpike = function () {
     this.text = "Ice Spike";
     this.type = "Attack";
     this.particle = iceSpikeParty;
-    this.MAX_POWER = 50;
+    this.maxPower = 50;
 
     this.cast = function (target) {
-        if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
+        if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
+        else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         screenshake(10, this.particle.duration*30/1000)
         //this.spawnParticles();
@@ -228,11 +235,11 @@ Shield1 = function () {
     this.name = "Shield1";
     this.text = "Protect";
     this.type = "Shield";
-    this.MAX_POWER = 250;
+    this.maxPower = 250;
 
     this.cast = function (target) {
-        //if (this.power >= this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        //else if (this.power < this.MAX_POWER / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
+        //if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
+        //else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
         //this.spawnParticles(PARTICLE_FIREBALL); // FIXME

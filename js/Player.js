@@ -8,9 +8,11 @@ function Character() { //"Character" == base class for anything that can fight
     this.speedY = 0;
     this.img = null;
 
+    this.level = 1;
+    this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
     this.shieldHP = 0;
 
-    this.casting = false;
+    this.isCasting = false;
 
     this.cycleImage = false;
     var cycleCurrent = 0;
@@ -30,7 +32,7 @@ function Character() { //"Character" == base class for anything that can fight
     this.opponent = null;
 
     this.reset = function () {
-        this.hp = this.MAX_HP;
+        this.hp = this.maxHP;
         this.shieldHP = 0;
         if (typeof this.attack !== "undefined") {
             clearInterval(this.attack);
@@ -61,8 +63,9 @@ function Character() { //"Character" == base class for anything that can fight
         }
     }
     //Graphics
-    this.setGraphics = function (img) {
+    this.setGraphics = function (img, imgNumber) {
         this.img = img;
+        this.imgNumber = imgNumber; //# of images in spritesheet
     };
     this.draw = function () { //On canvas
         var spriteWidth = this.img.width / this.imgNumber;
@@ -95,7 +98,12 @@ function Character() { //"Character" == base class for anything that can fight
         }
     }
 
-    //Spell mechanics
+    ////////////       Spell mechanics         ///////////
+    this.levelUp = function () {
+        this.level++;
+        this.maxHP += this.hpLadder[this.level - 1];
+        this.skillPoints++;
+    }
     this.changeSpell = function (spell) {
         if(spell != this.currentSpell) {
             this.currentSpell.stopCountdown();
@@ -105,6 +113,11 @@ function Character() { //"Character" == base class for anything that can fight
         if (spell.particle) { spell.particle.reset();}
         this.currentSpell = spell;
     };
+    //Called from clicking a button in skills menu
+    this.upgradeSpell = function (spell) {
+        spell.levelUp();
+        player.skillPoints--;
+    }
 
     //Status effects
     this.isPoisoned = function () {
@@ -126,12 +139,13 @@ const MOVE_SPEED = 4; //In mini canvas pixels!
 function Player() { //Defines the player object
 
     this.name = "Beam";
-    this.img = standingPic; //player may or may not get a state machine of his own
+    this.img = idlePic;
+    this.picToChange = false;
     this.cycleDuration = 30;
     this.battleMsg = playerBattleMsg;
 
-    this.MAX_HP = 350;
-    this.hp = this.MAX_HP;
+    this.maxHP = 350;
+    this.hp = this.maxHP;
 
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
@@ -148,9 +162,24 @@ function Player() { //Defines the player object
     //var state_ = defaultState; //default state, changes during runtime
 
     this.drawBattle = function () {
-        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.MAX_HP) * 30, 5, "red");
+        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
         colorRect(this.x - (this.img.width / this.imgNumber) / 2, this.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
     };
+
+    //This is the replacement of the state machine that the main character would get if it was really needed. Changes his animations depending on situations
+    this.checkState = function () {
+        if (this.picToChange) {
+            if (this.isCasting) {
+                this.setGraphics(castingPic, 1);
+            }
+            else if (!this.isCasting) {
+                this.setGraphics(idlePic, 2);
+            }
+            if (this.isDead) {
+                return; //todo
+            }
+        }
+    }
 }
 Player.prototype = new Character(); //Note: prototype === inheritance in JS
 

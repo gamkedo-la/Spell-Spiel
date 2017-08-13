@@ -11,11 +11,11 @@ function GameController() {
 
     this.changeState = function (state) {
         if (state != null) {
-            if (state_ && Sound.isPlaying(state_.music, true)) { Sound.stop(state_.music); }
+            if (state_ && Sound.isPlaying(state_.music)) { Sound.stop(state_.music); }
             console.log("Changed state");
             delete state_; //not sure if it actually deletes...
             state_ = state;
-            if (state_.music) { Sound.play(state_.music); }
+            if (state_.music) { Sound.play(state_.music, true, 1); }
             state_.enter();
         }
     };
@@ -66,6 +66,7 @@ function BattleState() {
         this.handleInput();
 
         clearScreen(); //Everything under this is drawn on the small canvas...
+        player.checkState();
         drawBothBattle();
         drawParticles();
 
@@ -83,6 +84,11 @@ function BattleState() {
     this.currentSpell = "";
     this.lastLen = 0;
     this.handleInput = function () {
+
+        if (this.currentSpell === ""){
+            player.isCasting = false;
+            player.picToChange = true;
+        }
 
         if(keyPressed.data.length === 0) {
             this.lastLen = 0;
@@ -121,8 +127,13 @@ function BattleState() {
         if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
             return;
         }
-
-        // player.casting = true;
+        console.log("Current spell: " + this.currentSpell);
+        if (this.currentSpell != "") {
+            player.isCasting = true;
+            if (this.currentSpell.length == 1) {
+                player.picToChange = true;
+            }
+        }
 
         }
 
@@ -240,7 +251,7 @@ function BattleEndState() {
             resetKeypress();
             player.shieldHP = 0;
             if (!this.win) {
-                player.hp = player.MAX_HP;
+                player.hp = player.maxHP;
             }
         }
     }

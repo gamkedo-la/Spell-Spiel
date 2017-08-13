@@ -1,6 +1,8 @@
 
 //Characters
-var standingPic = document.createElement("img");
+var idlePic = document.createElement("img");
+var castingPic = document.createElement("img");
+
 var batPic = document.createElement("img");
 var zombiePic = document.createElement("img");
 var lizardPic = document.createElement("img");
@@ -43,16 +45,17 @@ function beginLoadingImage(imgVar, fileName){
 function loadImages(){
 
     var imageList = [
-        { varName: standingPic, theFile: "beamIdle.png" },
+        { varName: idlePic, theFile: "beamIdle.png" }, //spritesheet animation
+        { varName: castingPic, theFile: "beamCasting.png" }, //spritesheet animation
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "bgResized.png" },
         { varName: overworldPic, theFile: "study.png" },
 
         { varName: batPic, theFile: "bat.png" },
-        { varName: zombiePic, theFile: "zombieIdle.png" },
-        { varName: lizardPic, theFile: "lizardIdle.png" },
-        { varName: jellyfishPic, theFile: "jellyfishIdle.png" }, //this one is a spritesheet animation
-        { varName: ghostChickenPic, theFile: "CGSpritesheet.png" }, //this one is a spritesheet animation
+        { varName: zombiePic, theFile: "zombieIdle.png" }, //spritesheet animation
+        { varName: lizardPic, theFile: "lizardIdle.png" }, //spritesheet animation
+        { varName: jellyfishPic, theFile: "jellyfishIdle.png" }, //spritesheet animation
+        { varName: ghostChickenPic, theFile: "CGSpritesheet.png" }, //spritesheet animation
 
         { varName: fireballSheet, theFile: "fireball.png" },
         { varName: iceSpikePic, theFile: "iceSpike.png" },
