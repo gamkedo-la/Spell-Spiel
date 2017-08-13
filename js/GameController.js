@@ -173,6 +173,26 @@ function BattleState() {
         //player.opponent.useAttack();
     }
 }
+    
+function NPC() {
+        this.name = "NPC";
+        this.text = "Text Goes Here";
+
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+
+        this.checkCollision = function() {
+        var colliding = false;
+            if (player.x == this.NPC.x + 2) {
+                colliding = true;
+                if (colliding && pressedKey){
+                    NPC.displayDialogue(this.text);
+                }
+            }
+        }
+    };
 
 function OverworldState() {
 
@@ -191,6 +211,11 @@ function OverworldState() {
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
+    
+    this.collision = function() { 
+        var colliderList = [];
+    };
+
     this.handleInput = function () {
         if (holdLeft) {
             player.speedX = -MOVE_SPEED;
