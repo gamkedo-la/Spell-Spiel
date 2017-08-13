@@ -177,11 +177,14 @@ function BattleState() {
 function NPC() {
         this.name = "NPC";
         this.text = "Text Goes Here";
-
+        /*
         this.x = 0;
         this.y = 0;
         this.width = 0;
         this.height = 0;
+        */
+
+        this.collider; //then each NPC has a collider (the player too)
 
         this.checkCollision = function() {
         var colliding = false;
@@ -193,6 +196,24 @@ function NPC() {
             }
         }
     };
+
+function Collider(x, y, width, height) {
+
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+
+    this.checkCollision = function (collider){
+        if (this.x < collider.x + collider.width &&
+        this.x + this.width > collider.x &&
+        this.y < collider.y + collider.height &&
+        this.height + this.y > collider.y) {
+            return true; //got a hit!
+        }
+        else { return false; }
+    }
+}
 
 function OverworldState() {
 

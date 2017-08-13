@@ -142,7 +142,7 @@ function drawSpell(spell) {
             color = "#0a1566";
         }
         else if (spell.rightOrWrong[i] == 1) {
-            color = "#0b4709";
+            color = "#07D800";
         }
         else if (spell.rightOrWrong[i] == -1) {
             color = "red";
