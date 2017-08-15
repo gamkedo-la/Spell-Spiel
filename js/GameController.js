@@ -179,7 +179,7 @@ function NPC() {
         this.name = "NPC";
         this.text = "Text Goes Here";
         this.img = batPic;
-        this.collider = Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width, this.img.height); //then each NPC has a collider (the player too)
+        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width, this.img.height); //then each NPC has a collider (the player too)
 
         //Graphics
         this.setGraphics = function (img, imgNumber) {
@@ -231,11 +231,12 @@ function Collider(x, y, width, height) {
     }
 }
 
-var test = new NPC;
+var test = new NPC();
     test.name = "Bat";
     test.x = 30;
     test.y = 100;
     test.img = batPic;
+    test.imgNumber = 1;
     test.text = "Testing";
 
 function OverworldState() {
@@ -249,6 +250,8 @@ function OverworldState() {
         player.move();
         player.draw();
         test.draw();
+        Collider(player.collider);
+        Collider(test.collider);
 
         draw_particles();
 

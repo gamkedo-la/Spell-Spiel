@@ -147,7 +147,7 @@ function Player() { //Defines the player object
     this.maxHP = 350;
     this.hp = this.maxHP;
 
-    this.collider = Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width, this.img.height);
+    this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width, this.img.height);
 
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
