@@ -175,16 +175,11 @@ function BattleState() {
 }
     
 function NPC() {
+        var currentImg = 0;
         this.name = "NPC";
         this.text = "Text Goes Here";
-        /*
-        this.x = 0;
-        this.y = 0;
-        this.width = 0;
-        this.height = 0;
-        */
-
-        this.collider; //then each NPC has a collider (the player too)
+        this.img = batPic;
+        this.collider = Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width, this.img.height); //then each NPC has a collider (the player too)
 
         //Graphics
         this.setGraphics = function (img, imgNumber) {
@@ -194,17 +189,25 @@ function NPC() {
         this.draw = function () { //On canvas
             var spriteWidth = this.img.width / this.imgNumber;
             canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
-            /*if (this.shieldHP !== 0) {
-                canvasContext.drawImage(shieldPic, this.x - (this.img.width / this.imgNumber) - 2, this.y - this.img.height - 21);
-            }*/ // shield is unneeded in this context
             scaledContext.font = "normal 20pt Bookman";
             resetFont();
         };
 
+        this.cycleTick = function () {
+        cycleCurrent++;
+        if (cycleCurrent >= this.cycleDuration) {
+            cycleCurrent = 0;
+            currentImg++;
+        }
+        if (currentImg >= this.imgNumber) {
+            currentImg = 0;
+        }
+    }
+
         this.displayText = function(collider) {
-            var collideOrNot = this.collider.checkcollision(collider);
-            if (collideOrNot && holdSpacebar) { //eveturally decoupled from startRandomBattle function?
-                    NPC.displayText(this.text); //this seems incorrect...?
+            var collidedOrNot = this.collider.checkCollision(collider);
+            if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
+                    console.log(this.text); 
         }
     }
 };
@@ -213,6 +216,7 @@ function Collider(x, y, width, height) {
 
     this.x = x;
     this.y = y;
+    this.img = batPic;
     this.width = width;
     this.height = height;
 
@@ -221,11 +225,19 @@ function Collider(x, y, width, height) {
         this.x + this.width > collider.x &&
         this.y < collider.y + collider.height &&
         this.height + this.y > collider.y) {
+            console.log("collision detected")
             return true; //got a hit!
         }
         else { return false; }
     }
 }
+
+var test = new NPC;
+    test.name = "Bat";
+    test.x = 30;
+    test.y = 100;
+    test.img = batPic;
+    test.text = "Testing";
 
 function OverworldState() {
 
@@ -237,6 +249,7 @@ function OverworldState() {
         clearScreen(); //All this is drawn on the small canvas...
         player.move();
         player.draw();
+        test.draw();
 
         draw_particles();
 
@@ -245,9 +258,9 @@ function OverworldState() {
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
     
-    this.collision = function() { 
+    /*this.collision = function() { 
         var colliderList = [];
-    };
+    };*/
 
     this.handleInput = function () {
         if (holdLeft) {
