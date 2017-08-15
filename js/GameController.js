@@ -216,7 +216,6 @@ function Collider(x, y, width, height) {
 
     this.x = x;
     this.y = y;
-    this.img = batPic;
     this.width = width;
     this.height = height;
 
