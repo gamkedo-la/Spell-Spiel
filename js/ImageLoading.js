@@ -48,7 +48,7 @@ function loadImages(){
         { varName: idlePic, theFile: "beamIdle.png" }, //spritesheet animation
         { varName: castingPic, theFile: "beamCasting.png" }, //spritesheet animation
         { varName: fillerPic, theFile: "pommier3.png" },
-        { varName: battlePic, theFile: "bgResized.png" },
+        { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
         { varName: overworldPic, theFile: "study.png" },
 
         { varName: batPic, theFile: "bat.png" },
