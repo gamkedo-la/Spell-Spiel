@@ -176,22 +176,26 @@ function BattleState() {
     
 function NPC() {
         var currentImg = 0;
+        this.imgNumber = 1;
         this.name = "NPC";
         this.text = "Text Goes Here";
         this.img = batPic;
-        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width, this.img.height); //then each NPC has a collider (the player too)
+        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width/this.imgNumber, this.img.height/this.imgNumber); //then each NPC has a collider (the player too)
 
         //Graphics
         this.setGraphics = function (img, imgNumber) {
             this.img = img;
             this.imgNumber = imgNumber; //# of images in spritesheet
         };
+
         this.draw = function () { //On canvas
-            var spriteWidth = this.img.width / this.imgNumber;
+            colorRect(this.x, this.y, this.img.width, this.img.height, "blue");
+        };
+           /* var spriteWidth = this.img.width / this.imgNumber;
             canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
             scaledContext.font = "normal 20pt Bookman";
             resetFont();
-        };
+            }; */
 
         this.cycleTick = function () {
         cycleCurrent++;
@@ -224,7 +228,7 @@ function Collider(x, y, width, height) {
         this.x + this.width > collider.x &&
         this.y < collider.y + collider.height &&
         this.height + this.y > collider.y) {
-            console.log("collision detected")
+            console.log('collision detected')
             return true; //got a hit!
         }
         else { return false; }
@@ -250,8 +254,7 @@ function OverworldState() {
         player.move();
         player.draw();
         test.draw();
-        Collider(player.collider);
-        Collider(test.collider);
+        player.collider.checkCollision(test.collider);
 
         draw_particles();
 
@@ -259,10 +262,6 @@ function OverworldState() {
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
-    
-    /*this.collision = function() { 
-        var colliderList = [];
-    };*/
 
     this.handleInput = function () {
         if (holdLeft) {
