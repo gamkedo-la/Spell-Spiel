@@ -167,37 +167,40 @@ function BattleState() {
         document.removeEventListener("keydown", keyDown);
         document.addEventListener("keypress", keyPressed); //keypress == only character keys!
 
-        player.x = 40;
-        player.y = 125;
+        player.collider.x = 40;
+        player.collider.x = 150;
         //player.opponent.useAttack();
     };
 }
 
 function NPC() {
-        var currentImg = 0;
-        this.imgNumber = 1;
-        this.name = "NPC";
-        this.text = "Text Goes Here";
-        this.img = batPic;
-        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2,
-            this.img.width/this.imgNumber, this.img.height/this.imgNumber);
+    var currentImg = 0;
+    this.imgNumber = 1;
+    this.name = "NPC";
+    this.text = "Text Goes Here";
+    this.img = batPic;
 
-        //Graphics
-        this.setGraphics = function (img, imgNumber) {
-            this.img = img;
-            this.imgNumber = imgNumber; //# of images in spritesheet
-        };
+    //Graphics
+    this.setGraphics = function (img, imgNumber) {
+        this.img = img;
+        this.imgNumber = imgNumber; //# of images in spritesheet
+    };
 
-        this.draw = function () { //On canvas
+    this.draw = function () { //On canvas
+        if(!this.hasOwnProperty("collider")) {
             colorRect(this.x, this.y, this.img.width, this.img.height, "blue");
-        };
+        } else {
+            console.log("using this one");
+            colorRect(this.collider.x, this.collider.y, this.img.width, this.img.height, "blue");
+        }
+    };
            /* var spriteWidth = this.img.width / this.imgNumber;
             canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
             scaledContext.font = "normal 20pt Bookman";
             resetFont();
             }; */
 
-        this.cycleTick = function () {
+    this.cycleTick = function () {
         cycleCurrent++;
         if (cycleCurrent >= this.cycleDuration) {
             cycleCurrent = 0;
@@ -208,12 +211,34 @@ function NPC() {
         }
     };
 
-        this.displayText = function(collider) {
-            var collidedOrNot = this.collider.checkCollision(collider);
-            if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
-                    console.log(this.text);
+    this.displayText = function(collider) {
+        var collidedOrNot = this.checkCollision(collider);
+        if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
+            console.log(this.text);
         }
     };
+
+    this.checkCollision = function (collobj){
+        // console.log(this.x,this.y,this.x+this.width,this.x+this.height);
+        // console.log(collider.x,collider.y,collider.x+collider.width,collider.y+collider.height);
+
+        if(this.x < collobj.x + collobj.collider.width) {
+            console.log("collision!");
+            return true;
+        } else {
+            console.log(this.x,collider.x+collider.width);
+        }
+        // if (this.x < collider.x + collider.width &&
+        // this.x + this.width > collider.x &&
+        // this.y < collider.y + collider.height &&
+        // this.height + this.y > collider.y) {
+        //     console.log('collision detected');
+        //     return true; //got a hit!
+        // }
+
+        return false;
+    };
+
 }
 
 function Collider(x, y, width, height) {
@@ -223,19 +248,6 @@ function Collider(x, y, width, height) {
     this.width = width;
     this.height = height;
 
-    this.checkCollision = function (collider){
-        // console.log(this.x,this.y,this.width,this.height);
-        // console.log("collider",collider.x,collider.y,collider.width,collider.height);
-
-        if (this.x < collider.x + collider.width &&
-        this.x + this.width > collider.x &&
-        this.y < collider.y + collider.height &&
-        this.height + this.y > collider.y) {
-            console.log('collision detected');
-            return true; //got a hit!
-        }
-        else { return false; }
-    };
 }
 
 var test = new NPC();
@@ -257,9 +269,20 @@ function OverworldState() {
         player.move();
         player.draw();
         test.draw();
-        // console.log(test.x,test.y,test.width,test.height);
-        // console.log("player",player.x,player.y,player.width,player.height);
-        player.collider.checkCollision(test.collider);
+
+        // console.log(test.x,test.y,test.x+test.img.width,test.y+test.img.height);
+        // console.log(player.x,player.y,player.x+player.img.width,player.y+player.img.height);
+
+        if(!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
+            player.collider = new Collider(player.x-player.img.width/2, player.y-player.img.height/2,
+                player.img.width/ player.imgNumber, player.img.height / player.imgNumber);
+        }
+        if(!test.hasOwnProperty("collider") && test.img.width && test.img.height) {
+            test.collider = new Collider(test.x-test.img.width/2, test.y-test.img.height/2,
+                test.img.width/ test.imgNumber, test.img.height / test.imgNumber);
+        }
+
+        player.checkCollision(test);
 
         draw_particles();
 

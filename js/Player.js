@@ -149,12 +149,6 @@ function Player() { //Defines the player object
     this.maxHP = 350;
     this.hp = this.maxHP;
 
-    console.log("imgwidth",this.img.width);
-    console.log("imgheight",this.img.height);
-    console.log("imgnum",this.imgNumber);
-    this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2,
-        this.img.width/ this.imgNumber, this.img.height / this.imgNumber);
-
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
     // created from the json?
@@ -188,6 +182,31 @@ function Player() { //Defines the player object
             }
         }
     };
+
+    this.checkCollision = function (collobj){
+        // console.log(this.x,this.y,this.x+this.width,this.x+this.height);
+        // console.log(collider.x,collider.y,collider.x+collider.width,collider.y+collider.height);
+        colorRect(this.x,this.y,1,10,"blue");
+        colorRect(collobj.x/2,collobj.y,1,10,"red");
+        colorRect(this.x + this.collider.width*2,this.y,1,10,"black");
+        if(this.x < collobj.x/2 + collobj.collider.width &&
+            this.x + this.collider.width > 1 ) {
+            console.log("collision!");
+            return true;
+        } else {
+            // console.log(this.x,collobj.x+collobj.width);
+        }
+        // if (this.x < collider.x + collider.width &&
+        // this.x + this.width > collider.x &&
+        // this.y < collider.y + collider.height &&
+        // this.height + this.y > collider.y) {
+        //     console.log('collision detected');
+        //     return true; //got a hit!
+        // }
+
+        return false;
+    };
+
 }
 
 Player.prototype = new Character(); //Note: prototype === inheritance in JS
