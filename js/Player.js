@@ -61,7 +61,7 @@ function Character() { //"Character" == base class for anything that can fight
         if (this.hp <= 0) {
             this.hp = 0;
         }
-    }
+    };
     //Graphics
     this.setGraphics = function (img, imgNumber) {
         this.img = img;
@@ -69,7 +69,7 @@ function Character() { //"Character" == base class for anything that can fight
     };
     this.draw = function () { //On canvas
         colorRect(this.x, this.y, this.img.width, this.img.height, "red");
-    }
+    };
         /*var spriteWidth = this.img.width / this.imgNumber;
         canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
         if (this.shieldHP !== 0) {
@@ -98,14 +98,14 @@ function Character() { //"Character" == base class for anything that can fight
         if (currentImg >= this.imgNumber) {
             currentImg = 0;
         }
-    }
+    };
 
     ////////////       Spell mechanics         ///////////
     this.levelUp = function () {
         this.level++;
         this.maxHP += this.hpLadder[this.level - 1];
         this.skillPoints++;
-    }
+    };
     this.changeSpell = function (spell) {
         if(spell != this.currentSpell) {
             this.currentSpell.stopCountdown();
@@ -119,7 +119,7 @@ function Character() { //"Character" == base class for anything that can fight
     this.upgradeSpell = function (spell) {
         spell.levelUp();
         player.skillPoints--;
-    }
+    };
 
     //Status effects
     this.isPoisoned = function () {
@@ -149,7 +149,11 @@ function Player() { //Defines the player object
     this.maxHP = 350;
     this.hp = this.maxHP;
 
-    this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width/ this.imgNumber, this.img.height / this.imgNumber);
+    console.log("imgwidth",this.img.width);
+    console.log("imgheight",this.img.height);
+    console.log("imgnum",this.imgNumber);
+    this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2,
+        this.img.width/ this.imgNumber, this.img.height / this.imgNumber);
 
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
@@ -183,7 +187,7 @@ function Player() { //Defines the player object
                 return; //todo
             }
         }
-    }
+    };
 }
 
 Player.prototype = new Character(); //Note: prototype === inheritance in JS
