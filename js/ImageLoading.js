@@ -24,7 +24,8 @@ var shieldPic = document.createElement("img");
 var bitePic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 
-
+//Other
+var pokeboxPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
 
@@ -62,7 +63,9 @@ function loadImages(){
         { varName: lightningSheet, theFile: "lightning.png" },
         { varName: shieldPic, theFile: "shield1.png" },
         { varName: poisonSpitPic, theFile: "poisonSpit.png" },
-        { varName: bitePic, theFile: "bite.png" }
+        { varName: bitePic, theFile: "bite.png" },
+
+        { varName: pokeboxPic, theFile: "pokeboxOrange.png" }
     ]
 
     picsToLoad = imageList.length; //This method avoids a race condition

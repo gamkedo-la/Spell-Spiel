@@ -1,14 +1,18 @@
+const KEY_ENTER = 13;
 const KEY_SPACEBAR = 32;
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
 const KEY_UP_ARROW = 38;
 const KEY_DOWN_ARROW = 40;
+const KEY_1 = 49;
 
 var holdLeft = false;
 var holdRight = false;
 var holdUp = false;
 var holdDown = false;
 var holdSpacebar = false;
+var holdEnter = false;
+var hold1 = false;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -66,6 +70,12 @@ function setKeyHoldState(thisKey, setTo) {
     }
     if (thisKey === KEY_SPACEBAR) {
         holdSpacebar = setTo;
+    }
+    if (thisKey === KEY_ENTER) {
+        holdEnter = setTo;
+    }
+    if (thisKey === KEY_1) {
+        hold1 = setTo;
     }
 }
 

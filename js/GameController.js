@@ -255,14 +255,14 @@ function OverworldState() {
         player.draw();
         test.draw();
         player.collider.checkCollision(test.collider);
-
         draw_particles();
 
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
+        if (pokebox.isAlive) { pokebox.drawBox(); } //split cus it has to be drawn on small canvas while words are on big one...
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        pokebox.update(); //see above
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
-
     this.handleInput = function () {
         if (holdLeft) {
             player.speedX = -MOVE_SPEED;
@@ -282,6 +282,9 @@ function OverworldState() {
 
         if (holdSpacebar) {
             gameController.startRandomBattle();
+        }
+        if (hold1) {
+            pokebox.beginText("If you can see this, then that means that my attempt at making a word wrapping system was a success! We can now have dialog boxes like in Pokemon, or use this for overhead bubbles. The script can and will definitely be upgraded so it can be appended to other projects :) I also want to use an awesome RPG style font at some point that would be super fun. If you want, try experimenting with the padding, numlines and tell me what other feature would be nice to have!");
         }
     }
 
