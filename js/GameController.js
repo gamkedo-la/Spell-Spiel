@@ -13,7 +13,6 @@ function GameController() {
         if (state != null) {
             if (state_ && Sound.isPlaying(state_.music)) { Sound.stop(state_.music); }
             console.log("Changed state");
-            delete state_; //not sure if it actually deletes...
             state_ = state;
             if (state_.music) { Sound.play(state_.music, true, 1); }
             state_.enter();
@@ -35,7 +34,7 @@ function GameController() {
         battleState.battleType = "Gauntlet";
         console.log("Enemy: " + player.opponent.img);
         gameController.changeState(battleState);
-    }
+    };
     this.startRandomBattle = function () {
         var random = Math.floor(Math.random() * allEnemies.length);
         enemy = allEnemies[random];
@@ -44,7 +43,7 @@ function GameController() {
         setOpponentsBoth(enemy);
         battleState.battleType = "Random";
         gameController.changeState(battleState);
-    }
+    };
 
     var state_; //default state, changes during runtime
     this.changeState(defaultState); //Initialize at default
@@ -135,14 +134,14 @@ function BattleState() {
             }
         }
 
-        }
+        };
 
 
     this.endCheck = function () {
         if (player.hp == 0 || player.opponent.hp == 0) {
             gameController.changeState(battleEndState);
         }
-    }
+    };
 
     this.drawOnScaled = function () {
         player.drawScaled(); //UI text for each character
@@ -171,16 +170,17 @@ function BattleState() {
         player.x = 40;
         player.y = 125;
         //player.opponent.useAttack();
-    }
+    };
 }
-    
+
 function NPC() {
         var currentImg = 0;
         this.imgNumber = 1;
         this.name = "NPC";
         this.text = "Text Goes Here";
         this.img = batPic;
-        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2, this.img.width/this.imgNumber, this.img.height/this.imgNumber); //then each NPC has a collider (the player too)
+        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2,
+            this.img.width/this.imgNumber, this.img.height/this.imgNumber);
 
         //Graphics
         this.setGraphics = function (img, imgNumber) {
@@ -206,15 +206,15 @@ function NPC() {
         if (currentImg >= this.imgNumber) {
             currentImg = 0;
         }
-    }
+    };
 
         this.displayText = function(collider) {
             var collidedOrNot = this.collider.checkCollision(collider);
             if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
-                    console.log(this.text); 
+                    console.log(this.text);
         }
-    }
-};
+    };
+}
 
 function Collider(x, y, width, height) {
 
@@ -224,15 +224,18 @@ function Collider(x, y, width, height) {
     this.height = height;
 
     this.checkCollision = function (collider){
+        // console.log(this.x,this.y,this.width,this.height);
+        // console.log("collider",collider.x,collider.y,collider.width,collider.height);
+
         if (this.x < collider.x + collider.width &&
         this.x + this.width > collider.x &&
         this.y < collider.y + collider.height &&
         this.height + this.y > collider.y) {
-            console.log('collision detected')
+            console.log('collision detected');
             return true; //got a hit!
         }
         else { return false; }
-    }
+    };
 }
 
 var test = new NPC();
@@ -254,6 +257,8 @@ function OverworldState() {
         player.move();
         player.draw();
         test.draw();
+        // console.log(test.x,test.y,test.width,test.height);
+        // console.log("player",player.x,player.y,player.width,player.height);
         player.collider.checkCollision(test.collider);
         draw_particles();
 
@@ -311,7 +316,7 @@ var gameController = new GameController();
 var endingBattle = false;
 
 function BattleEndState() {
-        
+
     var flicker = true;
     var flickerDuration = 15; //in frames
     var currentFlicker = 0;
@@ -329,7 +334,7 @@ function BattleEndState() {
                 player.hp = player.maxHP;
             }
         }
-    }
+    };
 
     this.drawOnScaled = function () {
         if (this.win === true) {
@@ -344,7 +349,7 @@ function BattleEndState() {
             if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }
             scaledContext.textAlign = "left";
         }
-    }
+    };
     this.updateFlicker = function () {
         currentFlicker++;
         if (currentFlicker >= flickerDuration) {
@@ -352,7 +357,7 @@ function BattleEndState() {
             if (flicker) { flicker = false;}
             else if (!flicker) { flicker = true;}
         }
-    }
+    };
 
     this.update = function () {
 
@@ -368,11 +373,11 @@ function BattleEndState() {
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
         this.handleInput(); //can trigger a state change
 
-    }
+    };
     this.enter = function () {
         this.currentFlicker = 0;
-        if (player.hp == 0) { this.win = false }
-        else if (player.opponent.hp == 0) { this.win = true }
+        if (player.hp == 0) { this.win = false; }
+        else if (player.opponent.hp == 0) { this.win = true; }
         if (this.win) {
             if (battleState.battleType === "Gauntlet") {
                 gauntletProgress++;
@@ -381,7 +386,7 @@ function BattleEndState() {
                 }
             }
         }
-    }
+    };
 }
 battleEndState = new BattleEndState();
 
@@ -394,18 +399,18 @@ function EndgameState() {
         colorRect(0, 0, canvas.width, canvas.height, "black");
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
-    }
+    };
 
     this.drawOnScaled = function () {
         scaledContext.textAlign = "center";
         colorText("Congratulations!", scaledCanvas.width / 2, 200, "white");
         colorText("You've completed the game!", scaledCanvas.width / 2, 285, "white");
         scaledContext.textAlign = "left";
-    }
+    };
 
     this.enter = function () {
         return;
-    }
+    };
 }
 endgameState = new EndgameState();
 

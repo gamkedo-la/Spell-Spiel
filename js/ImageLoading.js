@@ -30,16 +30,21 @@ var pokeboxPic = document.createElement("img");
 var picsToLoad = 0; //set automatically in loadImages()
 
 function countLoadedImagesAndLaunchIfReady(){
-	picsToLoad--;
-	console.log(picsToLoad);
-	if (picsToLoad == 0){
-		imageLoadingDoneSoStartGame();
-	}
+    picsToLoad--;
+    console.log(picsToLoad);
+    if (picsToLoad == 0){
+        console.log("idlepic",idlePic.width);
+        console.log("idlepic",idlePic.width);
+        // console.log("idlepic",overworldPic.height);
+        // console.log("idlepic",overworldPic.height);
+        console.log("HELLO WORLD");
+        imageLoadingDoneSoStartGame();
+    }
 }
 
 function beginLoadingImage(imgVar, fileName){
-	imgVar.onload = countLoadedImagesAndLaunchIfReady();
-	imgVar.src = "images/" + fileName;
+    imgVar.onload = countLoadedImagesAndLaunchIfReady;
+    imgVar.src = "images/" + fileName;
 }
 
 
@@ -70,8 +75,8 @@ function loadImages(){
 
     picsToLoad = imageList.length; //This method avoids a race condition
 
-	for(var i=0; i<imageList.length; i++){
-	    beginLoadingImage(imageList[i].varName, imageList[i].theFile);
-	}
+    for(var i=0; i<imageList.length; i++){
+        beginLoadingImage(imageList[i].varName, imageList[i].theFile);
+    }
 
 }
