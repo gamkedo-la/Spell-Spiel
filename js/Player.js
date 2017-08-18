@@ -163,6 +163,7 @@ function Player() { //Defines the player object
         "Ice Spike": iceSpike,
         "Lightning strike of doom": lightning,
         "Protect": shield1,
+        "Toxic Cloud": toxicCloud,
     };
     //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;

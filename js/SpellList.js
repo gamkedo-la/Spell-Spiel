@@ -22,6 +22,14 @@ var spellList = `{
         "anim_frames": 30,
         "particles": ["iceball"]
     },
+    "ToxicCloud": {
+        "name": "Toxic Cloud",
+        "text": "Toxic Cloud",
+        "type": "Attack",
+        "max_power": 30,
+        "anim_frames": 30,
+        "particles": ["fireball"]
+    },
     "Shield1": {
         "name": "Shield1",
         "text": "Protect",

@@ -151,6 +151,17 @@ iceSpikeParty.spriteWidth = 40;
 iceSpikeParty.spriteHeight = 20;
 iceSpikeParty.init();
 
+toxicCloudParty = new Particle();
+toxicCloudParty.frameCount = 10;
+toxicCloudParty.particleFPS = 16;
+toxicCloudParty.isMoving = true;
+toxicCloudParty.spritesheet = poisonSpitPic;
+toxicCloudParty.spriteWidth = 20;
+toxicCloudParty.spriteHeight = 20;
+toxicCloudParty.startX = 40;
+toxicCloudParty.destX = 155;
+toxicCloudParty.init();
+
 //////////////////////////              Monster Attacks              //////////////////////////
 
 biteParty = new Particle();

@@ -231,6 +231,28 @@ IceSpike = function () {
 IceSpike.prototype = new Spell();
 iceSpike = new IceSpike();
 
+ToxicCloud = function () {
+    this.name = "Toxic Cloud";
+    this.text = "Toxic Cloud";
+    this.type = "Attack";
+    this.maxPower = 25;
+    this.particle = toxicCloudParty;
+    console.log(this.particle);
+
+    this.cast = function (target) { //Notice: checkProgress casts this function
+        if (this.power >= this.maxPower/2) { displayBattleMsg(player.battleMsg, msgPoisonGood.concat(msgNeutralGood)); } //Display good or bad message
+        else if (this.power < this.maxPower/2) { displayBattleMsg(player.battleMsg, msgPoisonBad.concat(msgNeutralBad)); }
+        this.basicCast(target);
+        screenshake(10, this.particle.duration*30/1000);
+        this.playSound();
+        //this.spawnParticles();
+        this.particle.party();
+    };
+    this.reset();
+};
+ToxicCloud.prototype = new Spell();
+toxicCloud = new ToxicCloud();
+
 Shield1 = function () {
     this.name = "Shield1";
     this.text = "Protect";
