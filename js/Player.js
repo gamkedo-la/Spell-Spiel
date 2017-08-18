@@ -170,6 +170,7 @@ function Player() { //Defines the player object
     //var state_ = defaultState; //default state, changes during runtime
 
     this.drawBattle = function () {
+        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), 30, 5, "black");
         colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
         colorRect(this.x - (this.img.width / this.imgNumber) / 2, this.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
     };

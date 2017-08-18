@@ -19,6 +19,7 @@ function Enemy() {
     this.untilNextAttack = 100; //frames
 
     this.drawBattle = function () {
+        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), 30, 5, "black");
         colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
     }
 
