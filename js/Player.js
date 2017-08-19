@@ -68,16 +68,15 @@ function Character() { //"Character" == base class for anything that can fight
         this.imgNumber = imgNumber; //# of images in spritesheet
     };
     this.draw = function () { //On canvas
-        colorRect(this.x, this.y, this.img.width, this.img.height, "red");
-    };
-        /*var spriteWidth = this.img.width / this.imgNumber;
+        //colorRect(this.x, this.y, this.img.width, this.img.height, "red");
+        var spriteWidth = this.img.width / this.imgNumber;
         canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
         if (this.shieldHP !== 0) {
             canvasContext.drawImage(shieldPic, this.x - (this.img.width / this.imgNumber) - 2, this.y - this.img.height - 21);
         }
         scaledContext.font = "normal 20pt Bookman";
         resetFont();
-    }; */
+    }; 
     this.drawBattle = function () { //Override in player/enemy class
         return;
     };

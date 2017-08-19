@@ -1,37 +1,69 @@
 // Text wrapping system for Javascript/HTML5 on Canvas
+//Made by Rémy "OmegaLarmor" "RayTeX" Lapointe for Gamkedo Club projects! :)
 
-function MessageBox (x, y, width, height, padx, pady, numlines, img, font, fontsize, textcolor) {
-    /*
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.padx = padx;
-    this.pady = pady;
-    */
-    if (padx === null)     { padx = 0;}
-    if (pady === null)     { pady = 0;}
-    if (numlines === null) { numlines = 0;}
-    if (width === null)    { width = img.width;}
-    if (height === null)   { height = img.height; }
-    if (fontsize === null) { fontsize = 10; } //height in pixels
-    if (textcolor === null) { textcolor = "black"; }
 
-    var text = "test";
+
+////////////////        OPTIONS          //////////////////////
+
+/*The options include:
+
+width/height : Given as argument since there is no dynamic fitting based on box img (pixels)
+padx/pady : In pixels, defaults to 5
+numlines : Number of lines that have to be fit in the box. Currently this doesn't happen automatically, therefore be careful to set your fontsize appropriately!
+fontsize : In pixels, defaults to 10
+textcolor : Self-explanatory.
+
+Current limitations:
+No message queue
+No multiple choice
+Left align only
+No bold, italic, font changing mid-text
+No actual typing effect yet!
+*/
+
+
+function MessageBox (x, y, options) {
+
+    //////////////////           Initialization           //////////
+
+    var width = options.width;
+    var height = options.height;
+    var padx = options.padx;
+    var pady = options.pady;
+    var numlines = options.numlines;
+    var font = options.font;
+    var fontsize = options.fontsize;
+    var textcolor = options.textcolor;
+    this.img = options.img;
+
+    if (!options.width) {
+        if (this.img) { width = this.img.width; }
+        else { width = 100; }
+    }
+    if (!options.height) {
+        if (this.img) { height = this.img.height; }
+        else { height = 100; }
+    }
+    if (!options.padx)     { padx = 5;}
+    if (!options.pady) { pady = 5; }
+    if (!options.numlines) { numlines = 2; }
+
+    if (!options.fontsize) { fontsize = 10; } //height in pixels
+    if (!options.textcolor) { textcolor = "black"; }
+    //this.messageQueue = []; //contains strings
+
+    var text = "";
     var remainingWords = [];
     var spliceIndex = 0;
     var standbyForInput = false;
-    var delayTillNext = 5;
+    var messageDone = false;
+    //var playerInput = holdEnter;
+    var delayTillNext = 0; //frames of waiting that prevent the player from multi skipping when hitting the button
+    var delayBoost = 5;
     this.isAlive = false;
-    /*
-    getWordHeight = function () {
-        scaledContext.font = "normal " + fontsize + "px" + " " + font;
-        wordHeight = fontsize;
-    }
-    var wordHeight = function(){
-        
-    }
-    */
+    var currentx;
+    var currentline;
+
     this.beginText = function (text) {
         this.isAlive = true;
         text = text;
@@ -44,15 +76,15 @@ function MessageBox (x, y, width, height, padx, pady, numlines, img, font, fonts
             if (standbyForInput) {
                 this.drawWords(words);
                 delayTillNext--;
-                console.log(delayTillNext);
                 if (holdEnter && delayTillNext <= 0) {
                     standbyForInput = false;
-                    console.log(spliceIndex, words.length);
-                    if (spliceIndex === words.length) {
-                        this.isAlive = false; //message over!
+                    //our message is over, if we had an event system we would declare it there and call the appropriate function :P
+                    if (messageDone) {
+                        messageDone = false;
+                        this.isAlive = false;
                     }
                     words.splice(0, spliceIndex);
-                    delayTillNext = 5; //frames until the player can skip to following text
+                    delayTillNext = delayBoost; //frames until the player can skip to following text
                 }
             }
             else {
@@ -61,46 +93,102 @@ function MessageBox (x, y, width, height, padx, pady, numlines, img, font, fonts
         }
     }
     this.drawBox = function () {
-        canvasContext.drawImage(img, x, y);
+        canvasContext.drawImage(this.img, x, y);
         //console.log("Drawing box");
     }
     this.drawWords = function (text, toSplit) {
-
         scaledContext.font = "normal " + fontsize + "px" + " " + font;
-
-        var currentx = padx; //start at edge of box + padding
-        var currentline = 0;
+        currentx = padx; //start at edge of box + padding
+        currentline = 1;
 
         var spaceWidth = scaledContext.measureText(" ").width;
+
         for (i = 0; i < words.length; i++) {
+
             var wordWidth = scaledContext.measureText(words[i]).width;
 
             //draw on current line if it fits
             if (currentx + wordWidth < width - padx) {
-                colorText(words[i], currentx, y*4 + pady + fontsize * (currentline+1), textcolor);
+                if (words[i] === "\n") {
+                    if (currentline < numlines) {
+                        newLine();
+                    }
+                    else if (currentline === numlines) {
+                        stopDrawing(i+1); //+1 to cut the line skip
+                        break;
+                    }
+                }//for line skips, \n needs to be surrounded by spaces :O
+                else if (words[i] != "\n") {
+                    colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
+                    currentx = currentx + wordWidth + spaceWidth;
+                    //catches the end of the message
+                    if (i === words.length - 1) {
+                        messageDone = true;
+                        standbyForInput = true;
+                        console.log("Message done!");
+                    }
+                }
+            }
+            //if we have no space but lines left, skip to next
+            else if (currentline < numlines) {
+                newLine();
+                colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
                 currentx = currentx + wordWidth + spaceWidth;
             }
-            //if we have lines left, skip to next
-            else if (currentline+1 < numlines) {
-                currentline++;
-                currentx = padx;
-                colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline+1), textcolor);
-                currentx = currentx + wordWidth + spaceWidth;
-            }
-            //we have no more space! Gotta press something
+                //we have no more space! Gotta press something
             else {
                 standbyForInput = true;
                 spliceIndex = i; //we're gonna cut "words" when we press a given key
                 break;
             }
-            if (i === words.length) {
-                console.log("Hit");
-                standbyForInput = true
-                spliceIndex = i;
-                break;
-            }
         }
+    }
+    var newLine = function () {
+        currentx = padx;
+        currentline++;
+    }
+    var stopDrawing = function (i) {
+        standbyForInput = true;
+        spliceIndex = i;
     }
     
 }
-pokebox = new MessageBox(0, 85, 200 * 4, 65 * 4, 5 * 4, 5 * 4, 4, pokeboxPic, "Lucida Console", 10 * 4, "black");
+
+function drawMessages() {
+    messageBoxes.forEach(function (box) {
+        if (box.isAlive && box.img) { box.drawBox(); }
+    })
+}
+function updateMessages() {
+    messageBoxes.forEach(function (box) {
+        if (box.isAlive) { box.update(); }
+    })
+}
+
+pokeboxOptions = {
+    width: 800,
+    height: 65 * 4,
+    padx: 20,
+    pady: 20,
+    numlines: 5,
+    textcolor: "orange",
+    font: "Consolas",
+    fontsize: 40,
+    img: pokeboxPic
+}
+pokebox = new MessageBox(0, 85, pokeboxOptions);
+
+bubbleboxOptions = {
+    width: 200,
+    height: 40 * 4,
+    padx: 10,
+    pady: 10,
+    numlines: 3,
+    textcolor: "white",
+    font: "Comic Sans MS",
+    fontsize: 30,
+    img: pokeboxPic
+}
+bubblebox = new MessageBox(150, 85, bubbleboxOptions);
+
+var messageBoxes = [pokebox, bubblebox];
