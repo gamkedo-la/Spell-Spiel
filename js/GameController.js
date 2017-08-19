@@ -189,13 +189,12 @@ function NPC() {
         };
 
         this.draw = function () { //On canvas
-            colorRect(this.x, this.y, this.img.width, this.img.height, "blue");
-        };
-           /* var spriteWidth = this.img.width / this.imgNumber;
+            // colorRect(this.x, this.y, this.img.width, this.img.height, "blue");};
+            var spriteWidth = this.img.width / this.imgNumber;
             canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
             scaledContext.font = "normal 20pt Bookman";
             resetFont();
-            }; */
+            };
 
         this.cycleTick = function () {
         cycleCurrent++;
