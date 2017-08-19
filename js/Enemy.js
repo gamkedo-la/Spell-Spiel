@@ -5,8 +5,8 @@ function Enemy() {
     this.y = 125;
     this.img = batPic;
 
-    this.allAttacks = [bite, poisonSpit, block];
-    this.weakAttacks = [bite];
+    this.allAttacks = [bite, poisonSpit, block, slash];
+    this.weakAttacks = [bite, slash];
     this.mediumAttacks = [poisonSpit];
     this.strongAttacks = [noSpell];
     this.weakShields = [block];
@@ -92,6 +92,10 @@ jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
 jellyfish.imgNumber = 2;
 jellyfish.cycleImage = true;
+jellyfish.allAttacks = [poisonSpit, waterGun, bite, block];
+jellyfish.weakAttacks = [poisonSpit];
+jellyfish.mediumAttacks = [bite];
+jellyfish.strongAttacks = [waterGun];
 
 var ghostChicken = new Enemy();
 ghostChicken.name = "Spooky Cacaw";
@@ -99,7 +103,7 @@ ghostChicken.img = ghostChickenPic;
 ghostChicken.imgNumber = 2;
 ghostChicken.cycleImage = true;
 
-var gauntletOrder = [lizard, ghostChicken, jellyfish, bat, zombie];
+var gauntletOrder = [lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken]; //to use in random battles
