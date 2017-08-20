@@ -287,9 +287,11 @@ function OverworldState() {
             gameController.startRandomBattle();
         }
         if (hold1) {
+            console.log("Pressed 1");
             pokebox.beginText("If you can see this, then that means that my attempt at making a word wrapping system was a success! We can now have dialog boxes like in Pokemon, or use this for overhead bubbles. The script can and will definitely be upgraded so it can be appended to other projects :) I also want to use an awesome RPG style font at some point, that would be super fun. If you want, try experimenting with the padding, numlines, \n skipping \n lines, \n and tell me what other feature would be nice to have!");
         }
         if (hold2) {
+            console.log("Pressed 2");
             bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time.");
         }
     }

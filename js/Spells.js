@@ -121,7 +121,6 @@ function Spell() {
         // run an 8 frame spritesheet animation and move it
         if (!fromEnemy && this.particle) { // assume left to right (ie player cast)
             //party(45, 90, particletype, 70, 90);
-            console.log(this.particle);
             particle.party();
             
         }
@@ -219,8 +218,6 @@ IceSpike = function () {
     this.maxPower = 50;
 
     this.cast = function (target) {
-        if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         screenshake(10, this.particle.duration*30/1000)
         //this.spawnParticles();
@@ -240,8 +237,6 @@ ToxicCloud = function () {
     console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        if (this.power >= this.maxPower/2) { displayBattleMsg(player.battleMsg, msgPoisonGood.concat(msgNeutralGood)); } //Display good or bad message
-        else if (this.power < this.maxPower/2) { displayBattleMsg(player.battleMsg, msgPoisonBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         screenshake(10, this.particle.duration*30/1000);
         this.playSound();

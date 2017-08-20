@@ -63,18 +63,23 @@ function MessageBox (x, y, options) {
     this.isAlive = false;
     var currentx;
     var currentline;
+    var words;
 
     this.beginText = function (text) {
         this.isAlive = true;
         text = text;
         words = text.split(" ");
+        console.log(words);
     }
-
+    this.getText = function(){
+        console.log("Text:" + words);
+    }
     this.update = function () {
         //console.log("Current text: " + text);
         if (this.isAlive) {
             if (standbyForInput) {
-                this.drawWords(words);
+                this.drawWords();
+                this.getText();
                 delayTillNext--;
                 if (holdEnter && delayTillNext <= 0) {
                     standbyForInput = false;
@@ -88,7 +93,7 @@ function MessageBox (x, y, options) {
                 }
             }
             else {
-                this.drawWords(words);
+                this.drawWords();
             }
         }
     }
@@ -96,7 +101,7 @@ function MessageBox (x, y, options) {
         canvasContext.drawImage(this.img, x, y);
         //console.log("Drawing box");
     }
-    this.drawWords = function (text, toSplit) {
+    this.drawWords = function () {
         scaledContext.font = "normal " + fontsize + "px" + " " + font;
         currentx = padx; //start at edge of box + padding
         currentline = 1;
@@ -125,7 +130,6 @@ function MessageBox (x, y, options) {
                     if (i === words.length - 1) {
                         messageDone = true;
                         standbyForInput = true;
-                        console.log("Message done!");
                     }
                 }
             }
@@ -187,7 +191,7 @@ bubbleboxOptions = {
     textcolor: "white",
     font: "Comic Sans MS",
     fontsize: 30,
-    img: pokeboxPic
+    //img: pokeboxPic
 }
 bubblebox = new MessageBox(150, 85, bubbleboxOptions);
 
