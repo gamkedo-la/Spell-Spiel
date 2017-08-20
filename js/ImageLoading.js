@@ -17,12 +17,11 @@ var overworldPic = document.createElement("img");
 //Spell VFX
 var fireballSheet = document.createElement("img");
 var lightningSheet = document.createElement("img");
-var biteSheet = document.createElement("img");
-
 var iceSpikePic = document.createElement("img");
 var shieldPic = document.createElement("img");
 var bitePic = document.createElement("img");
 var slashPic = document.createElement("img");
+var toxicCloudPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 
 //Other
@@ -71,6 +70,7 @@ function loadImages(){
         { varName: poisonSpitPic, theFile: "poisonSpit.png" },
         { varName: bitePic, theFile: "bite.png" },
         { varName: slashPic, theFile: "slash.png" },
+        { varName: toxicCloudPic, theFile: "toxicCloud.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxOrange.png" }
     ]

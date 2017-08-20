@@ -152,12 +152,12 @@ iceSpikeParty.spriteHeight = 20;
 iceSpikeParty.init();
 
 toxicCloudParty = new Particle();
-toxicCloudParty.frameCount = 10;
-toxicCloudParty.particleFPS = 16;
+toxicCloudParty.frameCount = 4;
+toxicCloudParty.particleFPS = 1;
 toxicCloudParty.isMoving = true;
-toxicCloudParty.spritesheet = poisonSpitPic;
-toxicCloudParty.spriteWidth = 20;
-toxicCloudParty.spriteHeight = 20;
+toxicCloudParty.spritesheet = toxicCloudPic;
+toxicCloudParty.spriteWidth = 64;
+toxicCloudParty.spriteHeight = 64;
 toxicCloudParty.startX = 40;
 toxicCloudParty.destX = 155;
 toxicCloudParty.init();
