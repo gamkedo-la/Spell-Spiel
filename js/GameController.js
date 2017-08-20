@@ -38,6 +38,9 @@ function GameController() {
     this.startRandomBattle = function () {
         var random = Math.floor(Math.random() * allEnemies.length);
         enemy = allEnemies[random];
+        random = Math.floor(Math.random() * allBackgrounds.length);
+        battleState.img = allBackgrounds[random];
+        battleEndState.img = allBackgrounds[random];
         player.reset();
         enemy.reset();
         setOpponentsBoth(enemy);
@@ -438,3 +441,5 @@ function resetBattle() {
     msgOnDisplay = [];
     braceYourselves = [];
 }
+
+allBackgrounds = [battlePic, lavaPic];

@@ -36,7 +36,15 @@ var spellList = `{
         "type": "Shield",
         "max_power": 250,
         "particles": ["fireball"]
-    }
+    },
+    "ZaWarudo": {
+        "name": "Za Warudo",
+        "text": "Za Warudo",
+        "type": "Utility",
+        "max_power": 0,
+        "anim_frames": 0,
+        "particles": ["fireball"]
+}
 }`;
 
 var spells = JSON.parse(spellList);

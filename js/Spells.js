@@ -266,6 +266,21 @@ Shield1 = function () {
 Shield1.prototype = new Spell();
 shield1 = new Shield1();
 
+ZaWarudo = function () {
+    this.name = "Za Warudo";
+    this.text = "Za Warudo";
+    this.type = "Attack";
+    this.maxPower = 0;
+    console.log("Made pause spell");
+
+    this.cast = function () {
+        pauseState = !pauseState;
+    };
+    this.reset();
+};
+ZaWarudo.prototype = new Spell();
+zaWarudo = new ZaWarudo();
+
 //Fills the spot when no spell selected
 noSpell = new Spell();
 noSpell.name = "No spell";

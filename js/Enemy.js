@@ -7,7 +7,7 @@ function Enemy() {
 
     this.allAttacks = [bite, poisonSpit, block, slash];
     this.weakAttacks = [bite, slash];
-    this.mediumAttacks = [poisonSpit];
+    this.mediumAttacks = [slash];
     this.strongAttacks = [noSpell];
     this.weakShields = [block];
 

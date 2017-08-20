@@ -12,6 +12,7 @@ var ghostChickenPic = document.createElement("img");
 //Environments
 var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
+var lavaPic = document.createElement("img");
 var overworldPic = document.createElement("img");
 
 //Spell VFX
@@ -26,6 +27,7 @@ var poisonSpitPic = document.createElement("img");
 
 //Other
 var pokeboxPic = document.createElement("img");
+var bubbleBoxPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
 
@@ -55,6 +57,7 @@ function loadImages(){
         { varName: castingPic, theFile: "beamCasting.png" }, //spritesheet animation
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
+        { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: overworldPic, theFile: "study.png" },
 
         { varName: batPic, theFile: "bat.png" },
@@ -72,7 +75,8 @@ function loadImages(){
         { varName: slashPic, theFile: "slash.png" },
         { varName: toxicCloudPic, theFile: "toxicCloud.png" },
 
-        { varName: pokeboxPic, theFile: "pokeboxOrange.png" }
+        { varName: pokeboxPic, theFile: "pokeboxOrange.png" },
+        { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }
     ]
 
     picsToLoad = imageList.length; //This method avoids a race condition

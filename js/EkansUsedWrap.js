@@ -26,6 +26,8 @@ function MessageBox (x, y, options) {
 
     //////////////////           Initialization           //////////
 
+    var x = x;
+    var y = y;
     var width = options.width;
     var height = options.height;
     var padx = options.padx;
@@ -75,7 +77,6 @@ function MessageBox (x, y, options) {
         console.log("Text:" + words);
     }
     this.update = function () {
-        //console.log("Current text: " + text);
         if (this.isAlive) {
             if (standbyForInput) {
                 this.drawWords();
@@ -99,11 +100,10 @@ function MessageBox (x, y, options) {
     }
     this.drawBox = function () {
         canvasContext.drawImage(this.img, x, y);
-        //console.log("Drawing box");
     }
     this.drawWords = function () {
         scaledContext.font = "normal " + fontsize + "px" + " " + font;
-        currentx = padx; //start at edge of box + padding
+        currentx = padx + x*4; //start at edge of box + padding
         currentline = 1;
 
         var spaceWidth = scaledContext.measureText(" ").width;
@@ -114,6 +114,7 @@ function MessageBox (x, y, options) {
 
             //draw on current line if it fits
             if (currentx + wordWidth < width - padx) {
+                //console.log(currentline);
                 if (words[i] === "\n") {
                     if (currentline < numlines) {
                         newLine();
@@ -148,7 +149,7 @@ function MessageBox (x, y, options) {
         }
     }
     var newLine = function () {
-        currentx = padx;
+        currentx = padx + x*4;
         currentline++;
     }
     var stopDrawing = function (i) {
@@ -183,16 +184,16 @@ pokeboxOptions = {
 pokebox = new MessageBox(0, 85, pokeboxOptions);
 
 bubbleboxOptions = {
-    width: 200,
-    height: 40 * 4,
+    width: 140*4,
+    height: 50 * 4,
     padx: 10,
     pady: 10,
-    numlines: 3,
+    numlines: 4,
     textcolor: "white",
     font: "Comic Sans MS",
     fontsize: 30,
-    //img: pokeboxPic
+    img: bubbleBoxPic
 }
-bubblebox = new MessageBox(150, 85, bubbleboxOptions);
+bubblebox = new MessageBox(75, 65, bubbleboxOptions);
 
 var messageBoxes = [pokebox, bubblebox];

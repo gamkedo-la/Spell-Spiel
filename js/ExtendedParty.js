@@ -175,7 +175,7 @@ biteParty.init();
 
 slashParty = new Particle();
 slashParty.frameCount = 9;
-slashParty.particleFPS = 9;
+slashParty.particleFPS = 18;
 slashParty.isMoving = false;
 slashParty.spritesheet = slashPic;
 slashParty.spriteWidth = 64;
