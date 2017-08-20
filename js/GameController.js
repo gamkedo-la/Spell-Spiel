@@ -260,7 +260,6 @@ function OverworldState() {
         // console.log("player",player.x,player.y,player.width,player.height);
         player.collider.checkCollision(test.collider);
         draw_particles();
-
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
         drawMessages(); //split cus it has to be drawn on small canvas while words are on big one...
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
