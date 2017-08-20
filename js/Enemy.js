@@ -78,6 +78,7 @@ bat.img = batPic;
 var zombie = new Enemy();
 zombie.name = "Green Stroller";
 zombie.img = zombiePic;
+zombie.mediumAttacks = [slash];
 zombie.imgNumber = 2;
 zombie.cycleImage = true;
 
@@ -92,10 +93,10 @@ jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
 jellyfish.imgNumber = 2;
 jellyfish.cycleImage = true;
-jellyfish.allAttacks = [poisonSpit, waterGun, bite, block];
+jellyfish.allAttacks = [poisonSpit, waterSquirt, bite, block];
 jellyfish.weakAttacks = [poisonSpit];
 jellyfish.mediumAttacks = [bite];
-jellyfish.strongAttacks = [waterGun];
+jellyfish.strongAttacks = [waterSquirt];
 
 var ghostChicken = new Enemy();
 ghostChicken.name = "Spooky Cacaw";

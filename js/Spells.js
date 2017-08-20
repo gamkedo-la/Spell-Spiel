@@ -121,7 +121,6 @@ function Spell() {
         // run an 8 frame spritesheet animation and move it
         if (!fromEnemy && this.particle) { // assume left to right (ie player cast)
             //party(45, 90, particletype, 70, 90);
-            console.log(this.particle);
             particle.party();
             
         }

@@ -22,6 +22,7 @@ var biteSheet = document.createElement("img");
 var iceSpikePic = document.createElement("img");
 var shieldPic = document.createElement("img");
 var bitePic = document.createElement("img");
+var slashPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 
 //Other
@@ -69,6 +70,7 @@ function loadImages(){
         { varName: shieldPic, theFile: "shield1.png" },
         { varName: poisonSpitPic, theFile: "poisonSpit.png" },
         { varName: bitePic, theFile: "bite.png" },
+        { varName: slashPic, theFile: "slash.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxOrange.png" }
     ]

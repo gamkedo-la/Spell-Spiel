@@ -173,6 +173,15 @@ biteParty.spriteWidth = 64;
 biteParty.spriteHeight = 64;
 biteParty.init();
 
+slashParty = new Particle();
+slashParty.frameCount = 9;
+slashParty.particleFPS = 9;
+slashParty.isMoving = false;
+slashParty.spritesheet = slashPic;
+slashParty.spriteWidth = 64;
+slashParty.spriteHeight = 64;
+slashParty.init();
+
 poisonSpitParty = new Particle();
 poisonSpitParty.frameCount = 10;
 poisonSpitParty.particleFPS = 16;

@@ -19,7 +19,7 @@ bite = new Bite();
 function Slash() {
     this.name = "Slash";
     this.type = "Attack";
-    this.particle = poisonSpitParty;
+    this.particle = slashParty;
     this.power = 30;
 
     this.cast = function (target) {
@@ -50,7 +50,7 @@ function PoisonSpit() {
 PoisonSpit.prototype = new Spell();
 poisonSpit = new PoisonSpit();
 
-function WaterGun() {
+function WaterSquirt() {
     this.name = "Water Gun";
     this.type = "Attack";
     this.particle = biteParty;
@@ -63,8 +63,8 @@ function WaterGun() {
         this.spawnParticles(this.particle);
     }
 }
-WaterGun.prototype = new Spell();
-waterGun = new WaterGun();
+WaterSquirt.prototype = new Spell();
+waterSquirt = new WaterSquirt();
 
 
 function Block() {
