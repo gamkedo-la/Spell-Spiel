@@ -70,7 +70,7 @@ function Particle() {
             if (y >= this.destY + 1) { y = this.destY; }
             if (this.startX <= this.destX) { if (x >= this.destX) { x = this.destX; } } //Major hack. Couldn't figure out why it would overshoot at higher fps, so froze it and it actually makes it seamless...
             else if (this.startX > this.destX) { if (x <= this.destX) { x = this.destX; } } //My god the hacking!
-            console.log(currentFrame, this.frameCount);
+
             if (currentFrame >= this.frameCount) {
                 this.isAlive = false;
                 x = this.startX;
@@ -132,6 +132,11 @@ function drawParticles() {
     for (i = 0; i < particles.length; i++) {
         particles[i].draw();
     }
+}
+
+function durationInMS(partyDuration) {
+    trueDuration = partyDuration * 30 / 1000;
+    return trueDuration;
 }
 
 //////////////////////////              Player spells              //////////////////////////

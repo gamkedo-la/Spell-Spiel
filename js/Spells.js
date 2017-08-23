@@ -165,20 +165,18 @@ function rechargeAllExceptCurrent() { //Refills the cooldowns of inactive spells
     }
 }
 
-//Make spells here
+////////////////////////                Spell creation                  ///////////////////////////
 Pyroblast = function () {
     this.name = "Pyroblast";
     this.text = "Pyroblast";
     this.type = "Attack";
-    this.maxPower = 200;
+    this.maxPower = 50;
     this.particle = fireballParty;
     console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        if (this.power >= this.maxPower/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
-        else if (this.power < this.maxPower/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10, this.particle.duration*30/1000);
+        screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
         //this.spawnParticles();
         this.particle.party();
@@ -196,13 +194,9 @@ Lightning = function () {
     this.maxPower = 150;
 
     this.cast = function (target) {
-        if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
-        else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        console.log(this.particle.duration);
-        screenshake(10, this.particle.duration * 30 / 1000);
+        screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
-        //this.particle.party();
         this.spawnParticles(this.particle);
     };
     this.reset();
@@ -219,8 +213,7 @@ IceSpike = function () {
 
     this.cast = function (target) {
         this.basicCast(target);
-        screenshake(10, this.particle.duration*30/1000)
-        //this.spawnParticles();
+        screenshake(5, durationInMS(this.particle.duration))
         this.particle.party();
     };
     this.reset();
@@ -238,9 +231,8 @@ ToxicCloud = function () {
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target);
-        screenshake(10, this.particle.duration*30/1000);
+        screenshake(1, durationInMS(this.particle.duration));
         this.playSound();
-        //this.spawnParticles();
         this.particle.party();
     };
     this.reset();
@@ -252,14 +244,11 @@ Shield1 = function () {
     this.name = "Shield1";
     this.text = "Protect";
     this.type = "Shield";
-    this.maxPower = 250;
+    this.maxPower = 100;
 
     this.cast = function (target) {
-        //if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        //else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        //this.spawnParticles(PARTICLE_FIREBALL); // FIXME
     };
     this.reset();
 };
