@@ -170,7 +170,7 @@ Pyroblast = function () {
     this.name = "Pyroblast";
     this.text = "Pyroblast";
     this.type = "Attack";
-    this.maxPower = 50;
+    this.maxPower = 200;
     this.particle = fireballParty;
     console.log(this.particle);
 
