@@ -26,7 +26,8 @@ function GameController() {
         return state_.img; //Eventually we can expand this so states can have a variety of bg images
     };
 
-    this.startBattle = function (enemy) {
+    this.startBattle = function (chosenEnemy) {
+        enemy = chosenEnemy;
         player.reset();
         enemy.reset();
         setOpponentsBoth(enemy);
