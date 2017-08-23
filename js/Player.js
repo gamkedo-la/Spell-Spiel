@@ -2,8 +2,10 @@
 function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
-    this.x = 180;
-    this.y = 85;
+    this.position = {
+        x : 180,
+        y : 85
+    };
     this.speedX = 0;
     this.speedY = 0;
     this.img = null;
@@ -131,8 +133,10 @@ function Character() { //"Character" == base class for anything that can fight
     //RELATED TO OVERWORLD
 
     this.move = function () {
-        this.x += this.speedX;
-        this.y += this.speedY;
+        this.position.x += this.speedX;
+        this.position.y += this.speedY;
+        // this.x += this.speedX;
+        // this.y += this.speedY;
     };
 }
 
