@@ -53,7 +53,7 @@ function beginLoadingImage(imgVar, fileName){
 function loadImages(){
 
     var imageList = [
-        { varName: idlePic, theFile: "beamIdle.png" }, //spritesheet animation
+        { varName: idlePic, theFile: "beamIdle2.png" }, //spritesheet animation
         { varName: castingPic, theFile: "beamCasting.png" }, //spritesheet animation
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
