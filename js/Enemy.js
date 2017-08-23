@@ -13,7 +13,7 @@ function Enemy() {
 
     this.maxHP = 200;
     this.hp = this.maxHP;
-
+    this.expGiven = 0;
     this.chosenOne = noSpell; //the attack that will be used, as determined by AI
 
     this.untilNextAttack = 100; //frames
@@ -84,6 +84,7 @@ zombie.cycleImage = true;
 
 var lizard = new Enemy();
 lizard.name = "Rad Reptilian";
+lizard.expGiven = 20;
 lizard.img = lizardPic;
 lizard.imgNumber = 2;
 lizard.cycleImage = true;

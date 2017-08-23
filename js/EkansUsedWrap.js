@@ -36,6 +36,7 @@ function MessageBox (x, y, options) {
     var font = options.font;
     var fontsize = options.fontsize;
     var textcolor = options.textcolor;
+    this.type = "Message Box";
     this.img = options.img;
 
     if (!options.width) {
@@ -52,7 +53,7 @@ function MessageBox (x, y, options) {
 
     if (!options.fontsize) { fontsize = 10; } //height in pixels
     if (!options.textcolor) { textcolor = "black"; }
-    //this.messageQueue = []; //contains strings
+    
 
     var text = "";
     var remainingWords = [];
@@ -67,14 +68,15 @@ function MessageBox (x, y, options) {
     var currentline;
     var words;
 
-    this.beginText = function (text) {
+    this.subject = new Subject(); //optional, if using the Observer pattern to notify entities that the message is over
+
+    this.beginText = function (newText) {
         this.isAlive = true;
-        text = text;
+        text = newText;
         words = text.split(" ");
-        console.log(words);
     }
     this.getText = function(){
-        console.log("Text:" + words);
+        //console.log("Text:" + words);
     }
     this.update = function () {
         if (this.isAlive) {
@@ -88,6 +90,7 @@ function MessageBox (x, y, options) {
                     if (messageDone) {
                         messageDone = false;
                         this.isAlive = false;
+                        this.afterMessage(); //does whatever we said would happen once done
                     }
                     words.splice(0, spliceIndex);
                     delayTillNext = delayBoost; //frames until the player can skip to following text
@@ -112,9 +115,14 @@ function MessageBox (x, y, options) {
 
             var wordWidth = scaledContext.measureText(words[i]).width;
 
+            //catches the end of the message
+            if (i === words.length - 1) {
+                messageDone = true;
+                standbyForInput = true;
+            }
+
             //draw on current line if it fits
             if (currentx + wordWidth < width - padx) {
-                //console.log(currentline);
                 if (words[i] === "\n") {
                     if (currentline < numlines) {
                         newLine();
@@ -127,11 +135,6 @@ function MessageBox (x, y, options) {
                 else if (words[i] != "\n") {
                     colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
                     currentx = currentx + wordWidth + spaceWidth;
-                    //catches the end of the message
-                    if (i === words.length - 1) {
-                        messageDone = true;
-                        standbyForInput = true;
-                    }
                 }
             }
             //if we have no space but lines left, skip to next
@@ -140,14 +143,20 @@ function MessageBox (x, y, options) {
                 colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
                 currentx = currentx + wordWidth + spaceWidth;
             }
-                //we have no more space! Gotta press something
+            //we have no more space! Gotta press something
             else {
-                standbyForInput = true;
-                spliceIndex = i; //we're gonna cut "words" when we press a given key
+                stopDrawing(i); //we're gonna cut "words" at "i" when we press a given key
                 break;
             }
+
         }
     }
+
+    //To make for each box/thing or whatever
+    this.afterMessage = function () {
+        return;
+    }
+
     var newLine = function () {
         currentx = padx + x*4;
         currentline++;
@@ -156,10 +165,14 @@ function MessageBox (x, y, options) {
         standbyForInput = true;
         spliceIndex = i;
     }
+    this.changeFont = function(newFont){
+        font = newFont; //WOW!!!!
+        console.log(font);
+    }
     
 }
 
-function drawMessages() {
+function drawMessagesIfAlive() {
     messageBoxes.forEach(function (box) {
         if (box.isAlive && box.img) { box.drawBox(); }
     })
@@ -168,6 +181,16 @@ function updateMessages() {
     messageBoxes.forEach(function (box) {
         if (box.isAlive) { box.update(); }
     })
+}
+///////////////////           In Spell Spiel           ////////////////////////
+messageObserver = new Observer();
+messageObserver.onNotify = function (entity, event) {
+    console.log("Notified");
+    if (entity.type === "Message Box" && event.startBattle) {
+        console.log("So uh I heard you talked to me or sumthin...");
+        console.log("Gonna start a battle now with " + event.enemy.name);
+        gameController.startBattle(event.enemy);
+    }
 }
 
 pokeboxOptions = {
@@ -182,6 +205,10 @@ pokeboxOptions = {
     img: pokeboxPic
 }
 pokebox = new MessageBox(0, 85, pokeboxOptions);
+pokebox.subject.addObserver(messageObserver);
+pokebox.afterMessage = function () {
+    pokebox.subject.notify(pokebox, {startBattle : true, enemy : ghostChicken}) //does this affect the global namespace? :/
+}
 
 bubbleboxOptions = {
     width: 140*4,
@@ -195,5 +222,6 @@ bubbleboxOptions = {
     img: bubbleBoxPic
 }
 bubblebox = new MessageBox(75, 65, bubbleboxOptions);
+bubblebox.subject.addObserver(messageObserver);
 
 var messageBoxes = [pokebox, bubblebox];

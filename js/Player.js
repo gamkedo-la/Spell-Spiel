@@ -9,7 +9,6 @@ function Character() { //"Character" == base class for anything that can fight
     this.img = null;
 
     this.level = 1;
-    this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
     this.shieldHP = 0;
 
     this.isCasting = false;
@@ -147,6 +146,8 @@ function Player() { //Defines the player object
 
     this.maxHP = 350;
     this.hp = this.maxHP;
+    this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
+    this.exp = 0;
 
     console.log("imgwidth",this.img.width);
     console.log("imgheight",this.img.height);
