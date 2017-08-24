@@ -162,35 +162,35 @@ function BattleState() {
         document.removeEventListener("keydown", keyDown);
         document.addEventListener("keypress", keyPressed); //keypress == only character keys!
 
-        player.x = 40;
-        player.y = 125;
+        player.position.x = 40;
+        player.position.y = 125;
+
     };
 }
 
 function NPC() {
-        var currentImg = 0;
-        this.imgNumber = 1;
-        this.name = "NPC";
-        this.text = "Text Goes Here";
-        this.img = batPic;
-        this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2,
-            this.img.width/this.imgNumber, this.img.height/this.imgNumber);
+    var currentImg = 0;
+    this.imgNumber = 1;
+    this.name = "NPC";
+    this.text = "Text Goes Here";
+    this.img = batPic;
 
-        //Graphics
-        this.setGraphics = function (img, imgNumber) {
-            this.img = img;
-            this.imgNumber = imgNumber; //# of images in spritesheet
-        };
+    //Graphics
+    this.setGraphics = function (img, imgNumber) {
+        this.img = img;
+        this.imgNumber = imgNumber; //# of images in spritesheet
+    };
 
-        this.draw = function () { //On canvas
-            // colorRect(this.x, this.y, this.img.width, this.img.height, "blue");};
-            var spriteWidth = this.img.width / this.imgNumber;
-            canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
-            scaledContext.font = "normal 20pt Bookman";
-            resetFont();
-            };
+    this.draw = function () { //On canvas
+        var spriteWidth = this.img.width / this.imgNumber;
+        canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth,
+            this.img.height, this.position.x - (this.img.width / this.imgNumber) / 2,
+            this.position.y - this.img.height, spriteWidth, this.img.height);
+        scaledContext.font = "normal 20pt Bookman";
+        resetFont();
+    };
 
-        this.cycleTick = function () {
+    this.cycleTick = function () {
         cycleCurrent++;
         if (cycleCurrent >= this.cycleDuration) {
             cycleCurrent = 0;
@@ -201,40 +201,27 @@ function NPC() {
         }
     };
 
-        this.displayText = function(collider) {
-            var collidedOrNot = this.collider.checkCollision(collider);
-            if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
-                    console.log(this.text);
+    this.displayText = function(collider) {
+        var collidedOrNot = this.checkCollision(collider);
+        if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
+            console.log(this.text);
         }
     };
+
 }
 
-function Collider(x, y, width, height) {
-
-    this.x = x;
-    this.y = y;
+function Collider(position,width,height) {
+    this.position = position;
     this.width = width;
     this.height = height;
-
-    this.checkCollision = function (collider){
-        // console.log(this.x,this.y,this.width,this.height);
-        // console.log("collider",collider.x,collider.y,collider.width,collider.height);
-
-        if (this.x < collider.x + collider.width &&
-        this.x + this.width > collider.x &&
-        this.y < collider.y + collider.height &&
-        this.height + this.y > collider.y) {
-            console.log('collision detected');
-            return true; //got a hit!
-        }
-        else { return false; }
-    };
 }
 
 var test = new NPC();
     test.name = "Bat";
-    test.x = 30;
-    test.y = 100;
+    test.position = {
+        x : 30,
+        y : 100,
+    };
     test.img = batPic;
     test.imgNumber = 1;
     test.text = "Testing";
@@ -251,9 +238,16 @@ function OverworldState() {
         player.move();
         player.draw();
         test.draw();
-        // console.log(test.x,test.y,test.width,test.height);
-        // console.log("player",player.x,player.y,player.width,player.height);
-        player.collider.checkCollision(test.collider);
+
+        if(!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
+            player.collider = new Collider(player.position,player.img.width,player.img.height);
+        }
+        if(!test.hasOwnProperty("collider") && test.img.width && test.img.height) {
+            test.collider = new Collider(test.position, test.img.width, test.img.height);
+        }
+
+        player.checkCollision(test);
+
         draw_particles();
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
         drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
@@ -314,7 +308,7 @@ function OverworldState() {
             console.log("Pressed 2");
             bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time. I hope some of you will find this sytem useful once it's finished (ie not buggy)");
         }
-    }
+    };
 
 
     this.drawOnScaled = function () {

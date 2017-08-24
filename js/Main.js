@@ -15,11 +15,11 @@ const ORIG_WORLD_H = 150;
 const PIXEL_SCALE_UP = 4;
 
 window.onload = function () {
-    
-	// FIXME: it is impolite to trigger sound right away...
-	// maybe we should wait until one user click, like start game button
-	
-	//Prepping the game canvas. Strategy "borrowed" from the Roman's Adventure source code (ty Oasis Rim and co.)
+
+    // FIXME: it is impolite to trigger sound right away...
+    // maybe we should wait until one user click, like start game button
+
+    //Prepping the game canvas. Strategy "borrowed" from the Roman's Adventure source code (ty Oasis Rim and co.)
     canvas = document.createElement("canvas");
     canvasContext = canvas.getContext("2d");
     scaledCanvas = document.getElementById('gameCanvas');
@@ -45,9 +45,6 @@ window.onload = function () {
     for(var spell in spells) {
         spellTrie.insert(spells[spell].text);
     }
-
-    //console.log(spellTrie.autoComplete(""));
-    //console.log(spellTrie.autoComplete("Lig"));
 
     colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, 'purple'); //Doesn't work with the whole scaled canvas shenanigans...
     colorText('LOADING', scaledCanvas.width / 2, scaledCanvas.height / 2, 'orange'); //Also looks weird now :P
@@ -80,7 +77,7 @@ function updateAll() {
         }
     }
 }
-    
+
 function moveAll() {
 
 }
@@ -114,14 +111,14 @@ function updateDamage() {
             player.dealDamage(element[1]);
             player.delayedDamage.splice(index, 1);
         }
-    })
+    });
     player.opponent.delayedDamage.forEach(function (element, index) {
         element[0]--; // -1 frame
         if (element[0] <= 0) {
             player.opponent.dealDamage(element[1]);
             player.opponent.delayedDamage.splice(index, 1);
         }
-    })     
+    });
 }
 
 function spellTimeLapse() {

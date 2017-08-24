@@ -1,2 +1,5 @@
 *.pptx
 .vscode/launch.json
+*.swp
+.DS_Store
+Thumbs.db

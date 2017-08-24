@@ -39,8 +39,6 @@ function countLoadedImagesAndLaunchIfReady(){
     picsToLoad--;
     console.log(picsToLoad);
     if (picsToLoad == 0){
-        // console.log("idlepic",overworldPic.height);
-        // console.log("idlepic",overworldPic.height);
         imageLoadingDoneSoStartGame();
     }
 }

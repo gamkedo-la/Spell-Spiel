@@ -2,8 +2,10 @@
 function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
-    this.x = 180;
-    this.y = 85;
+    this.position = {
+        x : 180,
+        y : 85
+    };
     this.speedX = 0;
     this.speedY = 0;
     this.img = null;
@@ -67,16 +69,17 @@ function Character() { //"Character" == base class for anything that can fight
         this.imgNumber = imgNumber; //# of images in spritesheet
         this.cycleDuration = cycleDuration;
     };
-    this.draw = function () { //On canvas
-        //colorRect(this.x, this.y, this.img.width, this.img.height, "red");
+    this.draw = function () { //On canvas;
         var spriteWidth = this.img.width / this.imgNumber;
-        canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
+        canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth,
+            this.img.height, this.position.x - (this.img.width / this.imgNumber) / 2,
+            this.position.y - this.img.height, spriteWidth, this.img.height);
         if (this.shieldHP !== 0) {
             canvasContext.drawImage(shieldPic, this.x - (this.img.width / this.imgNumber) - 2, this.y - this.img.height - 21);
         }
         scaledContext.font = "normal 20pt Bookman";
         resetFont();
-    }; 
+    };
     this.drawBattle = function () { //Override in player/enemy class
         return;
     };
@@ -133,8 +136,10 @@ function Character() { //"Character" == base class for anything that can fight
     //RELATED TO OVERWORLD
 
     this.move = function () {
-        this.x += this.speedX;
-        this.y += this.speedY;
+        this.position.x += this.speedX;
+        this.position.y += this.speedY;
+        // this.x += this.speedX;
+        // this.y += this.speedY;
     };
 }
 
@@ -154,12 +159,6 @@ function Player() { //Defines the player object
     this.hp = this.maxHP;
     this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
     this.exp = 0;
-
-    //console.log("imgwidth",this.img.width);
-    //console.log("imgheight",this.img.height);
-    //console.log("imgnum",this.imgNumber);
-    this.collider = new Collider(this.x-this.img.width/2, this.y-this.img.height/2,
-        this.img.width/ this.imgNumber, this.img.height / this.imgNumber);
 
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
@@ -197,6 +196,14 @@ function Player() { //Defines the player object
             }
         }
     };
+
+    this.checkCollision = function (collobj){
+        return this.position.x < collobj.position.x + collobj.collider.width &&
+               this.position.x + this.collider.width > collobj.position.x &&
+               this.position.y < collobj.position.y + collobj.collider.height &&
+               this.position.y + this.collider.height > collobj.position.y;
+    };
+
 }
 
 Player.prototype = new Character(); //Note: prototype === inheritance in JS
