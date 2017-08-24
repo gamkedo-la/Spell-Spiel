@@ -14,7 +14,7 @@ function GameController() {
             if (state_ && Sound.isPlaying(state_.music)) { Sound.stop(state_.music); }
             console.log("Changed state");
             state_ = state;
-            if (state_.music) { Sound.play(state_.music, true, 1); }
+            if (state_.music) { Sound.play(state_.music, true, 0.8); }
             state_.enter();
         }
     };
@@ -64,7 +64,7 @@ function BattleState() {
 
     this.battleType = "Gauntlet";
     this.img = battlePic;
-    //this.music = "gymLeader";
+    this.music = "SpellSpiel_Battle";
 
     this.update = function ()
     {
