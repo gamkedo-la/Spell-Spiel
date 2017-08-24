@@ -65,11 +65,12 @@ function Particle() {
             // add delays functionality here if desired
             // moving particles
 
-                x += this.speedX;
-                y += this.speedY;
-                if (y >= this.destY + 1) { y = this.destY; }
-                if (this.startX <= this.destX) { if (x >= this.destX) { x = this.destX; } } //Major hack. Couldn't figure out why it would overshoot at higher fps, so froze it and it actually makes it seamless...
-                else if (this.startX > this.destX) { if (x <= this.destX) { x = this.destX; } } //My god the hacking!
+            x += this.speedX;
+            y += this.speedY;
+            if (y >= this.destY + 1) { y = this.destY; }
+            if (this.startX <= this.destX) { if (x >= this.destX) { x = this.destX; } } //Major hack. Couldn't figure out why it would overshoot at higher fps, so froze it and it actually makes it seamless...
+            else if (this.startX > this.destX) { if (x <= this.destX) { x = this.destX; } } //My god the hacking!
+
             if (currentFrame >= this.frameCount) {
                 this.isAlive = false;
                 x = this.startX;
@@ -102,7 +103,8 @@ function Particle() {
         }
     };
     this.reset = function () {
-        this.x = this.startX;
+        x = this.startX;
+        currentFrame = 0;
     }
 }
 function updateParticles() {
@@ -117,10 +119,24 @@ function updateParticles() {
         }
     }
 }
+function resetAllParticles() {
+    for (i = particles.length - 1; i >= 0 ; i--) {
+        particles[i].isAlive = false;
+        particles[i].reset();
+        particles.splice(i, 1);
+        console.log("Particle expired \n", "Particles remaining: " + particles.length);
+        }
+}
+
 function drawParticles() {
     for (i = 0; i < particles.length; i++) {
         particles[i].draw();
     }
+}
+
+function durationInMS(partyDuration) {
+    trueDuration = partyDuration * 30 / 1000;
+    return trueDuration;
 }
 
 //////////////////////////              Player spells              //////////////////////////
@@ -151,6 +167,17 @@ iceSpikeParty.spriteWidth = 40;
 iceSpikeParty.spriteHeight = 20;
 iceSpikeParty.init();
 
+toxicCloudParty = new Particle();
+toxicCloudParty.frameCount = 4;
+toxicCloudParty.particleFPS = 1;
+toxicCloudParty.isMoving = true;
+toxicCloudParty.spritesheet = toxicCloudPic;
+toxicCloudParty.spriteWidth = 64;
+toxicCloudParty.spriteHeight = 64;
+toxicCloudParty.startX = 40;
+toxicCloudParty.destX = 155;
+toxicCloudParty.init();
+
 //////////////////////////              Monster Attacks              //////////////////////////
 
 biteParty = new Particle();
@@ -161,6 +188,15 @@ biteParty.spritesheet = bitePic;
 biteParty.spriteWidth = 64;
 biteParty.spriteHeight = 64;
 biteParty.init();
+
+slashParty = new Particle();
+slashParty.frameCount = 9;
+slashParty.particleFPS = 18;
+slashParty.isMoving = false;
+slashParty.spritesheet = slashPic;
+slashParty.spriteWidth = 64;
+slashParty.spriteHeight = 64;
+slashParty.init();
 
 poisonSpitParty = new Particle();
 poisonSpitParty.frameCount = 10;

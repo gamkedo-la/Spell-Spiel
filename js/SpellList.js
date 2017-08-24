@@ -22,13 +22,29 @@ var spellList = `{
         "anim_frames": 30,
         "particles": ["iceball"]
     },
+    "ToxicCloud": {
+        "name": "Toxic Cloud",
+        "text": "Toxic Cloud",
+        "type": "Attack",
+        "max_power": 30,
+        "anim_frames": 30,
+        "particles": ["fireball"]
+    },
     "Shield1": {
         "name": "Shield1",
         "text": "Protect",
         "type": "Shield",
         "max_power": 250,
         "particles": ["fireball"]
-    }
+    },
+    "ZaWarudo": {
+        "name": "Za Warudo",
+        "text": "Za Warudo",
+        "type": "Utility",
+        "max_power": 0,
+        "anim_frames": 0,
+        "particles": ["fireball"]
+}
 }`;
 
 var spells = JSON.parse(spellList);

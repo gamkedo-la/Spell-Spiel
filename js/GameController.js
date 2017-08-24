@@ -26,18 +26,29 @@ function GameController() {
         return state_.img; //Eventually we can expand this so states can have a variety of bg images
     };
 
+    this.startBattle = function (chosenEnemy) {
+        enemy = chosenEnemy;
+        player.reset();
+        enemy.reset();
+        setOpponentsBoth(enemy);
+        battleState.battleType = "Normal";
+        gameController.changeState(battleState);
+    };
+
     this.startGauntletBattle = function () {
         enemy = gauntletOrder[gauntletProgress];
         player.reset();
         enemy.reset();
         setOpponentsBoth(enemy);
         battleState.battleType = "Gauntlet";
-        console.log("Enemy: " + player.opponent.img);
         gameController.changeState(battleState);
     };
     this.startRandomBattle = function () {
         var random = Math.floor(Math.random() * allEnemies.length);
         enemy = allEnemies[random];
+        random = Math.floor(Math.random() * allBackgrounds.length);
+        battleState.img = allBackgrounds[random];
+        battleEndState.img = allBackgrounds[random];
         player.reset();
         enemy.reset();
         setOpponentsBoth(enemy);
@@ -65,13 +76,13 @@ function BattleState() {
         this.handleInput();
 
         clearScreen(); //Everything under this is drawn on the small canvas...
-        player.checkState();
         drawBothBattle();
         drawParticles();
 
         updateScreenshake();
         updateParticles();
         updateDamage();
+        player.checkState();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
@@ -100,13 +111,11 @@ function BattleState() {
         // Checks if the pressed key is in the alphabet. If it is, we query the trie
         // Non-letter input can be used for pausing, etc.
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length - 1]);
-        console.log(keyPressed.data);
         if(key.match(/[a-z ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell + key);
             if (completion.length) {
                 completion = completion[0];
                 this.currentSpell += key;
-                console.log(completion);
                 var progress = player.currentSpell.progress;
                 player.changeSpell(player.availableSpells[completion]);
                 player.currentSpell.catchUp(progress);
@@ -126,7 +135,6 @@ function BattleState() {
         if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
             return;
         }
-        console.log("Current spell: " + this.currentSpell);
         if (this.currentSpell != "") {
             player.isCasting = true;
             if (this.currentSpell.length == 1) {
@@ -139,6 +147,7 @@ function BattleState() {
 
     this.endCheck = function () {
         if (player.hp == 0 || player.opponent.hp == 0) {
+            resetAllParticles();
             gameController.changeState(battleEndState);
         }
     };
@@ -243,9 +252,6 @@ function OverworldState() {
         player.draw();
         test.draw();
 
-        // console.log(test.x,test.y,test.x+test.img.width,test.y+test.img.height);
-        // console.log(player.x,player.y,player.x+player.img.width,player.y+player.img.height);
-
         if(!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
             player.collider = new Collider(player.position,player.img.width,player.img.height);
         }
@@ -256,12 +262,12 @@ function OverworldState() {
         player.checkCollision(test);
 
         draw_particles();
-
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
+        drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        updateMessages(); //see above
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
-
     this.handleInput = function () {
         if (holdLeft) {
             player.speedX = -MOVE_SPEED;
@@ -282,6 +288,14 @@ function OverworldState() {
         if (holdSpacebar) {
             gameController.startRandomBattle();
         }
+        if (hold1) {
+            console.log("Pressed 1");
+            pokebox.beginText("This will be the NPC/game text used by my super duper text wrapping code! You can even \n skip lines, adjust padding, and much more! :) \n \n stuff stuff stuff \n");
+        }
+        if (hold2) {
+            console.log("Pressed 2");
+            bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time. I hope some of you will find this sytem useful once it's finished (ie not buggy)");
+        }
     };
 
 
@@ -292,7 +306,6 @@ function OverworldState() {
     this.enter = function () {
         if (endingBattle === true) { endingBattle = false; }
         if (typeof player !== "undefined") { player.opponent.reset(); }
-        console.log("Entered overworld");
         document.removeEventListener("keypress", keyPressed);
         document.addEventListener("keydown", keyDown); //keypress == only character keys!
     };
@@ -330,8 +343,9 @@ function BattleEndState() {
     this.drawOnScaled = function () {
         if (this.win === true) {
             scaledContext.textAlign = "center";
-            colorText("You win!", scaledCanvas.width / 2, 200, "black");
-            if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }
+            colorText("You win!", scaledCanvas.width / 2, 180, "black");
+            colorText("Beam got " + enemy.expGiven + " exp!", scaledCanvas.width / 2, 220, "black");
+            if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 290, "black"); }
             scaledContext.textAlign = "left";
         }
         else if (this.win === false) {
@@ -370,6 +384,7 @@ function BattleEndState() {
         if (player.hp == 0) { this.win = false; }
         else if (player.opponent.hp == 0) { this.win = true; }
         if (this.win) {
+            player.exp += enemy.expGiven;
             if (battleState.battleType === "Gauntlet") {
                 gauntletProgress++;
                 if (gauntletProgress >= gauntletOrder.length) {
@@ -377,6 +392,7 @@ function BattleEndState() {
                 }
             }
         }
+
     };
 }
 battleEndState = new BattleEndState();
@@ -426,3 +442,5 @@ function resetBattle() {
     msgOnDisplay = [];
     braceYourselves = [];
 }
+
+allBackgrounds = [battlePic, lavaPic];

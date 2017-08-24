@@ -121,7 +121,6 @@ function Spell() {
         // run an 8 frame spritesheet animation and move it
         if (!fromEnemy && this.particle) { // assume left to right (ie player cast)
             //party(45, 90, particletype, 70, 90);
-            console.log(this.particle);
             particle.party();
             
         }
@@ -166,7 +165,7 @@ function rechargeAllExceptCurrent() { //Refills the cooldowns of inactive spells
     }
 }
 
-//Make spells here
+////////////////////////                Spell creation                  ///////////////////////////
 Pyroblast = function () {
     this.name = "Pyroblast";
     this.text = "Pyroblast";
@@ -176,10 +175,8 @@ Pyroblast = function () {
     console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        if (this.power >= this.maxPower/2) { displayBattleMsg(player.battleMsg, msgFireGood.concat(msgNeutralGood)); } //Display good or bad message
-        else if (this.power < this.maxPower/2) { displayBattleMsg(player.battleMsg, msgFireBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10, this.particle.duration*30/1000);
+        screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
         //this.spawnParticles();
         this.particle.party();
@@ -197,13 +194,9 @@ Lightning = function () {
     this.maxPower = 150;
 
     this.cast = function (target) {
-        if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgLightningGood.concat(msgNeutralGood)); }
-        else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgLightningBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        console.log(this.particle.duration);
-        screenshake(10, this.particle.duration * 30 / 1000);
+        screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
-        //this.particle.party();
         this.spawnParticles(this.particle);
     };
     this.reset();
@@ -219,11 +212,8 @@ IceSpike = function () {
     this.maxPower = 50;
 
     this.cast = function (target) {
-        if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
-        screenshake(10, this.particle.duration*30/1000)
-        //this.spawnParticles();
+        screenshake(5, durationInMS(this.particle.duration))
         this.particle.party();
     };
     this.reset();
@@ -231,23 +221,54 @@ IceSpike = function () {
 IceSpike.prototype = new Spell();
 iceSpike = new IceSpike();
 
+ToxicCloud = function () {
+    this.name = "Toxic Cloud";
+    this.text = "Toxic Cloud";
+    this.type = "Attack";
+    this.maxPower = 25;
+    this.particle = toxicCloudParty;
+    console.log(this.particle);
+
+    this.cast = function (target) { //Notice: checkProgress casts this function
+        this.basicCast(target);
+        screenshake(1, durationInMS(this.particle.duration));
+        this.playSound();
+        this.particle.party();
+    };
+    this.reset();
+};
+ToxicCloud.prototype = new Spell();
+toxicCloud = new ToxicCloud();
+
 Shield1 = function () {
     this.name = "Shield1";
     this.text = "Protect";
     this.type = "Shield";
-    this.maxPower = 250;
+    this.maxPower = 100;
 
     this.cast = function (target) {
-        //if (this.power >= this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceGood.concat(msgNeutralGood)); }
-        //else if (this.power < this.maxPower / 2) { displayBattleMsg(player.battleMsg, msgIceBad.concat(msgNeutralBad)); }
         this.basicCast(target);
         this.playSound();
-        //this.spawnParticles(PARTICLE_FIREBALL); // FIXME
     };
     this.reset();
 };
 Shield1.prototype = new Spell();
 shield1 = new Shield1();
+
+ZaWarudo = function () {
+    this.name = "Za Warudo";
+    this.text = "Za Warudo";
+    this.type = "Attack";
+    this.maxPower = 0;
+    console.log("Made pause spell");
+
+    this.cast = function () {
+        pauseState = !pauseState;
+    };
+    this.reset();
+};
+ZaWarudo.prototype = new Spell();
+zaWarudo = new ZaWarudo();
 
 //Fills the spot when no spell selected
 noSpell = new Spell();

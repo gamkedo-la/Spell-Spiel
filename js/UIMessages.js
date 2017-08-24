@@ -92,6 +92,15 @@ var msgIceBad = [
     "Walking on thin ice..."
 ];
 
+var msgPoisonGood = [
+    "Now you're coughing and wheezing!",
+
+];
+var msgPoisonBad = [
+    "Who came up with toxic cloud anyway?",
+
+];
+
 function displayBattleMsg(msg, msgArray) {
     msg.framesLeft = msg.DURATION;
     msg.text = msgArray[Math.floor(Math.random() * msgArray.length)]; //Pick one at random

@@ -7,6 +7,9 @@ var currentTime;
 var deltaTime;
 var spellTrie;
 
+var pauseState = false;
+var bufferFrames = 5;
+
 const ORIG_WORLD_W = 200;
 const ORIG_WORLD_H = 150;
 const PIXEL_SCALE_UP = 4;
@@ -59,13 +62,23 @@ function imageLoadingDoneSoStartGame() {
 }
 
 function updateAll() {
-
-    gameController.update();
-
+    if (!pauseState) {
+        gameController.update();
+        }
+    bufferFrames--;
+    if (holdP && bufferFrames <= 0) {
+        pauseState = !pauseState;
+        bufferFrames = 5;
+        if (pauseState) {
+            console.log(pauseState);
+            scaledContext.textAlign = "center";
+            colorText("P A U S E D", scaledCanvas.width / 2, 200, "blue");
+            scaledContext.textAlign = "left";
+        }
+    }
 }
 
 function moveAll() {
-
 
 }
 

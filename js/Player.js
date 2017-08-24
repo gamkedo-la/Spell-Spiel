@@ -11,7 +11,6 @@ function Character() { //"Character" == base class for anything that can fight
     this.img = null;
 
     this.level = 1;
-    this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
     this.shieldHP = 0;
 
     this.isCasting = false;
@@ -152,6 +151,8 @@ function Player() { //Defines the player object
 
     this.maxHP = 350;
     this.hp = this.maxHP;
+    this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
+    this.exp = 0;
 
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
@@ -161,13 +162,17 @@ function Player() { //Defines the player object
         "Ice Spike": iceSpike,
         "Lightning strike of doom": lightning,
         "Protect": shield1,
+        "Toxic Cloud": toxicCloud,
+        "Za Warudo": zaWarudo,
     };
+    console.log(this.availableSpells);
     //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;
 
     //var state_ = defaultState; //default state, changes during runtime
 
     this.drawBattle = function () {
+        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), 30, 5, "black");
         colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
         colorRect(this.x - (this.img.width / this.imgNumber) / 2, this.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
     };

@@ -12,19 +12,22 @@ var ghostChickenPic = document.createElement("img");
 //Environments
 var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
+var lavaPic = document.createElement("img");
 var overworldPic = document.createElement("img");
 
 //Spell VFX
 var fireballSheet = document.createElement("img");
 var lightningSheet = document.createElement("img");
-var biteSheet = document.createElement("img");
-
 var iceSpikePic = document.createElement("img");
 var shieldPic = document.createElement("img");
 var bitePic = document.createElement("img");
+var slashPic = document.createElement("img");
+var toxicCloudPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 
-
+//Other
+var pokeboxPic = document.createElement("img");
+var bubbleBoxPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
 
@@ -45,10 +48,11 @@ function beginLoadingImage(imgVar, fileName){
 function loadImages(){
 
     var imageList = [
-        { varName: idlePic, theFile: "beamIdle.png" }, //spritesheet animation
+        { varName: idlePic, theFile: "beamIdle2.png" }, //spritesheet animation
         { varName: castingPic, theFile: "beamCasting.png" }, //spritesheet animation
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
+        { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: overworldPic, theFile: "study.png" },
 
         { varName: batPic, theFile: "bat.png" },
@@ -62,8 +66,13 @@ function loadImages(){
         { varName: lightningSheet, theFile: "lightning.png" },
         { varName: shieldPic, theFile: "shield1.png" },
         { varName: poisonSpitPic, theFile: "poisonSpit.png" },
-        { varName: bitePic, theFile: "bite.png" }
-    ];
+        { varName: bitePic, theFile: "bite.png" },
+        { varName: slashPic, theFile: "slash.png" },
+        { varName: toxicCloudPic, theFile: "toxicCloud.png" },
+
+        { varName: pokeboxPic, theFile: "pokeboxOrange.png" },
+        { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }
+    ]
 
     picsToLoad = imageList.length; //This method avoids a race condition
 
