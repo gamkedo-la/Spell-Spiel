@@ -1,8 +1,8 @@
 
 function Enemy() {
 
-    this.x = 155;
-    this.y = 125;
+    this.position.x = 155;
+    this.position.y = 125;
     this.img = batPic;
 
     this.allAttacks = [];
@@ -19,8 +19,8 @@ function Enemy() {
     this.untilNextAttack = 100; //frames
 
     this.drawBattle = function () {
-        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), 30, 5, "black");
-        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
+        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");
+        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
     }
 
     /*

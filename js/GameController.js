@@ -451,7 +451,6 @@ function updateCycles() {
     }
     if (player.opponent) {
         if (player.opponent.cycleImage) {
-            console.log("Ticked enemy");
             player.opponent.cycleTick();
         }
     }

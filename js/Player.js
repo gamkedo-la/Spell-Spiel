@@ -75,7 +75,7 @@ function Character() { //"Character" == base class for anything that can fight
             this.img.height, this.position.x - (this.img.width / this.imgNumber) / 2,
             this.position.y - this.img.height, spriteWidth, this.img.height);
         if (this.shieldHP !== 0) {
-            canvasContext.drawImage(shieldPic, this.x - (this.img.width / this.imgNumber) - 2, this.y - this.img.height - 21);
+            canvasContext.drawImage(shieldPic, this.position.x - (this.img.width / this.imgNumber) - 2, this.position.y - this.img.height - 21);
         }
         scaledContext.font = "normal 20pt Bookman";
         resetFont();
@@ -84,11 +84,11 @@ function Character() { //"Character" == base class for anything that can fight
         return;
     };
     this.drawScaled = function () { //On scaled canvas
-        colorText("HP: " + this.hp, (this.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 10) * PIXEL_SCALE_UP, "red");
+        colorText("HP: " + this.hp, (this.position.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 10) * PIXEL_SCALE_UP, "red");
         if (this.shieldHP !== 0) {
-            colorText("Shield: " + this.shieldHP, (this.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
+            colorText("Shield: " + this.shieldHP, (this.position.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
         }
-        colorText(this.name, (this.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.y - this.img.height -45) * PIXEL_SCALE_UP, "orange");
+        colorText(this.name, (this.position.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.position.y - this.img.height -45) * PIXEL_SCALE_UP, "orange");
     };
 
     this.cycleTick = function () {
@@ -138,8 +138,8 @@ function Character() { //"Character" == base class for anything that can fight
     this.move = function () {
         this.position.x += this.speedX;
         this.position.y += this.speedY;
-        // this.x += this.speedX;
-        // this.y += this.speedY;
+        // this.position.x += this.speedX;
+        // this.position.y += this.speedY;
     };
 }
 
@@ -177,9 +177,9 @@ function Player() { //Defines the player object
     //var state_ = defaultState; //default state, changes during runtime
 
     this.drawBattle = function () {
-        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), 30, 5, "black");
-        colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
-        colorRect(this.x - (this.img.width / this.imgNumber) / 2, this.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
+        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");
+        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
+        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
     };
     var idleBattleCycleDuration = 30;
     //This is the replacement of the state machine that the main character would get if it was really needed. Changes his animations depending on situations
