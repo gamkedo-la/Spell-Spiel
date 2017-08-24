@@ -187,17 +187,13 @@ function NPC() {
     };
 
     this.draw = function () { //On canvas
-        // if(!this.hasOwnProperty("collider")) {
-            colorRect(this.position.x, this.position.y, this.img.width, this.img.height, "blue");
-        // } else {
-            // colorRect(this.collider.position.x, this.collider.position.y, this.img.width, this.img.height, "blue");
-        // }
+        var spriteWidth = this.img.width / this.imgNumber;
+        canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth,
+            this.img.height, this.position.x - (this.img.width / this.imgNumber) / 2,
+            this.position.y - this.img.height, spriteWidth, this.img.height);
+        scaledContext.font = "normal 20pt Bookman";
+        resetFont();
     };
-           /* var spriteWidth = this.img.width / this.imgNumber;
-            canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
-            scaledContext.font = "normal 20pt Bookman";
-            resetFont();
-            }; */
 
     this.cycleTick = function () {
         cycleCurrent++;
@@ -216,7 +212,6 @@ function NPC() {
             console.log(this.text);
         }
     };
-
 
 }
 
