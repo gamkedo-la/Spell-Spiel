@@ -69,8 +69,8 @@ function Character() { //"Character" == base class for anything that can fight
         this.img = img;
         this.imgNumber = imgNumber; //# of images in spritesheet
     };
-    this.draw = function () { //On canvas
-        colorRect(this.x, this.y, this.img.width, this.img.height, "red");
+    this.draw = function () { //On canvas;
+        colorRect(this.position.x, this.position.y, this.img.width, this.img.height, "red");
     };
         /*var spriteWidth = this.img.width / this.imgNumber;
         canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
@@ -188,27 +188,10 @@ function Player() { //Defines the player object
     };
 
     this.checkCollision = function (collobj){
-        // console.log(this.x,this.y,this.x+this.width,this.x+this.height);
-        // console.log(collider.x,collider.y,collider.x+collider.width,collider.y+collider.height);
-        colorRect(this.x,this.y,1,10,"blue");
-        colorRect(collobj.x/2,collobj.y,1,10,"red");
-        colorRect(this.x + this.collider.width*2,this.y,1,10,"black");
-        if(this.x < collobj.x/2 + collobj.collider.width &&
-            this.x + this.collider.width > 1 ) {
-            console.log("collision!");
-            return true;
-        } else {
-            // console.log(this.x,collobj.x+collobj.width);
-        }
-        // if (this.x < collider.x + collider.width &&
-        // this.x + this.width > collider.x &&
-        // this.y < collider.y + collider.height &&
-        // this.height + this.y > collider.y) {
-        //     console.log('collision detected');
-        //     return true; //got a hit!
-        // }
-
-        return false;
+        return this.position.x < collobj.position.x + collobj.collider.width &&
+               this.position.x + this.collider.width > collobj.position.x &&
+               this.position.y < collobj.position.y + collobj.collider.height &&
+               this.position.y + this.collider.height > collobj.position.y;
     };
 
 }

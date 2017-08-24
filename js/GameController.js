@@ -168,7 +168,7 @@ function BattleState() {
         document.addEventListener("keypress", keyPressed); //keypress == only character keys!
 
         player.collider.x = 40;
-        player.collider.x = 150;
+        player.collider.y = 150;
         //player.opponent.useAttack();
     };
 }
@@ -187,12 +187,11 @@ function NPC() {
     };
 
     this.draw = function () { //On canvas
-        if(!this.hasOwnProperty("collider")) {
-            colorRect(this.x, this.y, this.img.width, this.img.height, "blue");
-        } else {
-            console.log("using this one");
-            colorRect(this.collider.x, this.collider.y, this.img.width, this.img.height, "blue");
-        }
+        // if(!this.hasOwnProperty("collider")) {
+            colorRect(this.position.x, this.position.y, this.img.width, this.img.height, "blue");
+        // } else {
+            // colorRect(this.collider.position.x, this.collider.position.y, this.img.width, this.img.height, "blue");
+        // }
     };
            /* var spriteWidth = this.img.width / this.imgNumber;
             canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth, this.img.height, this.x - (this.img.width / this.imgNumber) / 2, this.y - this.img.height, spriteWidth, this.img.height);
@@ -221,12 +220,10 @@ function NPC() {
 
 }
 
-function Collider(position,width, height) {
-
+function Collider(position,width,height) {
     this.position = position;
     this.width = width;
     this.height = height;
-
 }
 
 var test = new NPC();
@@ -255,15 +252,10 @@ function OverworldState() {
         // console.log(player.x,player.y,player.x+player.img.width,player.y+player.img.height);
 
         if(!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
-            player.collider = new Collider(player.position,player.img.width/player.imgNumber,player.img.height/player.imgNumber);
-            // player.collider = new Collider(player.x-player.img.width/2, player.y-player.img.height/2,
-                // player.img.width/ player.imgNumber, player.img.height / player.imgNumber);
+            player.collider = new Collider(player.position,player.img.width,player.img.height);
         }
         if(!test.hasOwnProperty("collider") && test.img.width && test.img.height) {
-            test.collider = new Collider(test.position,
-                test.img.width/ test.imgNumber, test.img.height / test.imgNumber);
-            // test.collider = new Collider(test.x-test.img.width/2, test.y-test.img.height/2,
-            //     test.img.width/ test.imgNumber, test.img.height / test.imgNumber);
+            test.collider = new Collider(test.position, test.img.width, test.img.height);
         }
 
         player.checkCollision(test);
