@@ -64,9 +64,10 @@ function Character() { //"Character" == base class for anything that can fight
         }
     };
     //Graphics
-    this.setGraphics = function (img, imgNumber) {
+    this.setGraphics = function (img, imgNumber, cycleDuration) {
         this.img = img;
         this.imgNumber = imgNumber; //# of images in spritesheet
+        this.cycleDuration = cycleDuration;
     };
     this.draw = function () { //On canvas;
         var spriteWidth = this.img.width / this.imgNumber;
@@ -100,6 +101,9 @@ function Character() { //"Character" == base class for anything that can fight
             currentImg = 0;
         }
     };
+    this.resetTick = function () {
+        cycleCurrent = 0;
+    }
 
     ////////////       Spell mechanics         ///////////
     this.levelUp = function () {
@@ -144,10 +148,12 @@ const MOVE_SPEED = 4; //In mini canvas pixels!
 function Player() { //Defines the player object
 
     this.name = "Beam";
-    this.img = idlePic;
+    this.img = walkingRightPic;
+    this.cycleImage = true;
+    this.imgNumber = 4;
     this.picToChange = false;
+    this.movingDirection = ""; //can be "up", "down", "left", "right"
     this.cycleDuration = 30;
-    this.battleMsg = playerBattleMsg;
 
     this.maxHP = 350;
     this.hp = this.maxHP;
@@ -165,7 +171,6 @@ function Player() { //Defines the player object
         "Toxic Cloud": toxicCloud,
         "Za Warudo": zaWarudo,
     };
-    console.log(this.availableSpells);
     //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;
 
@@ -176,15 +181,15 @@ function Player() { //Defines the player object
         colorRect(this.x - (this.img.width/this.imgNumber) / 2, this.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
         colorRect(this.x - (this.img.width / this.imgNumber) / 2, this.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
     };
-
+    var idleBattleCycleDuration = 30;
     //This is the replacement of the state machine that the main character would get if it was really needed. Changes his animations depending on situations
     this.checkState = function () {
         if (this.picToChange) {
             if (this.isCasting) {
-                this.setGraphics(castingPic, 1);
+                this.setGraphics(castingPic, 1, idleBattleCycleDuration);
             }
             else if (!this.isCasting) {
-                this.setGraphics(idlePic, 2);
+                this.setGraphics(idlePic, 2, idleBattleCycleDuration);
             }
             if (this.isDead) {
                 return; //todo
@@ -204,5 +209,3 @@ function Player() { //Defines the player object
 Player.prototype = new Character(); //Note: prototype === inheritance in JS
 
 var player = new Player();
-player.cycleImage = true;
-player.imgNumber = 2;

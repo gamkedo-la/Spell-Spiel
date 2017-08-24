@@ -2,6 +2,10 @@
 //Characters
 var idlePic = document.createElement("img");
 var castingPic = document.createElement("img");
+var walkingUpPic = document.createElement("img");
+var walkingDownPic = document.createElement("img");
+var walkingLeftPic = document.createElement("img");
+var walkingRightPic = document.createElement("img");
 
 var batPic = document.createElement("img");
 var zombiePic = document.createElement("img");
@@ -50,6 +54,11 @@ function loadImages(){
     var imageList = [
         { varName: idlePic, theFile: "beamIdle2.png" }, //spritesheet animation
         { varName: castingPic, theFile: "beamCasting.png" }, //spritesheet animation
+        { varName: walkingUpPic, theFile: "beamWalkingUp.png" }, //spritesheet animation
+        { varName: walkingDownPic, theFile: "beamWalkingDown.png" }, //spritesheet animation
+        { varName: walkingLeftPic, theFile: "beamWalkingLeft.png" }, //spritesheet animation
+        { varName: walkingRightPic, theFile: "beamWalkingRight.png" }, //spritesheet animation
+
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
         { varName: lavaPic, theFile: "LavaBackground.png" }, 

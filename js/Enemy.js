@@ -118,7 +118,7 @@ lizard.combineAllAttacks();
 var jellyfish = new Enemy();
 jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
-jellyfish.maxHP = 1200;
+jellyfish.maxHP = 10;
 jellyfish.imgNumber = 2;
 jellyfish.cycleImage = true;
 jellyfish.weakAttacks = [sting];
@@ -129,9 +129,14 @@ jellyfish.combineAllAttacks();
 
 var ghostChicken = new Enemy();
 ghostChicken.name = "Spooky Cacaw";
-ghostChicken.img = ghostChickenPic;
 ghostChicken.imgNumber = 2;
 ghostChicken.cycleImage = true;
+ghostChicken.img = ghostChickenPic;
+ghostChicken.weakAttacks = [sting];
+ghostChicken.mediumAttacks = [];
+ghostChicken.strongAttacks = [waterSquirt];
+ghostChicken.weakShields = [];
+ghostChicken.combineAllAttacks();
 
 var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;

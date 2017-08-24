@@ -70,6 +70,7 @@ function BattleState() {
     {
         spellTimeLapse();
         rechargeAllExceptCurrent();
+        player.checkState();
         updateCycles();
         player.opponent.updateAttack();
 
@@ -82,7 +83,6 @@ function BattleState() {
         updateScreenshake();
         updateParticles();
         updateDamage();
-        player.checkState();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
@@ -156,29 +156,15 @@ function BattleState() {
         player.drawScaled(); //UI text for each character
         player.opponent.drawScaled();
         drawSpell(player.currentSpell);
-        //Display messages (ie the ones that are timed and kept in a queue)
-        /*for (i = 0; i < msgOnDisplay.length; i++) {
-            var toDraw = msgOnDisplay[i];
-            if (toDraw instanceof Message) {
-                toDraw.fontOn();
-                toDraw.framesLeft -= 1;
-                if (toDraw.framesLeft <= 0) {
-                    msgOnDisplay.splice(i, 1); //If over, remove
-                }
-            }
-            toDraw.draw();
-            //console.log("Frames left: ", toDraw.framesLeft);
-            toDraw.fontOff();
-        }*/
     };
     this.enter = function () {
         console.log("Entered battle");
         document.removeEventListener("keydown", keyDown);
         document.addEventListener("keypress", keyPressed); //keypress == only character keys!
 
-        player.collider.x = 40;
-        player.collider.y = 150;
-        //player.opponent.useAttack();
+        player.position.x = 40;
+        player.position.y = 125;
+
     };
 }
 
@@ -248,6 +234,7 @@ function OverworldState() {
     this.update = function () {
         this.handleInput();
         clearScreen(); //All this is drawn on the small canvas...
+        updateCycles();
         player.move();
         player.draw();
         test.draw();
@@ -268,23 +255,48 @@ function OverworldState() {
         updateMessages(); //see above
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
+    var walkingCyleDuration = 5;
     this.handleInput = function () {
         if (holdLeft) {
             player.speedX = -MOVE_SPEED;
+            if (player.movingDirection != "left") {
+                player.movingDirection = "left";
+                player.setGraphics(walkingLeftPic, 4, walkingCyleDuration);
+            }
         }
         else if (holdRight) {
             player.speedX = MOVE_SPEED;
+            if (player.movingDirection != "right") {
+                player.movingDirection = "right";
+                player.setGraphics(walkingRightPic, 4, walkingCyleDuration);
+            }
         }
-        else { player.speedX = 0; }
+        else {
+            player.speedX = 0;
+        }
 
         if (holdUp) {
             player.speedY = -MOVE_SPEED;
+            if (player.movingDirection != "up") {
+                player.movingDirection = "up";
+                player.setGraphics(walkingUpPic, 4, walkingCyleDuration);
+            }
         }
         else if (holdDown) {
             player.speedY = MOVE_SPEED;
+            if (player.movingDirection != "down") {
+                player.movingDirection = "down";
+                player.setGraphics(walkingDownPic, 4, walkingCyleDuration);
+            }
         }
-        else { player.speedY = 0; }
+        else {
+            player.speedY = 0;
+        }
 
+        if (player.speedX === 0 && player.speedY === 0) {
+            player.resetTick();
+        }
+        
         if (holdSpacebar) {
             gameController.startRandomBattle();
         }
@@ -305,7 +317,12 @@ function OverworldState() {
 
     this.enter = function () {
         if (endingBattle === true) { endingBattle = false; }
-        if (typeof player !== "undefined") { player.opponent.reset(); }
+        if (typeof player !== "undefined") {
+            console.log("Entered overworld");
+            player.setGraphics(walkingRightPic, 4, walkingCyleDuration);
+            console.log(player.img);
+            player.opponent.reset();
+        }
         document.removeEventListener("keypress", keyPressed);
         document.addEventListener("keydown", keyDown); //keypress == only character keys!
     };
@@ -432,8 +449,11 @@ function updateCycles() {
     if (player.cycleImage) {
         player.cycleTick();
     }
-    if (player.opponent.cycleImage) {
-        player.opponent.cycleTick();
+    if (player.opponent) {
+        if (player.opponent.cycleImage) {
+            console.log("Ticked enemy");
+            player.opponent.cycleTick();
+        }
     }
 }
 
