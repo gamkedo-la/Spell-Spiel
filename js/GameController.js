@@ -141,7 +141,6 @@ function BattleState() {
                 player.picToChange = true;
             }
         }
-
         };
 
 
@@ -173,12 +172,14 @@ function NPC() {
     this.imgNumber = 1;
     this.name = "NPC";
     this.text = "Text Goes Here";
-    this.img = batPic;
+    this.img = fillerPic;
+    this.cycleDuration = 30; //I doubt NPCs will have anims, but just in case
 
     //Graphics
-    this.setGraphics = function (img, imgNumber) {
+    this.setGraphics = function (img, imgNumber, cycleDuration) {
         this.img = img;
         this.imgNumber = imgNumber; //# of images in spritesheet
+        this.cycleDuration = cycleDuration;
     };
 
     this.draw = function () { //On canvas
@@ -186,8 +187,6 @@ function NPC() {
         canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth,
             this.img.height, this.position.x - (this.img.width / this.imgNumber) / 2,
             this.position.y - this.img.height, spriteWidth, this.img.height);
-        scaledContext.font = "normal 20pt Bookman";
-        resetFont();
     };
 
     this.cycleTick = function () {
@@ -203,7 +202,7 @@ function NPC() {
 
     this.displayText = function(collider) {
         var collidedOrNot = this.checkCollision(collider);
-        if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button?
+        if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button? -----> Will have an AdventureQuest Battle button soon! (Rémy)
             console.log(this.text);
         }
     };
@@ -214,17 +213,39 @@ function Collider(position,width,height) {
     this.position = position;
     this.width = width;
     this.height = height;
+    console.log(this.position.x);
+    this.position.x -= width / 2;
+    console.log(this.position.x);
+    this.position.y -= height / 2;
+
+    this.checkCollision = function (collobj) {
+        /*return this.position.x < collobj.position.x + collobj.width &&
+               this.position.x + this.width > collobj.position.x &&
+               this.position.y < collobj.position.y + collobj.height &&
+               this.position.y + this.height > collobj.position.y;*/
+        var myLeft = this.position.x - this.width/2;
+        var myRight = this.position.x + this.width/2;
+        var myTop = this.position.y - this.height/2;
+        var myDown = this.position.y + this.height/2;
+
+        var otherLeft = collobj.position.x - collobj.width / 2;
+        var otherRight = collobj.position.x + collobj.width/2;
+        var otherTop = collobj.position.y - collobj.height/2;
+        var otherDown = collobj.position.y + collobj.height/2;
+
+        return (myLeft >= otherRight || 
+            myRight <= otherLeft ||
+            myTop >= otherDown ||
+            myDown <= otherTop) == false;
+    };
+    this.draw = function () {
+        console.log(this.position.x);
+        colorRect(this.position.x - this.width/2, this.position.y - this.height, this.width, this.height, "black");
+    }
+
 }
 
-var test = new NPC();
-    test.name = "Bat";
-    test.position = {
-        x : 30,
-        y : 100,
-    };
-    test.img = batPic;
-    test.imgNumber = 1;
-    test.text = "Testing";
+
 
 function OverworldState() {
 
@@ -232,43 +253,48 @@ function OverworldState() {
     this.music = 'SpellSpiel_Music_Open';
 
     this.update = function () {
+
+        if (!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
+            player.collider = new Collider(player.position, player.img.width/player.imgNumber, player.img.height);
+        }
+        if (!marieTartine.hasOwnProperty("collider") && marieTartine.img.width && marieTartine.img.height) {
+            marieTartine.collider = new Collider(marieTartine.position, marieTartine.img.width, marieTartine.img.height);
+        }
+
+        if (player.collider.checkCollision(marieTartine.collider)) {
+            console.log("Hit");
+            player.moveBack();
+        }
         this.handleInput();
         clearScreen(); //All this is drawn on the small canvas...
         updateCycles();
         player.move();
-        player.draw();
-        test.draw();
-
-        if(!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
-            player.collider = new Collider(player.position,player.img.width,player.img.height);
-        }
-        if(!test.hasOwnProperty("collider") && test.img.width && test.img.height) {
-            test.collider = new Collider(test.position, test.img.width, test.img.height);
-        }
-
-        player.checkCollision(test);
 
         draw_particles();
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
         drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
+        player.collider.draw();
+        marieTartine.collider.draw();
+        player.draw();
+        marieTartine.draw();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         updateMessages(); //see above
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
-    var walkingCyleDuration = 5;
+    var walkingCycleDuration = 5;
     this.handleInput = function () {
         if (holdLeft) {
             player.speedX = -MOVE_SPEED;
             if (player.movingDirection != "left") {
                 player.movingDirection = "left";
-                player.setGraphics(walkingLeftPic, 4, walkingCyleDuration);
+                player.setGraphics(walkingLeftPic, 4, walkingCycleDuration);
             }
         }
         else if (holdRight) {
             player.speedX = MOVE_SPEED;
             if (player.movingDirection != "right") {
                 player.movingDirection = "right";
-                player.setGraphics(walkingRightPic, 4, walkingCyleDuration);
+                player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
             }
         }
         else {
@@ -279,14 +305,14 @@ function OverworldState() {
             player.speedY = -MOVE_SPEED;
             if (player.movingDirection != "up") {
                 player.movingDirection = "up";
-                player.setGraphics(walkingUpPic, 4, walkingCyleDuration);
+                player.setGraphics(walkingUpPic, 4, walkingCycleDuration);
             }
         }
         else if (holdDown) {
             player.speedY = MOVE_SPEED;
             if (player.movingDirection != "down") {
                 player.movingDirection = "down";
-                player.setGraphics(walkingDownPic, 4, walkingCyleDuration);
+                player.setGraphics(walkingDownPic, 4, walkingCycleDuration);
             }
         }
         else {
@@ -319,7 +345,7 @@ function OverworldState() {
         if (endingBattle === true) { endingBattle = false; }
         if (typeof player !== "undefined") {
             console.log("Entered overworld");
-            player.setGraphics(walkingRightPic, 4, walkingCyleDuration);
+            player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
             console.log(player.img);
             player.opponent.reset();
         }
@@ -439,8 +465,8 @@ function EndgameState() {
 endgameState = new EndgameState();
 
 function checkDoor() { //Demo only
-    if (player.x < 190 && player.x+5 > 165 &&
-        player.y < 52  && player.y+5 > 12) {
+    if (player.position.x < 190 && player.position.x + 5 > 165 &&
+        player.position.y < 52 && player.position.y + 5 > 12) {
         gameController.startGauntletBattle();
     }
 }

@@ -138,8 +138,18 @@ function Character() { //"Character" == base class for anything that can fight
     this.move = function () {
         this.position.x += this.speedX;
         this.position.y += this.speedY;
-        // this.position.x += this.speedX;
-        // this.position.y += this.speedY;
+        if (this.collider != undefined) {
+            //this.collider.position.x += this.speedX;
+            //this.collider.position.y += this.speedY;
+        }
+    }
+    this.moveBack = function () {
+        this.position.x -= this.speedX;
+        this.position.y -= this.speedY;
+        if (this.collider != undefined) {
+            //this.collider.position.x -= this.speedX;
+            //this.collider.position.y -= this.speedY;
+        }
     };
 }
 
@@ -196,14 +206,6 @@ function Player() { //Defines the player object
             }
         }
     };
-
-    this.checkCollision = function (collobj){
-        return this.position.x < collobj.position.x + collobj.collider.width &&
-               this.position.x + this.collider.width > collobj.position.x &&
-               this.position.y < collobj.position.y + collobj.collider.height &&
-               this.position.y + this.collider.height > collobj.position.y;
-    };
-
 }
 
 Player.prototype = new Character(); //Note: prototype === inheritance in JS

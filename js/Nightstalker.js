@@ -31,7 +31,7 @@ function Subject() {
 }
 
 ///////////////////                  Example                    /////////////////////////
-/*
+
 function Person(name) {
     this.name = name;
     this.observer = new Observer();
@@ -62,4 +62,3 @@ console.log("No one is listening to Ray anymore.");
 ray.subject.removeObserver(beam.observer);
 ray.speakUp(); //does nothing
 beam.speakUp();
-*/

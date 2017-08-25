@@ -13,6 +13,8 @@ var lizardPic = document.createElement("img");
 var jellyfishPic = document.createElement("img");
 var ghostChickenPic = document.createElement("img");
 
+var marieTartinePic = document.createElement("img");
+
 //Environments
 var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
@@ -58,6 +60,8 @@ function loadImages(){
         { varName: walkingDownPic, theFile: "beamWalkingDown.png" }, //spritesheet animation
         { varName: walkingLeftPic, theFile: "beamWalkingLeft.png" }, //spritesheet animation
         { varName: walkingRightPic, theFile: "beamWalkingRight.png" }, //spritesheet animation
+
+        { varName: marieTartinePic, theFile: "marieTartine.png" }, 
 
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png

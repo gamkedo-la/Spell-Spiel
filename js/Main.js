@@ -104,7 +104,6 @@ function setOpponentsBoth(enemy) {
 
 function updateDamage() {
     //Update on player and enemy
-    //console.log(player.delayedDamage[0][0]);
     player.delayedDamage.forEach(function (element, index) {
         element[0]--; // -1 frame
         if (element[0] <= 0) {
