@@ -254,7 +254,6 @@ createParticle = function (party) {
             party.destY = FAR_AWAY;
         }
     }
-    console.log(party.spritesheet.slice(0, -4) + "Sheet");
     party.spritesheet = window[party.spritesheet.slice(0, -4) + "Sheet"];
 
     return party;

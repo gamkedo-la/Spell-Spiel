@@ -71,7 +71,6 @@ function Enemy() {
     }
     this.combineAllAttacks = function () {
         this.allAttacks = this.weakAttacks.concat(this.mediumAttacks, this.strongAttacks, this.weakShields);
-        console.log(this.allAttacks);
     }
 }
 Enemy.prototype = new Character();

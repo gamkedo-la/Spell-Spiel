@@ -172,7 +172,6 @@ Pyroblast = function () {
     this.type = "Attack";
     this.maxPower = 50;
     this.particle = fireballParty;
-    console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target);
@@ -227,7 +226,6 @@ ToxicCloud = function () {
     this.type = "Attack";
     this.maxPower = 25;
     this.particle = toxicCloudParty;
-    console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target);
@@ -260,7 +258,6 @@ ZaWarudo = function () {
     this.text = "Za Warudo";
     this.type = "Attack";
     this.maxPower = 0;
-    console.log("Made pause spell");
 
     this.cast = function () {
         pauseState = !pauseState;

@@ -120,6 +120,15 @@ function updateDamage() {
     });
 }
 
+function updateInteractionDelay() {
+    interactDelay--;
+    if (interactDelay <= 0) { okToInteract = true; }
+    else okToInteract = false;
+}
+function didInteraction() {
+    interactDelay = interactDelayReset;
+}
+
 function spellTimeLapse() {
     date = new Date();
     lastTime = currentTime;

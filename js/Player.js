@@ -3,8 +3,8 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
     this.position = {
-        x : 180,
-        y : 85
+        x : 30,
+        y : 150
     };
     this.speedX = 0;
     this.speedY = 0;
@@ -37,7 +37,6 @@ function Character() { //"Character" == base class for anything that can fight
         this.shieldHP = 0;
         if (typeof this.attack !== "undefined") {
             clearInterval(this.attack);
-            console.log("Stopped attacking!");
         }
         if (!this.cycleImage) {
             currentImg = 0;
@@ -146,9 +145,9 @@ function Character() { //"Character" == base class for anything that can fight
     this.moveBack = function () {
         this.position.x -= this.speedX;
         this.position.y -= this.speedY;
-        if (this.collider != undefined) {
-            //this.collider.position.x -= this.speedX;
-            //this.collider.position.y -= this.speedY;
+        if (this.speedX == 0 && this.speedY == 0) {
+            this.position.x -= 1;
+            this.position.y -= 1;
         }
     };
 }

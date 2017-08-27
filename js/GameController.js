@@ -10,15 +10,14 @@ function GameController() {
     };
 
     this.changeState = function (state) {
-        if (state != null) {
-            console.log(typeof state.music !== "undefined");
-            if (state_ && Sound.isPlaying(state_.music)) {
-                console.log("Stopped music");
+        if (typeof state !== "undefined") {
+            if (state_) { var sameMusic = state.music === state_.music; }
+            if (state_ && Sound.isPlaying(state_.music) && !sameMusic) {
                 Sound.stop(state_.music);
             }
-            console.log("Changed state");
+            //console.log("Changed state");
             state_ = state;
-            if (state_.music) { Sound.play(state_.music, true, 0.8); }
+            if (state_.music && !sameMusic) { Sound.play(state_.music, true, 0.8); }
             state_.enter();
         }
     };
@@ -171,6 +170,9 @@ function BattleState() {
     };
 }
 
+var interactDelay = 0;
+var interactDelayReset = 30;
+var okToInteract = true;
 
 function OverworldState() {
 
@@ -183,6 +185,7 @@ function OverworldState() {
         this.handleInput();
         player.move();
 
+        updateInteractionDelay();
         this.currentRoom.makeColliders();
         this.currentRoom.checkCollisions();
         this.currentRoom.checkTriggers();
@@ -190,7 +193,6 @@ function OverworldState() {
 
         updateCycles();
 
-        checkDoor(); //For demo only. Will need to implement actual collision detection later!
 
         drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
@@ -242,11 +244,9 @@ function OverworldState() {
             gameController.startRandomBattle();
         }
         if (hold1) {
-            console.log("Pressed 1");
             pokebox.beginText("This will be the NPC/game text used by my super duper text wrapping code! You can even \n skip lines, adjust padding, and much more! :) \n \n stuff stuff stuff \n");
         }
         if (hold2) {
-            console.log("Pressed 2");
             bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time. I hope some of you will find this sytem useful once it's finished (ie not buggy)");
         }
     };
@@ -264,9 +264,7 @@ function OverworldState() {
     this.enter = function () {
         if (endingBattle === true) { endingBattle = false; }
         if (typeof player !== "undefined") {
-            console.log("Entered overworld");
             player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
-            console.log(player.img);
             player.opponent.reset();
         }
         document.removeEventListener("keypress", keyPressed);
@@ -284,6 +282,7 @@ var endingBattle = false;
 
 function BattleEndState() {
 
+    this.music = "SpellSpiel_Battle";
     var flicker = true;
     var flickerDuration = 15; //in frames
     var currentFlicker = 0;
@@ -336,7 +335,6 @@ function BattleEndState() {
         player.drawBattle();
         player.opponent.draw();
         player.opponent.drawBattle();
-        draw_particles();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
         this.handleInput(); //can trigger a state change
@@ -383,13 +381,6 @@ function EndgameState() {
     };
 }
 endgameState = new EndgameState();
-
-function checkDoor() { //Demo only
-    if (player.position.x < 190 && player.position.x + 5 > 165 &&
-        player.position.y < 52 && player.position.y + 5 > 12) {
-        gameController.startGauntletBattle();
-    }
-}
 
 function updateCycles() {
     if (player.cycleImage) {

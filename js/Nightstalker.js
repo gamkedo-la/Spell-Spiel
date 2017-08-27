@@ -48,7 +48,7 @@ function Person(name) {
          this.subject.notify(this, "speak"); //notify observers that the entity that spoke is "this", and that the event was talking
     }
 }
-
+/*
 ray = new Person("Ray");
 beam = new Person("Beam");
 
@@ -62,3 +62,4 @@ console.log("No one is listening to Ray anymore.");
 ray.subject.removeObserver(beam.observer);
 ray.speakUp(); //does nothing
 beam.speakUp();
+*/

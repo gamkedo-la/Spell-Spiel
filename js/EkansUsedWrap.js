@@ -61,7 +61,7 @@ function MessageBox (x, y, options) {
     var standbyForInput = false;
     var messageDone = false;
     //var playerInput = holdEnter;
-    var delayBoost = 5;
+    var delayReset = 5;
     var delayTillNext = 5; //frames of waiting that prevent the player from multi skipping when hitting the button
     this.isAlive = false;
     var currentx;
@@ -91,9 +91,10 @@ function MessageBox (x, y, options) {
                         messageDone = false;
                         this.isAlive = false;
                         this.afterMessage(); //does whatever we said would happen once done
+                        didInteraction(); //adds a delay so that the player can't immediately input another NPC interaction
                     }
                     words.splice(0, spliceIndex);
-                    delayTillNext = delayBoost; //frames until the player can skip to following text
+                    delayTillNext = delayReset; //frames until the player can skip to following text
                 }
             }
             else {
@@ -205,7 +206,7 @@ pokeboxOptions = {
     img: pokeboxPic
 }
 pokebox = new MessageBox(0, 85, pokeboxOptions);
-pokebox.subject.addObserver(messageObserver);
+//pokebox.subject.addObserver(marieTartine.observer);
 pokebox.afterMessage = function () {
     pokebox.subject.notify(pokebox, {startBattle : true, enemy : ghostChicken}) //does this affect the global namespace? :/
 }

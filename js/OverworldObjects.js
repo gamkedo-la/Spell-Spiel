@@ -40,8 +40,11 @@ function WorldObject() {
     this.onTrigger = function () {
         return; //specific to each
     }
+    this.onNotify = function () {
+        return; //specific to each
+    }
 }
-////////   Creation   ////////
+////////                                                           CREATION                                                                 ////////
 var marieTartine = new WorldObject();
 marieTartine.name = "Marie Tartine";
 marieTartine.position = {
@@ -50,12 +53,32 @@ marieTartine.position = {
 };
 marieTartine.img = marieTartinePic;
 marieTartine.onTrigger = function () {
-    if (holdEnter && !pokebox.isAlive) {
+    if (holdEnter && !pokebox.isAlive && okToInteract) {
+        pokebox.subject.addObserver(marieTartine.observer);
         pokebox.beginText("Here, you can see that I made a text specifically for this purpose. This was done in an onTrigger function, as such any NPC can have a custom text to say, as well as other possibilities. There is also a way for an NPC to add itself as an observer so that it can see when the message is over and call a function, like give the player a spell or start a battle (still needs minor tweaks though). For now, I'll just start a battle to demonstrate this!");
     }
 }
-
-var upperWall = new WorldObject();
+marieTartine.observer = new Observer();
+marieTartine.observer.onNotify = function (entity, event) {
+    console.log("Notified Marie-Tartine");
+    pokebox.subject.removeObserver(marieTartine.observer);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+var gauntletDoor = new WorldObject();
+gauntletDoor.name = "Gauntlet Door";
+gauntletDoor.position = {
+    x: 150,
+    y: 100,
+};
+gauntletDoor.img = {
+    width: 50,
+    height: 50
+};
+gauntletDoor.onTrigger = function () {
+    if (holdEnter && okToInteract) {
+        gameController.startGauntletBattle();
+    }
+}
 
 
 
@@ -92,14 +115,14 @@ function Room() {
             }
             if (player.collider.checkCollision(obj.collider)) {
                 player.moveBack();
-                console.log("Hit!");
+                //console.log("Hit!");
             }
         })
     }
     this.checkTriggers = function () {
         this.triggerList.forEach(function (obj) {
             if (player.collider.checkTrigger(obj.collider)) {
-                console.log("Triggered");
+                //console.log("Triggered");
                 obj.onTrigger();
             }
         })
@@ -108,9 +131,11 @@ function Room() {
         if (!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
             player.collider = new Collider(player.position, player.img.width / player.imgNumber, player.img.height);
         }
-        this.objectList.forEach(function (obj) {
+        //Covers both triggers and triggers+colliders
+        var toMake = this.objectList.concat(this.triggerList);
+        toMake.forEach(function (obj) {
             if (!obj.hasOwnProperty("collider") && obj.img.width && obj.img.height) {
-                obj.collider = new Collider(obj.position, obj.img.width, obj.img.height);
+                obj.collider = new Collider(obj.position, obj.img.width / obj.imgNumber, obj.img.height);
             }
         })
     }
@@ -125,7 +150,7 @@ function Room() {
 mainRoom = new Room();
 mainRoom.img = overworldPic;
 mainRoom.objectList = [marieTartine];
-mainRoom.triggerList = [marieTartine];
+mainRoom.triggerList = [marieTartine, gauntletDoor];
 mainRoom.toDraw = [marieTartine];
 overworldState.changeRoom(mainRoom);
 
@@ -141,13 +166,13 @@ function Collider(position,width,height) {
 
         var myLeft = this.position.x - this.width/2;
         var myRight = this.position.x + this.width/2;
-        var myTop = this.position.y - this.height/2;
-        var myDown = this.position.y + this.height/2;
+        var myTop = this.position.y - this.height;
+        var myDown = this.position.y;
 
         var otherLeft = collobj.position.x - collobj.width / 2;
         var otherRight = collobj.position.x + collobj.width/2;
-        var otherTop = collobj.position.y - collobj.height/2;
-        var otherDown = collobj.position.y + collobj.height/2;
+        var otherTop = collobj.position.y - collobj.height;
+        var otherDown = collobj.position.y;
 
         return (myLeft >= otherRight || 
             myRight <= otherLeft ||
@@ -159,13 +184,13 @@ function Collider(position,width,height) {
 
         var myLeft = this.position.x - this.width/2 + padx;
         var myRight = this.position.x + this.width/2 - padx;
-        var myTop = this.position.y - this.height/2;
-        var myDown = this.position.y + this.height/2 - pady;
+        var myTop = this.position.y - this.height;
+        var myDown = this.position.y - pady;
 
         var otherLeft = collobj.position.x - collobj.width / 2 + padx;
         var otherRight = collobj.position.x + collobj.width/2 - padx;
-        var otherTop = collobj.position.y - collobj.height/2;
-        var otherDown = collobj.position.y + collobj.height/2 - pady;
+        var otherTop = collobj.position.y - collobj.height;
+        var otherDown = collobj.position.y - pady;
 
         return (myLeft >= otherRight || 
             myRight <= otherLeft ||
@@ -175,6 +200,7 @@ function Collider(position,width,height) {
     this.draw = function () {
         colorRect(this.position.x - this.width / 2, this.position.y - this.height, this.width, this.height, "green");
         colorRect(this.position.x - this.width / 2 + padx, this.position.y - this.height, this.width - 2 * padx, this.height - pady, "black");
+        colorCircle(this.position.x, this.position.y, 1, "red");
     }
 
 }
