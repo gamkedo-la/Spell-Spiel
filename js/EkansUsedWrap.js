@@ -61,8 +61,8 @@ function MessageBox (x, y, options) {
     var standbyForInput = false;
     var messageDone = false;
     //var playerInput = holdEnter;
-    var delayTillNext = 0; //frames of waiting that prevent the player from multi skipping when hitting the button
     var delayBoost = 5;
+    var delayTillNext = 5; //frames of waiting that prevent the player from multi skipping when hitting the button
     this.isAlive = false;
     var currentx;
     var currentline;

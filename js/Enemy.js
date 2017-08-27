@@ -58,7 +58,7 @@ function Enemy() {
             index = Math.floor(Math.random() * this.strongAttacks.length);
             this.chosenOne = this.strongAttacks[index];
         }
-        else if (this.hp < this.maxHP * 0.5 && this.weakShields.length != 0) {
+        else if (this.hp < this.maxHP * 0.5 && this.weakShields.length != 0 && this.shieldHP===0) {
             index = Math.floor(Math.random() * this.weakShields.length);
             this.chosenOne = this.weakShields[index];
         }

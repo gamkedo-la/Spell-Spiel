@@ -213,16 +213,12 @@ function Collider(position,width,height) {
     this.position = position;
     this.width = width;
     this.height = height;
-    console.log(this.position.x);
-    this.position.x -= width / 2;
-    console.log(this.position.x);
-    this.position.y -= height / 2;
 
-    this.checkCollision = function (collobj) {
-        /*return this.position.x < collobj.position.x + collobj.width &&
-               this.position.x + this.width > collobj.position.x &&
-               this.position.y < collobj.position.y + collobj.height &&
-               this.position.y + this.height > collobj.position.y;*/
+    var padx = 10;
+    var pady = 10;
+
+    this.checkTrigger = function (collobj) {
+
         var myLeft = this.position.x - this.width/2;
         var myRight = this.position.x + this.width/2;
         var myTop = this.position.y - this.height/2;
@@ -238,9 +234,27 @@ function Collider(position,width,height) {
             myTop >= otherDown ||
             myDown <= otherTop) == false;
     };
+
+    this.checkCollision = function (collobj) {
+
+        var myLeft = this.position.x - this.width/2 + padx;
+        var myRight = this.position.x + this.width/2 - padx;
+        var myTop = this.position.y - this.height/2;
+        var myDown = this.position.y + this.height/2 - pady;
+
+        var otherLeft = collobj.position.x - collobj.width / 2 + padx;
+        var otherRight = collobj.position.x + collobj.width/2 - padx;
+        var otherTop = collobj.position.y - collobj.height/2;
+        var otherDown = collobj.position.y + collobj.height/2 - pady;
+
+        return (myLeft >= otherRight || 
+            myRight <= otherLeft ||
+            myTop >= otherDown ||
+            myDown <= otherTop) == false;
+    };
     this.draw = function () {
-        console.log(this.position.x);
-        colorRect(this.position.x - this.width/2, this.position.y - this.height, this.width, this.height, "black");
+        colorRect(this.position.x - this.width / 2, this.position.y - this.height, this.width, this.height, "green");
+        colorRect(this.position.x - this.width / 2 + padx, this.position.y - this.height, this.width - 2 * padx, this.height - pady, "black");
     }
 
 }
@@ -265,6 +279,12 @@ function OverworldState() {
             console.log("Hit");
             player.moveBack();
         }
+        if (player.collider.checkTrigger(marieTartine.collider)) {
+            console.log("In range");
+            if (holdEnter && !pokebox.isAlive) {
+                pokebox.beginText("As you can see, by pressing Enter I can interact with any given character and give him/her a custom text. I've also added an observer to this message event, so that anything can be called once the dialog is done. For example, here I'm going to initiate a battle right after we're done chatting.");
+            }
+        }
         this.handleInput();
         clearScreen(); //All this is drawn on the small canvas...
         updateCycles();
@@ -275,8 +295,8 @@ function OverworldState() {
         drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
         player.collider.draw();
         marieTartine.collider.draw();
-        player.draw();
         marieTartine.draw();
+        player.draw();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         updateMessages(); //see above
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
