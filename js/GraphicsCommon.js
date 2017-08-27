@@ -15,6 +15,12 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
     canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
 }
 
+function colorRectScaled(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+
+    scaledContext.fillStyle = fillColor;
+    scaledContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+}
+
 function colorCircle(centerX, centerY, radius, fillColor) {
     canvasContext.fillStyle = fillColor;
     canvasContext.beginPath();

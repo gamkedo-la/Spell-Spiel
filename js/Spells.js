@@ -135,7 +135,10 @@ function drawSpell(spell) {
 
     var spellTextStartX = 95;
     var currentTextWidth = 0;
+    var fullTextWidth = scaledContext.measureText(spell.text).width;
 
+    if (spell.name != "No spell") { colorRectScaled(spellTextStartX - 3, scaledCanvas.height / 2 - 108, fullTextWidth + 6, 66, "black"); }
+    colorRectScaled(spellTextStartX, scaledCanvas.height / 2 - 105, fullTextWidth, 60, "#e0ffff");
     for (i = 0; i < spell.rightOrWrong.length; i++) {
         if (spell.rightOrWrong[i] == 0) {
             color = "#0a1566";

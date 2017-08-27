@@ -3,7 +3,7 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
     this.position = {
-        x : 30,
+        x : 150,
         y : 150
     };
     this.speedX = 0;
