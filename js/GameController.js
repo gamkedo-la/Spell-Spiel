@@ -11,7 +11,11 @@ function GameController() {
 
     this.changeState = function (state) {
         if (state != null) {
-            if (state_ && Sound.isPlaying(state_.music)) { Sound.stop(state_.music); }
+            console.log(typeof state.music !== "undefined");
+            if (state_ && Sound.isPlaying(state_.music)) {
+                console.log("Stopped music");
+                Sound.stop(state_.music);
+            }
             console.log("Changed state");
             state_ = state;
             if (state_.music) { Sound.play(state_.music, true, 0.8); }
@@ -167,139 +171,30 @@ function BattleState() {
     };
 }
 
-function NPC() {
-    var currentImg = 0;
-    this.imgNumber = 1;
-    this.name = "NPC";
-    this.text = "Text Goes Here";
-    this.img = fillerPic;
-    this.cycleDuration = 30; //I doubt NPCs will have anims, but just in case
-
-    //Graphics
-    this.setGraphics = function (img, imgNumber, cycleDuration) {
-        this.img = img;
-        this.imgNumber = imgNumber; //# of images in spritesheet
-        this.cycleDuration = cycleDuration;
-    };
-
-    this.draw = function () { //On canvas
-        var spriteWidth = this.img.width / this.imgNumber;
-        canvasContext.drawImage(this.img, currentImg*spriteWidth, 0, spriteWidth,
-            this.img.height, this.position.x - (this.img.width / this.imgNumber) / 2,
-            this.position.y - this.img.height, spriteWidth, this.img.height);
-    };
-
-    this.cycleTick = function () {
-        cycleCurrent++;
-        if (cycleCurrent >= this.cycleDuration) {
-            cycleCurrent = 0;
-            currentImg++;
-        }
-        if (currentImg >= this.imgNumber) {
-            currentImg = 0;
-        }
-    };
-
-    this.displayText = function(collider) {
-        var collidedOrNot = this.checkCollision(collider);
-        if (collidedOrNot && holdLeft) { // Spacebar eventually decoupled from startRandomBattle function? Or different button? -----> Will have an AdventureQuest Battle button soon! (Rémy)
-            console.log(this.text);
-        }
-    };
-
-}
-
-function Collider(position,width,height) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
-
-    var padx = 10;
-    var pady = 10;
-
-    this.checkTrigger = function (collobj) {
-
-        var myLeft = this.position.x - this.width/2;
-        var myRight = this.position.x + this.width/2;
-        var myTop = this.position.y - this.height/2;
-        var myDown = this.position.y + this.height/2;
-
-        var otherLeft = collobj.position.x - collobj.width / 2;
-        var otherRight = collobj.position.x + collobj.width/2;
-        var otherTop = collobj.position.y - collobj.height/2;
-        var otherDown = collobj.position.y + collobj.height/2;
-
-        return (myLeft >= otherRight || 
-            myRight <= otherLeft ||
-            myTop >= otherDown ||
-            myDown <= otherTop) == false;
-    };
-
-    this.checkCollision = function (collobj) {
-
-        var myLeft = this.position.x - this.width/2 + padx;
-        var myRight = this.position.x + this.width/2 - padx;
-        var myTop = this.position.y - this.height/2;
-        var myDown = this.position.y + this.height/2 - pady;
-
-        var otherLeft = collobj.position.x - collobj.width / 2 + padx;
-        var otherRight = collobj.position.x + collobj.width/2 - padx;
-        var otherTop = collobj.position.y - collobj.height/2;
-        var otherDown = collobj.position.y + collobj.height/2 - pady;
-
-        return (myLeft >= otherRight || 
-            myRight <= otherLeft ||
-            myTop >= otherDown ||
-            myDown <= otherTop) == false;
-    };
-    this.draw = function () {
-        colorRect(this.position.x - this.width / 2, this.position.y - this.height, this.width, this.height, "green");
-        colorRect(this.position.x - this.width / 2 + padx, this.position.y - this.height, this.width - 2 * padx, this.height - pady, "black");
-    }
-
-}
-
-
 
 function OverworldState() {
 
     this.img = overworldPic;
     this.music = 'SpellSpiel_Music_Open';
-
+    this.currentRoom = 0;
     this.update = function () {
 
-        if (!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
-            player.collider = new Collider(player.position, player.img.width/player.imgNumber, player.img.height);
-        }
-        if (!marieTartine.hasOwnProperty("collider") && marieTartine.img.width && marieTartine.img.height) {
-            marieTartine.collider = new Collider(marieTartine.position, marieTartine.img.width, marieTartine.img.height);
-        }
-
-        if (player.collider.checkCollision(marieTartine.collider)) {
-            console.log("Hit");
-            player.moveBack();
-        }
-        if (player.collider.checkTrigger(marieTartine.collider)) {
-            console.log("In range");
-            if (holdEnter && !pokebox.isAlive) {
-                pokebox.beginText("As you can see, by pressing Enter I can interact with any given character and give him/her a custom text. I've also added an observer to this message event, so that anything can be called once the dialog is done. For example, here I'm going to initiate a battle right after we're done chatting.");
-            }
-        }
-        this.handleInput();
         clearScreen(); //All this is drawn on the small canvas...
-        updateCycles();
+        this.handleInput();
         player.move();
 
-        draw_particles();
+        this.currentRoom.makeColliders();
+        this.currentRoom.checkCollisions();
+        this.currentRoom.checkTriggers();
+        this.currentRoom.drawObjects();
+
+        updateCycles();
+
         checkDoor(); //For demo only. Will need to implement actual collision detection later!
+
         drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
-        player.collider.draw();
-        marieTartine.collider.draw();
-        marieTartine.draw();
-        player.draw();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         updateMessages(); //see above
-        this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
     var walkingCycleDuration = 5;
     this.handleInput = function () {
@@ -360,6 +255,11 @@ function OverworldState() {
     this.drawOnScaled = function () {
         return;
     };
+
+    this.changeRoom = function (room) {
+        this.img = room.img;
+        this.currentRoom = room;
+    }
 
     this.enter = function () {
         if (endingBattle === true) { endingBattle = false; }
