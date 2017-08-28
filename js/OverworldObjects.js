@@ -2,7 +2,7 @@
 
 
 var drawColliders = true;
-
+var drawColliders = false;
 ///////////////////////            NPC and other trigger objects             /////////////////////////
 //Base class
 function WorldObject() {
@@ -92,8 +92,8 @@ marieTartine.observer.onNotify = function (entity, event) {
 var gauntletDoor = new WorldObject();
 gauntletDoor.name = "Gauntlet Door";
 gauntletDoor.position = {
-    x: 150,
-    y: 100,
+    x: 175,
+    y: 45,
 };
 gauntletDoor.img = {
     width: 50,
@@ -104,9 +104,26 @@ gauntletDoor.onTrigger = function () {
         gameController.startGauntletBattle();
     }
 }
+//////////////////////////////////                 Blocking the player (terrain)                /////////////////////////////
+var upperWall = new WorldObject();
+upperWall.position = {
+    x: 100,
+    y: 45,
+};
+upperWall.img = {
+    width: 200,
+    height: 45,
+};
 
-
-
+var tables = new WorldObject();
+tables.position = {
+    x: 80,
+    y: 60,
+};
+tables.img = {
+    width: 150,
+    height: 40,
+};
 ////////////////////              ROOMS              //////////////////////
 //Base class
 function Room() {
@@ -174,7 +191,7 @@ function Room() {
 
 mainRoom = new Room();
 mainRoom.img = overworldPic;
-mainRoom.objectList = [marieTartine];
+mainRoom.objectList = [marieTartine, upperWall, tables, gauntletDoor];
 mainRoom.triggerList = [marieTartine, gauntletDoor];
 mainRoom.toDraw = [marieTartine];
 overworldState.changeRoom(mainRoom);
