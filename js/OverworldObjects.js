@@ -59,15 +59,15 @@ marieTartine.onTrigger = function () {
     if (holdEnter && !pokebox.isAlive && okToInteract) {
         pokebox.subject.addObserver(this.observer);
         if (this.currentMessage == 0) {
-            pokebox.beginText("Marie-Tartine: Hi! Ummm... what was I gonna say.... \n \n Oh yeah! The academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
+            pokebox.beginText("Marie-Tartine: Hi! Ummm... what was I gonna say.... \b Oh yeah! The academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
-            pokebox.beginText("Marie-Tartine: Hi again! I forgot to mention... ummmmm.... \n \n Oh yeah! You can talk to that guy over there if you want to fight a random enemy. That way you can earn experience and practice casting spells.");
+            pokebox.beginText("Marie-Tartine: Hi again! I forgot to mention... ummmmm.... \b Oh yeah! You can talk to that guy over there if you want to fight a random enemy. That way you can earn experience and practice casting spells.");
             this.currentMessage++;
         }
         else if (this.currentMessage == 2) {
-            pokebox.beginText("Marie-Tartine: You sure are chatty! I'm not really a talkative type myself though... Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies, and I'll show you my special incantation! *slight smile*");
+            pokebox.beginText("Marie-Tartine: You sure are chatty! I'm not really a talkative type myself though... \b Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies, and I'll show you my special incantation! *slight smile*");
             this.currentMessage++;
         }
         else if ((this.currentMessage == 3 && gauntletProgress >= 2 && !this.spellUnlocked)) {
@@ -88,16 +88,25 @@ marieTartine.observer.onNotify = function (entity, event) {
     //marieTartine.currentMessage++;
     pokebox.subject.removeObserver(marieTartine.observer);
 }
+////////////////////////////////////////////////////////////////////////////////////////////////
+var guideNPC1 = new WorldObject();
+guideNPC1.name = "Guide NPC 1";
+guideNPC1.currentMessage = 0;
+guideNPC1.position = {
+    x: 150,
+    y: 100,
+};
+guideNPC1.img = guideNPC1Pic;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var gauntletDoor = new WorldObject();
 gauntletDoor.name = "Gauntlet Door";
 gauntletDoor.position = {
-    x: 175,
-    y: 45,
+    x: 100,
+    y: 70,
 };
 gauntletDoor.img = {
-    width: 50,
-    height: 50
+    width: 60,
+    height: 60
 };
 gauntletDoor.onTrigger = function () {
     if (holdEnter && okToInteract) {
@@ -108,13 +117,13 @@ gauntletDoor.onTrigger = function () {
 var upperWall = new WorldObject();
 upperWall.position = {
     x: 100,
-    y: 45,
+    y: 70,
 };
 upperWall.img = {
     width: 200,
     height: 45,
 };
-
+/*
 var tables = new WorldObject();
 tables.position = {
     x: 80,
@@ -123,7 +132,7 @@ tables.position = {
 tables.img = {
     width: 150,
     height: 40,
-};
+};*/
 ////////////////////              ROOMS              //////////////////////
 //Base class
 function Room() {
@@ -190,10 +199,10 @@ function Room() {
 }
 
 mainRoom = new Room();
-mainRoom.img = overworldPic;
-mainRoom.objectList = [marieTartine, upperWall, tables, gauntletDoor];
-mainRoom.triggerList = [marieTartine, gauntletDoor];
-mainRoom.toDraw = [marieTartine];
+mainRoom.img = mainRoomPic;
+mainRoom.objectList = [marieTartine, upperWall, guideNPC1, gauntletDoor];
+mainRoom.triggerList = [marieTartine, guideNPC1, gauntletDoor];
+mainRoom.toDraw = [marieTartine, guideNPC1];
 overworldState.changeRoom(mainRoom);
 
 function Collider(position,width,height) {
@@ -202,7 +211,7 @@ function Collider(position,width,height) {
     this.height = height;
 
     var padx = 10;
-    var pady = 10;
+    var pady = 15;
 
     this.checkTrigger = function (collobj) {
 

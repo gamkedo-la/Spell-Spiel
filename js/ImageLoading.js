@@ -14,12 +14,13 @@ var jellyfishPic = document.createElement("img");
 var ghostChickenPic = document.createElement("img");
 
 var marieTartinePic = document.createElement("img");
+var guideNPC1Pic = document.createElement("img");
 
 //Environments
 var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
 var lavaPic = document.createElement("img");
-var overworldPic = document.createElement("img");
+var mainRoomPic = document.createElement("img");
 
 //Spell VFX
 var fireballSheet = document.createElement("img");
@@ -61,12 +62,13 @@ function loadImages(){
         { varName: walkingLeftPic, theFile: "beamWalkingLeft.png" }, //spritesheet animation
         { varName: walkingRightPic, theFile: "beamWalkingRight.png" }, //spritesheet animation
 
-        { varName: marieTartinePic, theFile: "marieTartine.png" }, 
+        { varName: marieTartinePic, theFile: "marieTartine.png" },
+        { varName: guideNPC1Pic, theFile: "guideNPC1.png" },
 
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
-        { varName: overworldPic, theFile: "study.png" },
+        { varName: mainRoomPic, theFile: "mainRoom.png" },
 
         { varName: batPic, theFile: "bat.png" },
         { varName: zombiePic, theFile: "zombieIdle.png" }, //spritesheet animation
@@ -83,7 +85,7 @@ function loadImages(){
         { varName: slashPic, theFile: "slash.png" },
         { varName: toxicCloudPic, theFile: "toxicCloud.png" },
 
-        { varName: pokeboxPic, theFile: "pokeboxOrange.png" },
+        { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
         { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }
     ]
 

@@ -176,7 +176,7 @@ var okToInteract = true;
 
 function OverworldState() {
 
-    this.img = overworldPic;
+    this.img = mainRoomPic;
     this.music = 'SpellSpiel_Music_Open';
     this.currentRoom = 0;
     this.update = function () {
@@ -200,48 +200,53 @@ function OverworldState() {
     };
     var walkingCycleDuration = 5;
     this.handleInput = function () {
-        if (holdLeft) {
-            player.speedX = -MOVE_SPEED;
-            if (player.movingDirection != "left") {
-                player.movingDirection = "left";
-                player.setGraphics(walkingLeftPic, 4, walkingCycleDuration);
+        if (!messageActive) {
+            if (holdLeft) {
+                player.speedX = -MOVE_SPEED;
+                if (player.movingDirection != "left") {
+                    player.movingDirection = "left";
+                    player.setGraphics(walkingLeftPic, 4, walkingCycleDuration);
+                }
             }
-        }
-        else if (holdRight) {
-            player.speedX = MOVE_SPEED;
-            if (player.movingDirection != "right") {
-                player.movingDirection = "right";
-                player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
+            else if (holdRight) {
+                player.speedX = MOVE_SPEED;
+                if (player.movingDirection != "right") {
+                    player.movingDirection = "right";
+                    player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
+                }
+            }
+            else {
+                player.speedX = 0;
+            }
+
+            if (holdUp) {
+                player.speedY = -MOVE_SPEED;
+                if (player.movingDirection != "up") {
+                    player.movingDirection = "up";
+                    player.setGraphics(walkingUpPic, 4, walkingCycleDuration);
+                }
+            }
+            else if (holdDown) {
+                player.speedY = MOVE_SPEED;
+                if (player.movingDirection != "down") {
+                    player.movingDirection = "down";
+                    player.setGraphics(walkingDownPic, 4, walkingCycleDuration);
+                }
+            }
+            else {
+                player.speedY = 0;
+            }
+
+            if (player.speedX === 0 && player.speedY === 0) {
+                player.resetTickAndImg();
+            }
+
+            if (holdSpacebar) {
+                gameController.startRandomBattle();
             }
         }
         else {
-            player.speedX = 0;
-        }
-
-        if (holdUp) {
-            player.speedY = -MOVE_SPEED;
-            if (player.movingDirection != "up") {
-                player.movingDirection = "up";
-                player.setGraphics(walkingUpPic, 4, walkingCycleDuration);
-            }
-        }
-        else if (holdDown) {
-            player.speedY = MOVE_SPEED;
-            if (player.movingDirection != "down") {
-                player.movingDirection = "down";
-                player.setGraphics(walkingDownPic, 4, walkingCycleDuration);
-            }
-        }
-        else {
-            player.speedY = 0;
-        }
-
-        if (player.speedX === 0 && player.speedY === 0) {
-            player.resetTick();
-        }
-        
-        if (holdSpacebar) {
-            gameController.startRandomBattle();
+            player.resetTickAndImg();
         }
         if (hold1) {
             pokebox.beginText("This will be the NPC/game text used by my super duper text wrapping code! You can even \n skip lines, adjust padding, and much more! :) \n \n stuff stuff stuff \n");

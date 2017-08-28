@@ -100,8 +100,9 @@ function Character() { //"Character" == base class for anything that can fight
             currentImg = 0;
         }
     };
-    this.resetTick = function () {
+    this.resetTickAndImg = function () {
         cycleCurrent = 0;
+        currentImg = 0;
     }
 
     ////////////       Spell mechanics         ///////////
