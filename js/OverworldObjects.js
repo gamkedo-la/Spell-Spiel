@@ -47,20 +47,45 @@ function WorldObject() {
 ////////                                                           CREATION                                                                 ////////
 var marieTartine = new WorldObject();
 marieTartine.name = "Marie Tartine";
+marieTartine.currentMessage = 0;
 marieTartine.position = {
     x: 30,
     y: 100,
 };
 marieTartine.img = marieTartinePic;
+marieTartine.spellUnlocked = false;
+
 marieTartine.onTrigger = function () {
     if (holdEnter && !pokebox.isAlive && okToInteract) {
-        pokebox.subject.addObserver(marieTartine.observer);
-        pokebox.beginText("Here, you can see that I made a text specifically for this purpose. This was done in an onTrigger function, as such any NPC can have a custom text to say, as well as other possibilities. There is also a way for an NPC to add itself as an observer so that it can see when the message is over and call a function, like give the player a spell or start a battle (still needs minor tweaks though). For now, I'll just start a battle to demonstrate this!");
+        pokebox.subject.addObserver(this.observer);
+        if (this.currentMessage == 0) {
+            pokebox.beginText("Marie-Tartine: Hi! Ummm... what was I gonna say.... \n \n Oh yeah! The academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage == 1) {
+            pokebox.beginText("Marie-Tartine: Hi again! I forgot to mention... ummmmm.... \n \n Oh yeah! You can talk to that guy over there if you want to fight a random enemy. That way you can earn experience and practice casting spells.");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage == 2) {
+            pokebox.beginText("Marie-Tartine: You sure are chatty! I'm not really a talkative type myself though... Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies, and I'll show you my special incantation! *slight smile*");
+            this.currentMessage++;
+        }
+        else if ((this.currentMessage == 3 && gauntletProgress >= 2 && !this.spellUnlocked)) {
+            pokebox.beginText("Marie-Tartine: Wow! You did it! Ok, then I'll show you the spell I've been working on. The words are 'Toxic Cloud'. It poisons any enemy that breathes it. Those are the secret words that I made myself though: don't go stealing them!");
+            //unlockSpell(toxicCloud); //todo
+            this.spellUnlocked = true;
+            this.currentMessage++;
+        }
+        else if ((this.currentMessage == 3 && gauntletProgress < 2 && !this.spellUnlocked)) {
+            pokebox.beginText("Marie-Tartine: Awww... you still have to beat the 2nd enemy... Go on, I believe in you! ");
+        }
+        else if (this.currentMessage == 4) { pokebox.beginText("Marie-Tartine: I don't have anything else to teach you. Don't give up!"); }
     }
 }
+
 marieTartine.observer = new Observer();
 marieTartine.observer.onNotify = function (entity, event) {
-    console.log("Notified Marie-Tartine");
+    //marieTartine.currentMessage++;
     pokebox.subject.removeObserver(marieTartine.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
