@@ -241,6 +241,25 @@ ToxicCloud = function () {
 ToxicCloud.prototype = new Spell();
 toxicCloud = new ToxicCloud();
 
+LifeDrain = function () {
+    this.name = "Life Drain";
+    this.text = "Life Drain";
+    this.type = "Attack";
+    this.maxPower = 50;
+    this.particle = poisonSpitParty;
+
+    this.cast = function (target) { //Notice: checkProgress casts this function
+        this.basicCast(target);
+        screenshake(1, durationInMS(this.particle.duration));
+        this.playSound();
+        this.particle.party();
+        player.hp += this.maxPower/2
+    };
+    this.reset();
+};
+LifeDrain.prototype = new Spell();
+lifeDrain = new LifeDrain();
+
 Shield1 = function () {
     this.name = "Shield1";
     this.text = "Protect";

@@ -179,6 +179,7 @@ function Player() { //Defines the player object
         "Lightning strike of doom": lightning,
         "Protect": shield1,
         "Toxic Cloud": toxicCloud,
+        "Life Drain": lifeDrain,
         "Za Warudo": zaWarudo,
     };
     //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement

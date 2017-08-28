@@ -30,6 +30,14 @@ var spellList = `{
         "anim_frames": 30,
         "particles": ["fireball"]
     },
+    "LifeDrain": {
+        "name": "Life Drain",
+        "text": "Life Drain",
+        "type": "Attack",
+        "max_power": 50,
+        "anim_frames": 30,
+        "particles": ["fireball"]
+    },
     "Shield1": {
         "name": "Shield1",
         "text": "Protect",
