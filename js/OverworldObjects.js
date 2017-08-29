@@ -2,7 +2,7 @@
 
 
 var drawColliders = true;
-var drawColliders = false;
+//var drawColliders = false;
 ///////////////////////            NPC and other trigger objects             /////////////////////////
 //Base class
 function WorldObject() {
@@ -59,7 +59,7 @@ marieTartine.onTrigger = function () {
     if (holdEnter && !pokebox.isAlive && okToInteract) {
         pokebox.subject.addObserver(this.observer);
         if (this.currentMessage == 0) {
-            pokebox.beginText("Marie-Tartine: Hi! Ummm... what was I gonna say.... \b Oh yeah! The academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
+            pokebox.beginText("Marie-Tartine: Hi! Ummm... what was I gonna say.... \b Oh yeah! The Academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
@@ -94,7 +94,7 @@ guideNPC1.name = "Guide NPC 1";
 guideNPC1.currentMessage = 0;
 guideNPC1.position = {
     x: 150,
-    y: 100,
+    y: 90,
 };
 guideNPC1.img = guideNPC1Pic;
 guideNPC1.onTrigger = function () {
@@ -107,14 +107,42 @@ guideNPC1.onTrigger = function () {
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+var noStyleNPC = new WorldObject();
+noStyleNPC.name = "Keven";
+noStyleNPC.currentMessage = 0;
+noStyleNPC.position = {
+    x: 180,
+    y: 90,
+};
+var completedTraining = true;
+noStyleNPC.img = noStyleNPCPic;
+noStyleNPC.onTrigger = function () {
+    if (holdEnter && !pokebox.isAlive && okToInteract) {
+        if (this.currentMessage === 0) {
+            pokebox.beginText("People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat an enemy in the training facility.");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage === 1 && completedTraining) {
+            pokebox.beginText("Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well.");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage === 1 && !completedTraining) {
+            pokebox.beginText("Come on! Just go for a quick training, it won't take long!");
+        }
+        else if (this.currentMessage === 2) {
+            pokebox.beginText("What do you mean it's spelled wrong? Whatever...");
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 var gauntletDoor = new WorldObject();
 gauntletDoor.name = "Gauntlet Door";
 gauntletDoor.position = {
     x: 100,
-    y: 70,
+    y: 65,
 };
 gauntletDoor.img = {
-    width: 60,
+    width: 40,
     height: 60
 };
 gauntletDoor.onTrigger = function () {
@@ -126,7 +154,7 @@ gauntletDoor.onTrigger = function () {
 var upperWall = new WorldObject();
 upperWall.position = {
     x: 100,
-    y: 70,
+    y: 65,
 };
 upperWall.img = {
     width: 200,
@@ -209,9 +237,9 @@ function Room() {
 
 mainRoom = new Room();
 mainRoom.img = mainRoomPic;
-mainRoom.objectList = [marieTartine, upperWall, guideNPC1, gauntletDoor];
-mainRoom.triggerList = [marieTartine, guideNPC1, gauntletDoor];
-mainRoom.toDraw = [marieTartine, guideNPC1];
+mainRoom.objectList = [marieTartine, upperWall, guideNPC1, noStyleNPC, gauntletDoor];
+mainRoom.triggerList = [marieTartine, guideNPC1, noStyleNPC, gauntletDoor];
+mainRoom.toDraw = [marieTartine, guideNPC1, noStyleNPC];
 overworldState.changeRoom(mainRoom);
 
 function Collider(position,width,height) {

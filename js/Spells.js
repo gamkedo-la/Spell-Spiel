@@ -163,6 +163,7 @@ function rechargeAllExceptCurrent() { //Refills the cooldowns of inactive spells
         toBoost = player.availableSpells[i];
         if (toBoost === player.currentSpell) { continue;}
         toBoost.currentCastWindow += 3;
+        console.log(toBoost.currentCastWindow);
         if (toBoost.currentCastWindow > toBoost.MAX_CAST_WINDOW) {
             toBoost.currentCastWindow = toBoost.MAX_CAST_WINDOW;
         }

@@ -35,12 +35,11 @@ function Character() { //"Character" == base class for anything that can fight
     this.reset = function () {
         this.hp = this.maxHP;
         this.shieldHP = 0;
-        if (typeof this.attack !== "undefined") {
-            clearInterval(this.attack);
-        }
         if (!this.cycleImage) {
             currentImg = 0;
         }
+        this.delayedDamage = [];
+        resetSpellWindows();
     };
     this.dealDamage = function (amount) {
         var toDeal;
@@ -186,10 +185,7 @@ function Player() { //Defines the player object
         "Life Drain": lifeDrain,
         "Za Warudo": zaWarudo,
     };
-    //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;
-
-    //var state_ = defaultState; //default state, changes during runtime
 
     this.drawBattle = function () {
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");

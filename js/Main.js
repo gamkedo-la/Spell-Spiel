@@ -136,3 +136,12 @@ function spellTimeLapse() {
     deltaTime = currentTime - lastTime;
     player.currentSpell.timeElapsed += deltaTime;
 }
+function resetSpellWindows() {
+    console.log("Resetting");
+    for (i = 0; i < player.availableSpells.length; i++) {
+        toReset = player.availableSpells[i];
+        console.log(toReset.currentCastWindow, toReset.MAX_CAST_WINDOW);
+        toReset.currentCastWindow = toReset.MAX_CAST_WINDOW;
+        console.log(toReset.currentCastWindow, toReset.MAX_CAST_WINDOW);
+    }
+}
