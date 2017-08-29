@@ -143,3 +143,12 @@ function resetSpellWindows() {
         toReset.currentCastWindow = toReset.MAX_CAST_WINDOW;
     }
 }
+
+function checkForRoomChange() {
+    if (player.position.x <= 0) {
+        overworldState.changeRoom("left");
+    }
+    else if (player.position.x >= 200) {
+        overworldState.changeRoom("right");
+    }
+}

@@ -21,7 +21,9 @@ var noStyleNPCPic = document.createElement("img");
 var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
 var lavaPic = document.createElement("img");
+
 var mainRoomPic = document.createElement("img");
+var hallwayPic = document.createElement("img");
 
 //Spell VFX
 var fireballSheet = document.createElement("img");
@@ -74,6 +76,7 @@ function loadImages(){
         { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
+        { varName: hallwayPic, theFile: "mainHallway.png" },
 
         { varName: batPic, theFile: "bat.png" },
         { varName: zombiePic, theFile: "zombieIdle.png" }, //spritesheet animation

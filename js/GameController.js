@@ -180,7 +180,8 @@ function OverworldState() {
         clearScreen(); //All this is drawn on the small canvas...
         this.handleInput();
         player.move();
-        updateInteractionDelay();
+        updateInteractionDelay(); //after interacting with stuff, gives a few frames of breathing room so as to not interact again immediately
+        checkForRoomChange();
         this.currentRoom.makeColliders();
         this.currentRoom.checkCollisions();
         this.currentRoom.checkTriggers();
@@ -247,7 +248,8 @@ function OverworldState() {
             pokebox.beginText("This will be the NPC/game text used by my super duper text wrapping code! You can even \n skip lines, adjust padding, and much more! :) \n \n stuff stuff stuff \n");
         }
         if (hold2) {
-            bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time. I hope some of you will find this sytem useful once it's finished (ie not buggy)");
+            //overworldState.changeRoom("left");
+            //bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time. I hope some of you will find this sytem useful once it's finished (ie not buggy)");
         }
     };
 
@@ -257,8 +259,42 @@ function OverworldState() {
     };
 
     this.changeRoom = function (room) {
-        this.img = room.img;
-        this.currentRoom = room;
+        var toGo;
+        if (typeof room === "string") {
+            switch (room) {
+                case "up":
+                    toGo = this.currentRoom.upRoom;
+                    player.position.y = 190;
+                    break;
+                case "down":
+                    toGo = this.currentRoom.downRoom;
+                    player.position.y = 10;
+                    break;
+                case "left":
+                    toGo = this.currentRoom.leftRoom;
+                    player.position.x = 190;
+                    break;
+                case "right":
+                    toGo = this.currentRoom.rightRoom;
+                    player.position.x = 10;
+                    break;
+                default: console.log("Not a valid direction!");
+            }
+            if (typeof toGo === "undefined") {
+                console.log("There is no room on this side!");
+            }
+            else {
+                this.currentRoom = toGo;
+                this.img = toGo.img;
+            }
+        }
+            //else, we assume "room" is an actual Room object
+        else {
+            console.log("Not a string");
+            this.img = room.img;
+            this.currentRoom = room;
+            player.position = this.currentRoom.spawnPoints.center;
+        }
     }
 
     this.enter = function () {

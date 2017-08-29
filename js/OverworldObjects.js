@@ -2,13 +2,13 @@
 
 
 var drawColliders = true;
-//var drawColliders = false;
+var drawColliders = false;
 ///////////////////////            NPC and other trigger objects             /////////////////////////
 //Base class
 function WorldObject() {
     var currentImg = 0;
     this.imgNumber = 1;
-    this.name = "NPC";
+    this.name = "World Object";
     this.img = fillerPic;
     this.cycleDuration = 30; //I doubt NPCs will have anims, but just in case
 
@@ -160,16 +160,6 @@ upperWall.img = {
     width: 200,
     height: 45,
 };
-/*
-var tables = new WorldObject();
-tables.position = {
-    x: 80,
-    y: 60,
-};
-tables.img = {
-    width: 150,
-    height: 40,
-};*/
 ////////////////////              ROOMS              //////////////////////
 //Base class
 function Room() {
@@ -178,7 +168,14 @@ function Room() {
     this.imgNumber = 1;
     this.name = "Room";
     this.cycleDuration = 30; //Cycles could have been used to make animated backgrounds (think weird space stuff behind player), but not in this game lol
-
+    
+    this.spawnPoints = {
+        center: { x: 100, y:100},
+        left  : { x: 0,   y: 100 },
+        right : { x: 200, y: 100 },
+        up:     { x: 100, y: 0 },
+        down:   { x: 100, y: 200}
+    }
     //Graphics
     this.setGraphics = function (img, imgNumber, cycleDuration) {
         this.img = img;
@@ -196,16 +193,20 @@ function Room() {
     var roomRight = null;
 
     this.checkCollisions = function () {
-        this.objectList.forEach(function (obj) {
-            if (drawColliders) {
-                player.collider.draw();
-                obj.collider.draw();
+        if (this.objectList) {
+            for (i = 0; i < this.objectList.length; i++) {
+                if (drawColliders) {
+                    player.collider.draw();
+                    console.log(this.objectList[i].collider);
+                    console.log(counter);
+                    this.objectList[i].collider.draw();
+                }
+                if (player.collider.checkCollision(this.objectList[i].collider)) {
+                    player.moveBack();
+                    //console.log("Hit!");
+                }
             }
-            if (player.collider.checkCollision(obj.collider)) {
-                player.moveBack();
-                //console.log("Hit!");
-            }
-        })
+        }
     }
     this.checkTriggers = function () {
         this.triggerList.forEach(function (obj) {
@@ -236,10 +237,23 @@ function Room() {
 }
 
 mainRoom = new Room();
+mainRoom.name = "Main room";
 mainRoom.img = mainRoomPic;
 mainRoom.objectList = [marieTartine, upperWall, guideNPC1, noStyleNPC, gauntletDoor];
 mainRoom.triggerList = [marieTartine, guideNPC1, noStyleNPC, gauntletDoor];
 mainRoom.toDraw = [marieTartine, guideNPC1, noStyleNPC];
+
+hallwayRoom = new Room();
+hallwayRoom.name = "Hallway";
+hallwayRoom.img = hallwayPic;
+hallwayRoom.objectList = [upperWall];
+hallwayRoom.triggerList = [];
+hallwayRoom.toDraw = [];
+
+//This is so not the best way to do this but DNDC: don't know don't care!
+mainRoom.leftRoom = hallwayRoom;
+hallwayRoom.rightRoom = mainRoom;
+
 overworldState.changeRoom(mainRoom);
 
 function Collider(position,width,height) {
