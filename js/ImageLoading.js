@@ -82,7 +82,7 @@ function loadImages(){
         { varName: fireballSheet, theFile: "fireball.png" },
         { varName: iceSpikePic, theFile: "iceSpike.png" },
         { varName: lightningSheet, theFile: "lightning.png" },
-        { varName: shieldPic, theFile: "shield1.png" },
+        { varName: shieldPic, theFile: "shield.png" },
         { varName: poisonSpitPic, theFile: "poisonSpit.png" },
         { varName: bitePic, theFile: "bite.png" },
         { varName: slashPic, theFile: "slash.png" },
