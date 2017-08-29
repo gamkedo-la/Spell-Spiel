@@ -119,7 +119,7 @@ function Character() { //"Character" == base class for anything that can fight
             spell.startCountdown();
             spell.reset();
         }
-        if (spell.particle) { spell.particle.reset();}
+        if (spell.particle && !spell.particle.isAlive) { spell.particle.reset();}
         this.currentSpell = spell;
     };
     //Called from clicking a button in skills menu

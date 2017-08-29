@@ -54,6 +54,10 @@ function Spell() {
 
     this.checkProgress = function () {
         if (this.progress === this.text.length) {
+            if (this.particle && this.particle.isAlive) {
+                this.spellFailed();//kills the cast if the particle is alive. Gotta prevent that spam (and avoid dealing with multiple particles :P)
+                return;
+            }
             this.power = this.getPower();
             if (this.type === "Attack") { this.cast(player.opponent);}
             if (this.type === "Shield" || this.type === "Buff") { this.cast(player); } //Yay! :D
@@ -159,11 +163,10 @@ function drawSpell(spell) {
 }
 
 function rechargeAllExceptCurrent() { //Refills the cooldowns of inactive spells each frame
-    for (i = 0; i < player.availableSpells.length; i++) {
-        toBoost = player.availableSpells[i];
+    for (var keyname in player.availableSpells) {
+        toBoost = player.availableSpells[keyname];
         if (toBoost === player.currentSpell) { continue;}
         toBoost.currentCastWindow += 3;
-        console.log(toBoost.currentCastWindow);
         if (toBoost.currentCastWindow > toBoost.MAX_CAST_WINDOW) {
             toBoost.currentCastWindow = toBoost.MAX_CAST_WINDOW;
         }

@@ -138,10 +138,8 @@ function spellTimeLapse() {
 }
 function resetSpellWindows() {
     console.log("Resetting");
-    for (i = 0; i < player.availableSpells.length; i++) {
-        toReset = player.availableSpells[i];
-        console.log(toReset.currentCastWindow, toReset.MAX_CAST_WINDOW);
+    for (var keyname in player.availableSpells) {
+        toReset = player.availableSpells[keyname];
         toReset.currentCastWindow = toReset.MAX_CAST_WINDOW;
-        console.log(toReset.currentCastWindow, toReset.MAX_CAST_WINDOW);
     }
 }

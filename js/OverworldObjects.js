@@ -46,7 +46,7 @@ function WorldObject() {
 }
 ////////                                                           CREATION                                                                 ////////
 var marieTartine = new WorldObject();
-marieTartine.name = "Marie Tartine";
+marieTartine.name = "Marie-Tartine";
 marieTartine.currentMessage = 0;
 marieTartine.position = {
     x: 30,
@@ -59,25 +59,25 @@ marieTartine.onTrigger = function () {
     if (holdEnter && !pokebox.isAlive && okToInteract) {
         pokebox.subject.addObserver(this.observer);
         if (this.currentMessage == 0) {
-            pokebox.beginText("Marie-Tartine: Hi! Ummm... what was I gonna say.... \b Oh yeah! The Academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
+            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! The Academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
-            pokebox.beginText("Marie-Tartine: Hi again! I forgot to mention... ummmmm.... \b Oh yeah! You can talk to that guy over there if you want to fight a random enemy. That way you can earn experience and practice casting spells.");
+            pokebox.beginText(this.name + ": " + "Hi again! I forgot to mention... ummmmm.... \b Oh yeah! You can talk to that guy over there if you want to fight a random enemy. That way you can earn experience and practice casting spells.");
             this.currentMessage++;
         }
         else if (this.currentMessage == 2) {
-            pokebox.beginText("Marie-Tartine: You sure are chatty! I'm not really a talkative type myself though... \b Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies, and I'll show you my special incantation! *slight smile*");
+            pokebox.beginText(this.name + ": " + "You sure are chatty! I'm not really a talkative type myself though... \b Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies, and I'll show you my special incantation! *slight smile*");
             this.currentMessage++;
         }
         else if ((this.currentMessage == 3 && gauntletProgress >= 2 && !this.spellUnlocked)) {
-            pokebox.beginText("Marie-Tartine: Wow! You did it! Ok, then I'll show you the spell I've been working on. The words are 'Toxic Cloud'. It poisons any enemy that breathes it. Those are the secret words that I made myself though: don't go stealing them!");
+            pokebox.beginText(this.name + ": " + "Wow! You did it! Ok, then I'll show you the spell I've been working on. The words are 'Toxic Cloud'. It poisons any enemy that breathes it. Those are the secret words that I made myself though: don't go stealing them!");
             //unlockSpell(toxicCloud); //todo
             this.spellUnlocked = true;
             this.currentMessage++;
         }
         else if ((this.currentMessage == 3 && gauntletProgress < 2 && !this.spellUnlocked)) {
-            pokebox.beginText("Marie-Tartine: Awww... you still have to beat the 2nd enemy... Go on, I believe in you! ");
+            pokebox.beginText(this.name + ": " + "Awww... you still have to beat the 2nd enemy... Go on, I believe in you! ");
         }
         else if (this.currentMessage == 4) { pokebox.beginText("Marie-Tartine: I don't have anything else to teach you. Don't give up!"); }
     }
@@ -90,7 +90,7 @@ marieTartine.observer.onNotify = function (entity, event) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 var guideNPC1 = new WorldObject();
-guideNPC1.name = "Guide NPC 1";
+guideNPC1.name = "Ekktor";
 guideNPC1.currentMessage = 0;
 guideNPC1.position = {
     x: 150,
@@ -100,10 +100,10 @@ guideNPC1.img = guideNPC1Pic;
 guideNPC1.onTrigger = function () {
     if (holdEnter && !pokebox.isAlive && okToInteract) {
         if (this.currentMessage == 0) {
-            pokebox.beginText("In battle, it's important to keep focusing on your spellcast. If you don't complete your incantation fast enough, it'll fail! Not only that, when you do cast your spell, you'll have less time for the next cast. You have to mix it up and let your spells recharge! \b If you want to practice, pretty sure the Academy has a training room somewhere around here...");
+            pokebox.beginText(this.name + ": " + "In battle, it's important to keep focusing on your spellcast. If you don't complete your incantation fast enough, it'll fail! Not only that, when you do cast your spell, you'll have less time for the next cast. You have to mix it up and let your spells recharge! \b If you want to practice, pretty sure the Academy has a training room somewhere around here...");
             this.currentMessage++;
         }
-        else { pokebox.beginText("It's not about how much time you have, it's about how you use it!");}
+        else { pokebox.beginText(this.name + ": " + "It's not about how much time you have, it's about how you use it!"); }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,18 +119,18 @@ noStyleNPC.img = noStyleNPCPic;
 noStyleNPC.onTrigger = function () {
     if (holdEnter && !pokebox.isAlive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText("People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat an enemy in the training facility.");
+            pokebox.beginText(this.name + ": "+ "People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat an enemy in the training facility.");
             this.currentMessage++;
         }
         else if (this.currentMessage === 1 && completedTraining) {
-            pokebox.beginText("Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well.");
+            pokebox.beginText(this.name + ": " + "Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well.");
             this.currentMessage++;
         }
         else if (this.currentMessage === 1 && !completedTraining) {
-            pokebox.beginText("Come on! Just go for a quick training, it won't take long!");
+            pokebox.beginText(this.name + ": " + "Come on! Just go for a quick training, it won't take long!");
         }
         else if (this.currentMessage === 2) {
-            pokebox.beginText("What do you mean it's spelled wrong? Whatever...");
+            pokebox.beginText(this.name + ": " + "What do you mean it's spelled wrong? Whatever...");
         }
     }
 }
