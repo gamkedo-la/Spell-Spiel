@@ -32,6 +32,8 @@ var slashPic = document.createElement("img");
 var toxicCloudPic = document.createElement("img");
 var lifeDrainPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
+var waterSquirtPic = document.createElement("img");
+var stingPic = document.createElement("img");
 
 //Other
 var pokeboxPic = document.createElement("img");
@@ -48,7 +50,7 @@ function countLoadedImagesAndLaunchIfReady(){
 }
 
 function beginLoadingImage(imgVar, fileName){
-    imgVar.onload = countLoadedImagesAndLaunchIfReady;
+    imgVar.onload = countLoadedImagesAndLaunchIfReady();
     imgVar.src = "images/" + fileName;
 }
 
@@ -86,6 +88,8 @@ function loadImages(){
         { varName: slashPic, theFile: "slash.png" },
         { varName: toxicCloudPic, theFile: "toxicCloud.png" },
         { varName: lifeDrainPic, theFile: "lifeDrain.png" },
+        { varName: waterSquirtPic, theFile: "waterSquirt.png" },
+        { varName: stingPic, theFile: "sting.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
         { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }

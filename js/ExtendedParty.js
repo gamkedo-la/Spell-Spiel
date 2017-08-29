@@ -209,6 +209,15 @@ slashParty.spriteWidth = 64;
 slashParty.spriteHeight = 64;
 slashParty.init();
 
+stingParty = new Particle();
+stingParty.frameCount = 4;
+stingParty.particleFPS = 12;
+stingParty.isMoving = false;
+stingParty.spritesheet = stingPic;
+stingParty.spriteWidth = 32;
+stingParty.spriteHeight = 32;
+stingParty.init();
+
 poisonSpitParty = new Particle();
 poisonSpitParty.frameCount = 10;
 poisonSpitParty.particleFPS = 16;
@@ -219,6 +228,17 @@ poisonSpitParty.spriteHeight = 20;
 poisonSpitParty.startX = 155;
 poisonSpitParty.destX = 40;
 poisonSpitParty.init();
+
+waterSquirtParty = new Particle();
+waterSquirtParty.frameCount = 10;
+waterSquirtParty.particleFPS = 16;
+waterSquirtParty.isMoving = true;
+waterSquirtParty.spritesheet = waterSquirtPic;
+waterSquirtParty.spriteWidth = 20;
+waterSquirtParty.spriteHeight = 20;
+waterSquirtParty.startX = 155;
+waterSquirtParty.destX = 40;
+waterSquirtParty.init();
 
 ///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
 createParticle = function (party) {

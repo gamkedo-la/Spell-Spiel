@@ -60,7 +60,7 @@ poisonSpit = new PoisonSpit();
 function Sting() {
     this.name = "Sting";
     this.type = "Attack";
-    this.particle = slashParty;
+    this.particle = stingParty;
     this.power = 20;
     this.untilNext = 65;
 
@@ -78,7 +78,7 @@ sting = new Sting();
 function WaterSquirt() {
     this.name = "Water Gun";
     this.type = "Attack";
-    this.particle = biteParty;
+    this.particle = waterSquirtParty;
     this.power = 75;
     this.untilNext = 150;
 
