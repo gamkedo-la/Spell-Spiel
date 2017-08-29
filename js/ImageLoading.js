@@ -30,6 +30,7 @@ var shieldPic = document.createElement("img");
 var bitePic = document.createElement("img");
 var slashPic = document.createElement("img");
 var toxicCloudPic = document.createElement("img");
+var lifeDrainPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 
 //Other
@@ -84,6 +85,7 @@ function loadImages(){
         { varName: bitePic, theFile: "bite.png" },
         { varName: slashPic, theFile: "slash.png" },
         { varName: toxicCloudPic, theFile: "toxicCloud.png" },
+        { varName: lifeDrainPic, theFile: "lifeDrain.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
         { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }

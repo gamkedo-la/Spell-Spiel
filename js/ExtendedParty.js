@@ -178,6 +178,17 @@ toxicCloudParty.startX = 40;
 toxicCloudParty.destX = 155;
 toxicCloudParty.init();
 
+lifeDrainParty = new Particle();
+lifeDrainParty.frameCount = 10;
+lifeDrainParty.particleFPS = 10;
+lifeDrainParty.isMoving = true;
+lifeDrainParty.spritesheet = lifeDrainPic;
+lifeDrainParty.spriteWidth = 32;
+lifeDrainParty.spriteHeight = 32;
+lifeDrainParty.startX = 155;
+lifeDrainParty.destX = 40;
+lifeDrainParty.init();
+
 //////////////////////////              Monster Attacks              //////////////////////////
 
 biteParty = new Particle();
@@ -214,7 +225,6 @@ createParticle = function (party) {
 
     party.prototype = new Particle();
     
-
     if (party.start == "self") {
         party.startX = 40;
         party.startY = 90;

@@ -23,16 +23,6 @@ function Enemy() {
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
     }
 
-    /*
-    this.useAttack = function () {
-        this.attack = setInterval(function () {
-            i = Math.floor(Math.random() * this.attacks.length);
-            chosenAttack = this.attacks[i];
-            chosenAttack.power = chosenAttack.maxPower;
-            chosenAttack.cast(this.opponent);
-        }.bind(this), 3000); //Bind so that it takes "this" from the Enemy namespace
-    }*/
-
     this.updateAttack = function () {
         this.untilNextAttack--;
         if (this.untilNextAttack < 0) {

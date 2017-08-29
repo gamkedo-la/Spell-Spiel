@@ -45,7 +45,7 @@ function Character() { //"Character" == base class for anything that can fight
     this.dealDamage = function (amount) {
         var toDeal;
         //Remove shield
-        if (this.shieldHP != 0) {
+        if (this.shieldHP != 0 && amount >=0 ) {
             toDeal = amount - this.shieldHP;
             if (toDeal < 0) {
                 toDeal = 0;
@@ -60,6 +60,9 @@ function Character() { //"Character" == base class for anything that can fight
         this.hp -= toDeal;
         if (this.hp <= 0) {
             this.hp = 0;
+        }
+        if (this.hp >= this.maxHP) {
+            this.hp = this.maxHP;
         }
     };
     //Graphics
@@ -167,6 +170,7 @@ function Player() { //Defines the player object
 
     this.maxHP = 350;
     this.hp = this.maxHP;
+    this.hp = 100;
     this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
     this.exp = 0;
 

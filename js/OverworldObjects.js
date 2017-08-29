@@ -97,6 +97,15 @@ guideNPC1.position = {
     y: 100,
 };
 guideNPC1.img = guideNPC1Pic;
+guideNPC1.onTrigger = function () {
+    if (holdEnter && !pokebox.isAlive && okToInteract) {
+        if (this.currentMessage == 0) {
+            pokebox.beginText("In battle, it's important to keep focusing on your spellcast. If you don't complete your incantation fast enough, it'll fail! Not only that, when you do cast your spell, you'll have less time for the next cast. You have to mix it up and let your spells recharge! \b If you want to practice, pretty sure the Academy has a training room somewhere around here...");
+            this.currentMessage++;
+        }
+        else { pokebox.beginText("It's not about how much time you have, it's about how you use it!");}
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var gauntletDoor = new WorldObject();
 gauntletDoor.name = "Gauntlet Door";

@@ -21,10 +21,7 @@ function GameController() {
             state_.enter();
         }
     };
-    /*
-    this.startMusicLoop = function () {
-        Sound.play(state_.music);
-    }*/
+
     this.getBackground = function () {
         return state_.img; //Eventually we can expand this so states can have a variety of bg images
     };
@@ -76,7 +73,6 @@ function BattleState() {
         player.checkState();
         updateCycles();
         player.opponent.updateAttack();
-
         this.handleInput();
 
         clearScreen(); //Everything under this is drawn on the small canvas...
@@ -184,7 +180,6 @@ function OverworldState() {
         clearScreen(); //All this is drawn on the small canvas...
         this.handleInput();
         player.move();
-
         updateInteractionDelay();
         this.currentRoom.makeColliders();
         this.currentRoom.checkCollisions();

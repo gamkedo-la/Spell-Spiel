@@ -93,12 +93,13 @@ function Spell() {
         return; //To override in subclasses
     };
 
-    this.basicCast = function (target) { //Deal damage based on power
+    this.basicCast = function (target, extraDelayFrames) { //Deal damage based on power
 
+        if (typeof extraDelayFrames === "undefined") { extraDelayFrames = 0 }
         if (this.type === "Attack") {
             var dmgToPush = this.power;
             if (this.particle) {
-                target.delayedDamage.push([this.particle.duration * 30 / 1000, dmgToPush]);
+                target.delayedDamage.push([(this.particle.duration+extraDelayFrames) * 30 / 1000, dmgToPush]);
             }
             else { target.delayedDamage.push([0, dmgToPush]); }
         }
@@ -246,14 +247,14 @@ LifeDrain = function () {
     this.text = "Life Drain";
     this.type = "Attack";
     this.maxPower = 50;
-    this.particle = poisonSpitParty;
+    this.particle = lifeDrainParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        this.basicCast(target);
+        this.basicCast(target, -this.particle.duration);
         screenshake(1, durationInMS(this.particle.duration));
         this.playSound();
         this.particle.party();
-        player.hp += this.maxPower/2
+        player.delayedDamage.push([durationInMS(this.particle.duration), -this.maxPower / 2]); //delayed healing
     };
     this.reset();
 };
