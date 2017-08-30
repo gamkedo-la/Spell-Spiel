@@ -43,7 +43,7 @@ function PoisonSpit() {
     this.type = "Attack";
     this.particle = poisonSpitParty;
     this.power = 20;
-    this.untilNext = 65;
+    this.untilNext = 100;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -60,9 +60,9 @@ poisonSpit = new PoisonSpit();
 function Sting() {
     this.name = "Sting";
     this.type = "Attack";
-    this.particle = slashParty;
+    this.particle = stingParty;
     this.power = 20;
-    this.untilNext = 65;
+    this.untilNext = 100;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -78,9 +78,9 @@ sting = new Sting();
 function WaterSquirt() {
     this.name = "Water Gun";
     this.type = "Attack";
-    this.particle = biteParty;
+    this.particle = waterSquirtParty;
     this.power = 75;
-    this.untilNext = 150;
+    this.untilNext = 200;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -97,7 +97,7 @@ function Block() {
     this.name = "Block";
     this.type = "Shield";
     this.power = 25;
-    this.untilNext = 60;
+    this.untilNext = 75;
 
     this.cast = function (target) {
         this.basicCast(target);

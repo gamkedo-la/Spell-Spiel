@@ -23,16 +23,6 @@ function Enemy() {
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
     }
 
-    /*
-    this.useAttack = function () {
-        this.attack = setInterval(function () {
-            i = Math.floor(Math.random() * this.attacks.length);
-            chosenAttack = this.attacks[i];
-            chosenAttack.power = chosenAttack.maxPower;
-            chosenAttack.cast(this.opponent);
-        }.bind(this), 3000); //Bind so that it takes "this" from the Enemy namespace
-    }*/
-
     this.updateAttack = function () {
         this.untilNextAttack--;
         if (this.untilNextAttack < 0) {
@@ -58,7 +48,7 @@ function Enemy() {
             index = Math.floor(Math.random() * this.strongAttacks.length);
             this.chosenOne = this.strongAttacks[index];
         }
-        else if (this.hp < this.maxHP * 0.5 && this.weakShields.length != 0) {
+        else if (this.hp < this.maxHP * 0.5 && this.weakShields.length != 0 && this.shieldHP===0) {
             index = Math.floor(Math.random() * this.weakShields.length);
             this.chosenOne = this.weakShields[index];
         }
@@ -71,17 +61,17 @@ function Enemy() {
     }
     this.combineAllAttacks = function () {
         this.allAttacks = this.weakAttacks.concat(this.mediumAttacks, this.strongAttacks, this.weakShields);
-        console.log(this.allAttacks);
     }
 }
 Enemy.prototype = new Character();
 
 /////////////////////////////              Enemy creation                 ////////////////////////////////////
 
+//First enemy in gauntlet
 var bat = new Enemy();
 bat.name = "Echo Mouse";
 bat.img = batPic;
-bat.maxHP = 500;
+bat.maxHP = 300;
 bat.expGiven = 10;
 bat.weakAttacks = [poisonSpit];
 bat.mediumAttacks = [bite];
@@ -89,7 +79,7 @@ bat.strongAttacks = [];
 bat.weakShields = [];
 bat.combineAllAttacks();
 
-
+//2nd enemy in gauntlet
 var zombie = new Enemy();
 zombie.name = "Green Stroller";
 zombie.img = zombiePic;
@@ -103,6 +93,7 @@ zombie.strongAttacks = [];
 zombie.weakShields = [block];
 zombie.combineAllAttacks();
 
+//3rd enemy in gauntlet
 var lizard = new Enemy();
 lizard.name = "Rad Reptilian";
 lizard.expGiven = 23;
@@ -115,6 +106,7 @@ lizard.strongAttacks = [];
 lizard.weakShields = [block];
 lizard.combineAllAttacks();
 
+//4th enemy in gauntlet
 var jellyfish = new Enemy();
 jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
@@ -127,6 +119,7 @@ jellyfish.strongAttacks = [waterSquirt];
 jellyfish.weakShields = [];
 jellyfish.combineAllAttacks();
 
+//5th enemy in gauntlet
 var ghostChicken = new Enemy();
 ghostChicken.name = "Spooky Cacaw";
 ghostChicken.imgNumber = 2;
@@ -138,7 +131,8 @@ ghostChicken.strongAttacks = [waterSquirt];
 ghostChicken.weakShields = [];
 ghostChicken.combineAllAttacks();
 
-var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
+//var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
+var gauntletOrder = [bat, jellyfish, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken]; //to use in random battles

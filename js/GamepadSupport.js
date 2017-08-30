@@ -140,7 +140,7 @@ function GamepadSupport()
     }
 
     // init
-    console.log('Initializing gamepad support...')
+    //console.log('Initializing gamepad support...')
     window.requestAnimationFrame(handle_gamepad);
 
 } // GamepadKeyboardEventEmulator

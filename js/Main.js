@@ -120,10 +120,41 @@ function updateDamage() {
     });
 }
 
+function updateInteractionDelay() {
+    interactDelay--;
+    if (interactDelay <= 0) { okToInteract = true; }
+    else okToInteract = false;
+}
+function didInteraction() {
+    interactDelay = interactDelayReset;
+}
+
 function spellTimeLapse() {
     date = new Date();
     lastTime = currentTime;
     currentTime = date.getTime();
     deltaTime = currentTime - lastTime;
     player.currentSpell.timeElapsed += deltaTime;
+}
+function resetSpellWindows() {
+    console.log("Resetting");
+    for (var keyname in player.availableSpells) {
+        toReset = player.availableSpells[keyname];
+        toReset.currentCastWindow = toReset.MAX_CAST_WINDOW;
+    }
+}
+
+function checkForRoomChange() {
+    if (player.position.x <= 0) {
+        overworldState.changeRoom("left");
+    }
+    else if (player.position.x >= 200) {
+        overworldState.changeRoom("right");
+    }
+    else if (player.position.y <= 0) {
+        overworldState.changeRoom("up");
+    }
+    else if (player.position.y >= 200) {
+        overworldState.changeRoom("down");
+    }
 }

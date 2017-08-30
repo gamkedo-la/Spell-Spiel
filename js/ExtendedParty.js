@@ -178,6 +178,17 @@ toxicCloudParty.startX = 40;
 toxicCloudParty.destX = 155;
 toxicCloudParty.init();
 
+lifeDrainParty = new Particle();
+lifeDrainParty.frameCount = 10;
+lifeDrainParty.particleFPS = 10;
+lifeDrainParty.isMoving = true;
+lifeDrainParty.spritesheet = lifeDrainPic;
+lifeDrainParty.spriteWidth = 32;
+lifeDrainParty.spriteHeight = 32;
+lifeDrainParty.startX = 155;
+lifeDrainParty.destX = 40;
+lifeDrainParty.init();
+
 //////////////////////////              Monster Attacks              //////////////////////////
 
 biteParty = new Particle();
@@ -198,6 +209,15 @@ slashParty.spriteWidth = 64;
 slashParty.spriteHeight = 64;
 slashParty.init();
 
+stingParty = new Particle();
+stingParty.frameCount = 4;
+stingParty.particleFPS = 12;
+stingParty.isMoving = false;
+stingParty.spritesheet = stingPic;
+stingParty.spriteWidth = 32;
+stingParty.spriteHeight = 32;
+stingParty.init();
+
 poisonSpitParty = new Particle();
 poisonSpitParty.frameCount = 10;
 poisonSpitParty.particleFPS = 16;
@@ -209,12 +229,22 @@ poisonSpitParty.startX = 155;
 poisonSpitParty.destX = 40;
 poisonSpitParty.init();
 
+waterSquirtParty = new Particle();
+waterSquirtParty.frameCount = 10;
+waterSquirtParty.particleFPS = 16;
+waterSquirtParty.isMoving = true;
+waterSquirtParty.spritesheet = waterSquirtPic;
+waterSquirtParty.spriteWidth = 20;
+waterSquirtParty.spriteHeight = 20;
+waterSquirtParty.startX = 155;
+waterSquirtParty.destX = 40;
+waterSquirtParty.init();
+
 ///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
 createParticle = function (party) {
 
     party.prototype = new Particle();
     
-
     if (party.start == "self") {
         party.startX = 40;
         party.startY = 90;
@@ -254,7 +284,6 @@ createParticle = function (party) {
             party.destY = FAR_AWAY;
         }
     }
-    console.log(party.spritesheet.slice(0, -4) + "Sheet");
     party.spritesheet = window[party.spritesheet.slice(0, -4) + "Sheet"];
 
     return party;

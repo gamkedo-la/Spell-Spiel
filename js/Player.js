@@ -3,8 +3,8 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.name = "Character";
     this.position = {
-        x : 180,
-        y : 85
+        x : 150,
+        y : 150
     };
     this.speedX = 0;
     this.speedY = 0;
@@ -35,18 +35,16 @@ function Character() { //"Character" == base class for anything that can fight
     this.reset = function () {
         this.hp = this.maxHP;
         this.shieldHP = 0;
-        if (typeof this.attack !== "undefined") {
-            clearInterval(this.attack);
-            console.log("Stopped attacking!");
-        }
         if (!this.cycleImage) {
             currentImg = 0;
         }
+        this.delayedDamage = [];
+        resetSpellWindows();
     };
     this.dealDamage = function (amount) {
         var toDeal;
         //Remove shield
-        if (this.shieldHP != 0) {
+        if (this.shieldHP != 0 && amount >=0 ) {
             toDeal = amount - this.shieldHP;
             if (toDeal < 0) {
                 toDeal = 0;
@@ -61,6 +59,9 @@ function Character() { //"Character" == base class for anything that can fight
         this.hp -= toDeal;
         if (this.hp <= 0) {
             this.hp = 0;
+        }
+        if (this.hp >= this.maxHP) {
+            this.hp = this.maxHP;
         }
     };
     //Graphics
@@ -101,8 +102,9 @@ function Character() { //"Character" == base class for anything that can fight
             currentImg = 0;
         }
     };
-    this.resetTick = function () {
+    this.resetTickAndImg = function () {
         cycleCurrent = 0;
+        currentImg = 0;
     }
 
     ////////////       Spell mechanics         ///////////
@@ -117,7 +119,7 @@ function Character() { //"Character" == base class for anything that can fight
             spell.startCountdown();
             spell.reset();
         }
-        if (spell.particle) { spell.particle.reset();}
+        if (spell.particle && !spell.particle.isAlive) { spell.particle.reset();}
         this.currentSpell = spell;
     };
     //Called from clicking a button in skills menu
@@ -146,9 +148,9 @@ function Character() { //"Character" == base class for anything that can fight
     this.moveBack = function () {
         this.position.x -= this.speedX;
         this.position.y -= this.speedY;
-        if (this.collider != undefined) {
-            //this.collider.position.x -= this.speedX;
-            //this.collider.position.y -= this.speedY;
+        if (this.speedX == 0 && this.speedY == 0) {
+            this.position.x -= 1;
+            this.position.y -= 1;
         }
     };
 }
@@ -167,6 +169,7 @@ function Player() { //Defines the player object
 
     this.maxHP = 350;
     this.hp = this.maxHP;
+    this.hp = 100;
     this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
     this.exp = 0;
 
@@ -179,12 +182,10 @@ function Player() { //Defines the player object
         "Lightning strike of doom": lightning,
         "Protect": shield1,
         "Toxic Cloud": toxicCloud,
+        "Life Drain": lifeDrain,
         "Za Warudo": zaWarudo,
     };
-    //this.spellCooldowns = ArrayWithZeros(this.availableSpells.length); //To implement
     this.currentSpell = noSpell;
-
-    //var state_ = defaultState; //default state, changes during runtime
 
     this.drawBattle = function () {
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");

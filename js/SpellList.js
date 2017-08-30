@@ -30,6 +30,14 @@ var spellList = `{
         "anim_frames": 30,
         "particles": ["fireball"]
     },
+    "LifeDrain": {
+        "name": "Life Drain",
+        "text": "Life Drain",
+        "type": "Attack",
+        "max_power": 50,
+        "anim_frames": 30,
+        "particles": ["fireball"]
+    },
     "Shield1": {
         "name": "Shield1",
         "text": "Protect",
@@ -49,5 +57,5 @@ var spellList = `{
 
 var spells = JSON.parse(spellList);
 
-console.log("Type: " + typeof parties.fireballParty.spritesheet);
+//console.log("Type: " + typeof parties.fireballParty.spritesheet);
 //console.log(spells[0].name);

@@ -54,6 +54,10 @@ function Spell() {
 
     this.checkProgress = function () {
         if (this.progress === this.text.length) {
+            if (this.particle && this.particle.isAlive) {
+                this.spellFailed();//kills the cast if the particle is alive. Gotta prevent that spam (and avoid dealing with multiple particles :P)
+                return;
+            }
             this.power = this.getPower();
             if (this.type === "Attack") { this.cast(player.opponent);}
             if (this.type === "Shield" || this.type === "Buff") { this.cast(player); } //Yay! :D
@@ -93,12 +97,13 @@ function Spell() {
         return; //To override in subclasses
     };
 
-    this.basicCast = function (target) { //Deal damage based on power
+    this.basicCast = function (target, extraDelayFrames) { //Deal damage based on power
 
+        if (typeof extraDelayFrames === "undefined") { extraDelayFrames = 0 }
         if (this.type === "Attack") {
             var dmgToPush = this.power;
             if (this.particle) {
-                target.delayedDamage.push([this.particle.duration * 30 / 1000, dmgToPush]);
+                target.delayedDamage.push([(this.particle.duration+extraDelayFrames) * 30 / 1000, dmgToPush]);
             }
             else { target.delayedDamage.push([0, dmgToPush]); }
         }
@@ -135,7 +140,10 @@ function drawSpell(spell) {
 
     var spellTextStartX = 95;
     var currentTextWidth = 0;
+    var fullTextWidth = scaledContext.measureText(spell.text).width;
 
+    if (spell.name != "No spell") { colorRectScaled(spellTextStartX - 3, scaledCanvas.height / 2 - 108, fullTextWidth + 6, 66, "black"); }
+    colorRectScaled(spellTextStartX, scaledCanvas.height / 2 - 105, fullTextWidth, 60, "#e0ffff"); 
     for (i = 0; i < spell.rightOrWrong.length; i++) {
         if (spell.rightOrWrong[i] == 0) {
             color = "#0a1566";
@@ -155,8 +163,8 @@ function drawSpell(spell) {
 }
 
 function rechargeAllExceptCurrent() { //Refills the cooldowns of inactive spells each frame
-    for (i = 0; i < player.availableSpells.length; i++) {
-        toBoost = player.availableSpells[i];
+    for (var keyname in player.availableSpells) {
+        toBoost = player.availableSpells[keyname];
         if (toBoost === player.currentSpell) { continue;}
         toBoost.currentCastWindow += 3;
         if (toBoost.currentCastWindow > toBoost.MAX_CAST_WINDOW) {
@@ -172,7 +180,6 @@ Pyroblast = function () {
     this.type = "Attack";
     this.maxPower = 50;
     this.particle = fireballParty;
-    console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target);
@@ -227,7 +234,6 @@ ToxicCloud = function () {
     this.type = "Attack";
     this.maxPower = 25;
     this.particle = toxicCloudParty;
-    console.log(this.particle);
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target);
@@ -239,6 +245,25 @@ ToxicCloud = function () {
 };
 ToxicCloud.prototype = new Spell();
 toxicCloud = new ToxicCloud();
+
+LifeDrain = function () {
+    this.name = "Life Drain";
+    this.text = "Life Drain";
+    this.type = "Attack";
+    this.maxPower = 50;
+    this.particle = lifeDrainParty;
+
+    this.cast = function (target) { //Notice: checkProgress casts this function
+        this.basicCast(target, -this.particle.duration);
+        screenshake(1, durationInMS(this.particle.duration));
+        this.playSound();
+        this.particle.party();
+        player.delayedDamage.push([durationInMS(this.particle.duration), -this.maxPower / 2]); //delayed healing
+    };
+    this.reset();
+};
+LifeDrain.prototype = new Spell();
+lifeDrain = new LifeDrain();
 
 Shield1 = function () {
     this.name = "Shield1";
@@ -260,7 +285,6 @@ ZaWarudo = function () {
     this.text = "Za Warudo";
     this.type = "Attack";
     this.maxPower = 0;
-    console.log("Made pause spell");
 
     this.cast = function () {
         pauseState = !pauseState;

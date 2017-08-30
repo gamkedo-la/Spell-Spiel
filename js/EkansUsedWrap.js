@@ -21,6 +21,7 @@ No bold, italic, font changing mid-text
 No actual typing effect yet!
 */
 
+var messageActive = false;
 
 function MessageBox (x, y, options) {
 
@@ -61,8 +62,8 @@ function MessageBox (x, y, options) {
     var standbyForInput = false;
     var messageDone = false;
     //var playerInput = holdEnter;
-    var delayTillNext = 0; //frames of waiting that prevent the player from multi skipping when hitting the button
-    var delayBoost = 5;
+    var delayReset = 5;
+    var delayTillNext = 5; //frames of waiting that prevent the player from multi skipping when hitting the button
     this.isAlive = false;
     var currentx;
     var currentline;
@@ -80,6 +81,7 @@ function MessageBox (x, y, options) {
     }
     this.update = function () {
         if (this.isAlive) {
+            messageActive = true;
             if (standbyForInput) {
                 this.drawWords();
                 this.getText();
@@ -90,10 +92,12 @@ function MessageBox (x, y, options) {
                     if (messageDone) {
                         messageDone = false;
                         this.isAlive = false;
+                        messageActive = false;
                         this.afterMessage(); //does whatever we said would happen once done
+                        didInteraction(); //adds a delay so that the player can't immediately input another NPC interaction
                     }
                     words.splice(0, spliceIndex);
-                    delayTillNext = delayBoost; //frames until the player can skip to following text
+                    delayTillNext = delayReset; //frames until the player can skip to following text
                 }
             }
             else {
@@ -132,7 +136,11 @@ function MessageBox (x, y, options) {
                         break;
                     }
                 }//for line skips, \n needs to be surrounded by spaces :O
-                else if (words[i] != "\n") {
+                else if (words[i] === "\b") {
+                    stopDrawing(i + 1);
+                    break;
+                }
+                else {
                     colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
                     currentx = currentx + wordWidth + spaceWidth;
                 }
@@ -161,6 +169,7 @@ function MessageBox (x, y, options) {
         currentx = padx + x*4;
         currentline++;
     }
+
     var stopDrawing = function (i) {
         standbyForInput = true;
         spliceIndex = i;
@@ -199,13 +208,13 @@ pokeboxOptions = {
     padx: 20,
     pady: 20,
     numlines: 5,
-    textcolor: "orange",
+    textcolor: "#4f2b24",
     font: "Consolas",
     fontsize: 40,
     img: pokeboxPic
 }
 pokebox = new MessageBox(0, 85, pokeboxOptions);
-pokebox.subject.addObserver(messageObserver);
+//pokebox.subject.addObserver(marieTartine.observer);
 pokebox.afterMessage = function () {
     pokebox.subject.notify(pokebox, {startBattle : true, enemy : ghostChicken}) //does this affect the global namespace? :/
 }
