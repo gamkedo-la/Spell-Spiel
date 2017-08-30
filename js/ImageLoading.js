@@ -22,6 +22,9 @@ var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
 var lavaPic = document.createElement("img");
 
+var mainMenuPic = document.createElement("img");
+var spellMenuPic = document.createElement("img");
+
 var mainRoomPic = document.createElement("img");
 var hallwayPic = document.createElement("img");
 var lowerWallTransparentPic = document.createElement("img");
@@ -75,7 +78,9 @@ function loadImages(){
         { varName: noStyleNPCPic, theFile: "noStyleNPC.png" },
 
         { varName: fillerPic, theFile: "pommier3.png" },
-        { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
+        { varName: mainMenuPic, theFile: "mainMenu.png" },
+        { varName: spellMenuPic, theFile: "upgradeMenu.png" },
+        { varName: battlePic, theFile: "canyon_of_the_castle.png" },
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
         { varName: hallwayPic, theFile: "mainHallway.png" },

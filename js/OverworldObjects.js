@@ -50,7 +50,7 @@ marieTartine.name = "Marie-Tartine";
 marieTartine.currentMessage = 0;
 marieTartine.position = {
     x: 30,
-    y: 100,
+    y: 90,
 };
 marieTartine.img = marieTartinePic;
 marieTartine.spellUnlocked = false;
