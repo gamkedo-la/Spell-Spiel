@@ -41,6 +41,7 @@ var stingPic = document.createElement("img");
 
 //Other
 var pokeboxPic = document.createElement("img");
+var announceBoxPic = document.createElement("img");
 var bubbleBoxPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
@@ -99,6 +100,7 @@ function loadImages(){
         { varName: stingPic, theFile: "sting.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
+        { varName: announceBoxPic, theFile: "announceBox.png" },
         { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }
     ]
 

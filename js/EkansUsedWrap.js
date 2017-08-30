@@ -126,7 +126,7 @@ function MessageBox (x, y, options) {
             }
 
             //draw on current line if it fits
-            if (currentx + wordWidth < width - padx) {
+            if (currentx + wordWidth < x * 4 + width - padx) {
                 if (words[i] === "\n") {
                     if (currentline < numlines) {
                         newLine();
@@ -219,6 +219,19 @@ pokebox.afterMessage = function () {
     pokebox.subject.notify(pokebox, {startBattle : true, enemy : ghostChicken}) //does this affect the global namespace? :/
 }
 
+announceBoxOptions = {
+    width: 120*4,
+    height: 28 * 4,
+    padx: 30,
+    pady: 20,
+    numlines: 1,
+    textcolor: "#4f2b24",
+    font: "Consolas",
+    fontsize: 40,
+    img: announceBoxPic
+}
+announceBox = new MessageBox(40, 30, announceBoxOptions);
+
 bubbleboxOptions = {
     width: 140*4,
     height: 50 * 4,
@@ -233,4 +246,4 @@ bubbleboxOptions = {
 bubblebox = new MessageBox(75, 65, bubbleboxOptions);
 bubblebox.subject.addObserver(messageObserver);
 
-var messageBoxes = [pokebox, bubblebox];
+var messageBoxes = [pokebox, bubblebox, announceBox];

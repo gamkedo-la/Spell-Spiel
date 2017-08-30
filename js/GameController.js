@@ -245,7 +245,7 @@ function OverworldState() {
             player.resetTickAndImg();
         }
         if (hold1) {
-            pokebox.beginText("This will be the NPC/game text used by my super duper text wrapping code! You can even \n skip lines, adjust padding, and much more! :) \n \n stuff stuff stuff \n");
+            announceBox.beginText("UNLOCKED PYROBLAST!");
         }
         if (hold2) {
             //overworldState.changeRoom("left");
