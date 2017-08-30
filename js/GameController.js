@@ -74,12 +74,12 @@ function MainMenuState() {
        
         if (holdP && okToInteract) {
             gameController.changeState(overworldState);
-            announceBox.beginText("Welcome to the Academy!");
         }
         if (holdS && okToInteract) {
             gameController.changeState(spellMenuState);
         }
         if (holdC && okToInteract) {
+            didInteraction();
             console.log("Credits");
         }
     }
@@ -90,12 +90,24 @@ function MainMenuState() {
 function SpellMenuState() {
     this.img = spellMenuPic;
     this.music = "SpellSpiel_Battle";
+    var firstTime = true;
 
+    this.currentPage = 0;
+
+    //this is a workaround to catch mouseUp events
     this.observer = new Observer();
     this.observer.onNotify = function () {
-        console.log("clicked");
+        if (mouseX <= 400 && mouseY <= 300) {
+            console.log(spellMenuState.currentPage.spells[0]);
+        }
+        if (mouseX > 400 && mouseY <= 300) {
+            console.log(spellMenuState.currentPage.spells[1]);
+        }
+        if (mouseX <= 400 && mouseY > 300) {
+            console.log(spellMenuState.currentPage.spells[2]);
+        }
         if (mouseX > 400 && mouseY > 300) {
-            console.log("Lower right");
+            console.log(spellMenuState.currentPage.spells[3]);
         }
     }
     this.update = function () {
@@ -113,11 +125,56 @@ function SpellMenuState() {
         }
         if (holdH && okToInteract) {
             didInteraction();
-            announceBox.beginText("Help text");
+            announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school. \b You can upgrade your spells by battling and leveling up your character, Beam.");
+        }
+        if (holdS && okToInteract) {
+            didInteraction();
+            announceBox.beginText("Current level: " + player.level + " \b Current points to spend: " + player.skillpoints);
+        }
+        if (holdLeft && okToInteract) {
+            this.changePage("previous");
+        }
+        if (holdRight && okToInteract) {
+            this.changePage("next");
         }
     }
+
+    this.changePage = function (page) {
+        var toGo;
+        if (typeof page === "string") {
+            switch (page) {
+                case "next":
+                    toGo = this.currentPage.next;
+                    break;
+                case "previous":
+                    toGo = this.currentPage.previous;
+                    break;
+                default: console.log("Not a valid direction!");
+            }
+            if (typeof toGo === "undefined") {
+                console.log("There is no page there!");
+            }
+            else {
+                this.currentPage = toGo;
+                this.img = toGo.img;
+            }
+        }
+            //else, we assume "page" is an actual page object
+        else {
+            console.log("Not a string");
+            this.img = page.img;
+            this.currentPage = page;
+        }
+        didInteraction();
+    }
+
     this.enter = function () {
         mouseUpSubject.addObserver(this.observer);
+        this.changePage(page1);
+        if (firstTime) {
+            announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school \b You can upgrade your spells by battling and leveling up your character, Beam.");
+            firstTime = false;
+        }
     }
 }
 
@@ -127,6 +184,7 @@ var okToInteract = true;
 
 function OverworldState() {
 
+    var firstTime = true;
     this.img = mainRoomPic;
     this.music = 'SpellSpiel_Music_Open';
     this.currentRoom = 0;
@@ -257,9 +315,13 @@ function OverworldState() {
     this.enter = function () {
         if (endingBattle === true) { endingBattle = false; }
         if (typeof player !== "undefined") {
-            player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
+            if (firstTime) { player.setGraphics(walkingRightPic, 4, walkingCycleDuration); }
             if (typeof player.opponent != "undefined") { player.opponent.reset(); }
             player.position = this.currentRoom.spawnPoints.center;
+        }
+        if (firstTime) {
+            announceBox.beginText("Welcome to the Academy! \b To graduate, you must defeat every enemy outside the school grounds, through the big doorway near you. \b But first, take the time to chat with your classmates to prepare yourself!");
+            firstTime = false;
         }
         document.removeEventListener("keypress", keyPressed);//keypress == only character keys!
         document.addEventListener("keydown", keyDown); 

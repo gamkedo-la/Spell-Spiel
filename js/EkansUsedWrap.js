@@ -73,6 +73,8 @@ function MessageBox (x, y, options) {
 
     this.beginText = function (newText) {
         this.isAlive = true;
+        //currentLine = 0;
+        messageDone = false;
         text = newText;
         words = text.split(" ");
     }

@@ -21,6 +21,7 @@ function Character() { //"Character" == base class for anything that can fight
     var currentImg = 0;
     this.imgNumber = 1;
 
+    this.skillpoints = 0;
     //RELATED TO BATTLES
 
     //Eh, implement status effects later
@@ -125,7 +126,7 @@ function Character() { //"Character" == base class for anything that can fight
     //Called from clicking a button in skills menu
     this.upgradeSpell = function (spell) {
         spell.levelUp();
-        player.skillPoints--;
+        this.skillPoints--;
     };
 
     //Status effects
