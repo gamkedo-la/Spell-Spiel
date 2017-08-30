@@ -24,6 +24,7 @@ var lavaPic = document.createElement("img");
 
 var mainRoomPic = document.createElement("img");
 var hallwayPic = document.createElement("img");
+var lowerWallTransparentPic = document.createElement("img");
 
 //Spell VFX
 var fireballSheet = document.createElement("img");
@@ -77,6 +78,7 @@ function loadImages(){
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
         { varName: hallwayPic, theFile: "mainHallway.png" },
+        { varName: lowerWallTransparentPic, theFile: "lowerWallTransparent.png" },
 
         { varName: batPic, theFile: "bat.png" },
         { varName: zombiePic, theFile: "zombieIdle.png" }, //spritesheet animation

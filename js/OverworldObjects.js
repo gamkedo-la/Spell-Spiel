@@ -160,6 +160,14 @@ upperWall.img = {
     width: 200,
     height: 45,
 };
+
+var lowerWallTransparent = new WorldObject();
+lowerWallTransparent.position = {
+    x: 100,
+    y: 160,
+};
+lowerWallTransparent.img = lowerWallTransparentPic;
+
 ////////////////////              ROOMS              //////////////////////
 //Base class
 function Room() {
@@ -186,6 +194,7 @@ function Room() {
     this.triggerList = []; //to check triggers
     this.objectList = []; //to check collision
     this.toDraw = []; //to draw
+    this.toDrawOnTop = []; //player appears behind. only supports one or the other (place things so that player is either alwasys in front of always behind)
 
     var roomUp = null;
     var roomDown = null;
@@ -233,6 +242,9 @@ function Room() {
             obj.draw();
         })
         player.draw();
+        this.toDrawOnTop.forEach(function (obj) {
+            obj.draw();
+        })
     }
 }
 
@@ -246,9 +258,9 @@ mainRoom.toDraw = [marieTartine, guideNPC1, noStyleNPC];
 hallwayRoom = new Room();
 hallwayRoom.name = "Hallway";
 hallwayRoom.img = hallwayPic;
-hallwayRoom.objectList = [upperWall];
+hallwayRoom.objectList = [upperWall, lowerWallTransparent];
 hallwayRoom.triggerList = [];
-hallwayRoom.toDraw = [];
+hallwayRoom.toDrawOnTop = [lowerWallTransparent];
 
 //This is so not the best way to do this but DNDC: don't know don't care!
 mainRoom.leftRoom = hallwayRoom;

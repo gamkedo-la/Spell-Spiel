@@ -302,6 +302,7 @@ function OverworldState() {
         if (typeof player !== "undefined") {
             player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
             player.opponent.reset();
+            player.position = this.currentRoom.center;
         }
         document.removeEventListener("keypress", keyPressed);
         document.addEventListener("keydown", keyDown); //keypress == only character keys!
