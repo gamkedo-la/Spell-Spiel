@@ -22,6 +22,9 @@ var fillerPic = document.createElement("img");
 var battlePic = document.createElement("img");
 var lavaPic = document.createElement("img");
 
+var mainMenuPic = document.createElement("img");
+var spellMenuPic = document.createElement("img");
+
 var mainRoomPic = document.createElement("img");
 var hallwayPic = document.createElement("img");
 var lowerWallTransparentPic = document.createElement("img");
@@ -41,6 +44,7 @@ var stingPic = document.createElement("img");
 
 //Other
 var pokeboxPic = document.createElement("img");
+var announceBoxPic = document.createElement("img");
 var bubbleBoxPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
@@ -74,7 +78,9 @@ function loadImages(){
         { varName: noStyleNPCPic, theFile: "noStyleNPC.png" },
 
         { varName: fillerPic, theFile: "pommier3.png" },
-        { varName: battlePic, theFile: "canyon_of_the_castle.png" }, // was bgResized.png
+        { varName: mainMenuPic, theFile: "mainMenu.png" },
+        { varName: spellMenuPic, theFile: "upgradeMenu.png" },
+        { varName: battlePic, theFile: "canyon_of_the_castle.png" },
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
         { varName: hallwayPic, theFile: "mainHallway.png" },
@@ -99,6 +105,7 @@ function loadImages(){
         { varName: stingPic, theFile: "sting.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
+        { varName: announceBoxPic, theFile: "announceBox.png" },
         { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }
     ]
 

@@ -297,3 +297,15 @@ zaWarudo = new ZaWarudo();
 //Fills the spot when no spell selected
 noSpell = new Spell();
 noSpell.name = "No spell";
+
+//Page setups for menu
+var page1 = {
+    spells: [pyroblast, iceSpike, lightning, shield1],
+    img : spellMenuPic
+}
+var page2 = {
+    spells: [toxicCloud, lifeDrain, noSpell, noSpell],
+    img: lavaPic
+}
+page1.next = page2;
+page2.previous = page1;

@@ -11,6 +11,7 @@ function GameController() {
 
     this.changeState = function (state) {
         if (typeof state !== "undefined") {
+            didInteraction();
             if (state_) { var sameMusic = state.music === state_.music; }
             if (state_ && Sound.isPlaying(state_.music) && !sameMusic) {
                 Sound.stop(state_.music);
@@ -60,118 +61,130 @@ function GameController() {
     this.changeState(defaultState); //Initialize at default
 }
 
-function BattleState() {
-
-    this.battleType = "Gauntlet";
-    this.img = battlePic;
+function MainMenuState() {
+    this.img = mainMenuPic;
     this.music = "SpellSpiel_Battle";
 
-    this.update = function ()
-    {
-        spellTimeLapse();
-        rechargeAllExceptCurrent();
-        player.checkState();
-        updateCycles();
-        player.opponent.updateAttack();
+    this.update = function () {
+        clearScreen(); //All this is drawn on the small canvas...
         this.handleInput();
-
-        clearScreen(); //Everything under this is drawn on the small canvas...
-        drawBothBattle();
-        drawParticles();
-
-        updateScreenshake();
-        updateParticles();
-        updateDamage();
-
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
-        this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
-        this.endCheck(); //Check if battle is over
+    }
+    this.handleInput = function () {
+       
+        if (holdP && okToInteract) {
+            gameController.changeState(overworldState);
+        }
+        if (holdS && okToInteract) {
+            gameController.changeState(spellMenuState);
+        }
+        if (holdC && okToInteract) {
+            didInteraction();
+            console.log("Credits");
+        }
+    }
+    this.enter = function () {
+    }
+}
 
-        resetKeypress();
-    };
+function SpellMenuState() {
+    this.img = spellMenuPic;
+    this.music = "SpellSpiel_Battle";
+    var firstTime = true;
 
-    this.currentSpell = "";
-    this.lastLen = 0;
+    this.currentPage = 0;
+
+    //this is a workaround to catch mouseUp events
+    this.observer = new Observer();
+    this.observer.onNotify = function () {
+        if (mouseX <= 400 && mouseY <= 300) {
+            console.log(spellMenuState.currentPage.spells[0]);
+        }
+        if (mouseX > 400 && mouseY <= 300) {
+            console.log(spellMenuState.currentPage.spells[1]);
+        }
+        if (mouseX <= 400 && mouseY > 300) {
+            console.log(spellMenuState.currentPage.spells[2]);
+        }
+        if (mouseX > 400 && mouseY > 300) {
+            console.log(spellMenuState.currentPage.spells[3]);
+        }
+    }
+    this.update = function () {
+        clearScreen(); //All this is drawn on the small canvas...
+        this.handleInput();
+        drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
+        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        updateMessages();
+    }
     this.handleInput = function () {
 
-        if (this.currentSpell === ""){
-            player.isCasting = false;
-            player.picToChange = true;
+        if (holdM && okToInteract) {
+            mouseUpSubject.removeObserver(this.observer);
+            gameController.changeState(mainMenuState);
         }
-
-        if(keyPressed.data.length === 0) {
-            this.lastLen = 0;
-            return;
+        if (holdH && okToInteract) {
+            didInteraction();
+            announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school. \b You can upgrade your spells by battling and leveling up your character, Beam.");
         }
+        if (holdS && okToInteract) {
+            didInteraction();
+            announceBox.beginText("Current level: " + player.level + " \b Current points to spend: " + player.skillpoints);
+        }
+        if (holdLeft && okToInteract) {
+            this.changePage("previous");
+        }
+        if (holdRight && okToInteract) {
+            this.changePage("next");
+        }
+    }
 
-        if(keyPressed.data.length === this.lastLen) return;
-        this.lastLen++;
-
-        // Checks if the pressed key is in the alphabet. If it is, we query the trie
-        // Non-letter input can be used for pausing, etc.
-        var key = String.fromCharCode(keyPressed.data[keyPressed.data.length - 1]);
-        if(key.match(/[a-z ]/i)) {
-            var completion = spellTrie.autoComplete(this.currentSpell + key);
-            if (completion.length) {
-                completion = completion[0];
-                this.currentSpell += key;
-                var progress = player.currentSpell.progress;
-                player.changeSpell(player.availableSpells[completion]);
-                player.currentSpell.catchUp(progress);
-                player.currentSpell.updateResults(true);
-                resetKeypress();
-            } else {
-                // Play a sound, do not advance
-                if(player.currentSpell.name != "No spell") {
-                    player.currentSpell.updateResults(false);
-                    console.log(player.currentSpell.numWrong);
-                }
+    this.changePage = function (page) {
+        var toGo;
+        if (typeof page === "string") {
+            switch (page) {
+                case "next":
+                    toGo = this.currentPage.next;
+                    break;
+                case "previous":
+                    toGo = this.currentPage.previous;
+                    break;
+                default: console.log("Not a valid direction!");
             }
-        } else {
-            // Pausing, other input?
-        }
-
-        if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
-            return;
-        }
-        if (this.currentSpell != "") {
-            player.isCasting = true;
-            if (this.currentSpell.length == 1) {
-                player.picToChange = true;
+            if (typeof toGo === "undefined") {
+                console.log("There is no page there!");
+            }
+            else {
+                this.currentPage = toGo;
+                this.img = toGo.img;
             }
         }
-        };
-
-
-    this.endCheck = function () {
-        if (player.hp == 0 || player.opponent.hp == 0) {
-            resetAllParticles();
-            gameController.changeState(battleEndState);
+            //else, we assume "page" is an actual page object
+        else {
+            console.log("Not a string");
+            this.img = page.img;
+            this.currentPage = page;
         }
-    };
+        didInteraction();
+    }
 
-    this.drawOnScaled = function () {
-        player.drawScaled(); //UI text for each character
-        player.opponent.drawScaled();
-        drawSpell(player.currentSpell);
-    };
     this.enter = function () {
-        console.log("Entered battle");
-        document.removeEventListener("keydown", keyDown);
-        document.addEventListener("keypress", keyPressed); //keypress == only character keys!
-
-        player.position.x = 40;
-        player.position.y = 125;
-
-    };
+        mouseUpSubject.addObserver(this.observer);
+        this.changePage(page1);
+        if (firstTime) {
+            announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school \b You can upgrade your spells by battling and leveling up your character, Beam.");
+            firstTime = false;
+        }
+    }
 }
 
 var interactDelay = 0;
-var interactDelayReset = 30;
+var interactDelayReset = 10;
 var okToInteract = true;
 
 function OverworldState() {
 
+    var firstTime = true;
     this.img = mainRoomPic;
     this.music = 'SpellSpiel_Music_Open';
     this.currentRoom = 0;
@@ -180,7 +193,6 @@ function OverworldState() {
         clearScreen(); //All this is drawn on the small canvas...
         this.handleInput();
         player.move();
-        updateInteractionDelay(); //after interacting with stuff, gives a few frames of breathing room so as to not interact again immediately
         checkForRoomChange();
         this.currentRoom.makeColliders();
         this.currentRoom.checkCollisions();
@@ -245,11 +257,14 @@ function OverworldState() {
             player.resetTickAndImg();
         }
         if (hold1) {
-            pokebox.beginText("This will be the NPC/game text used by my super duper text wrapping code! You can even \n skip lines, adjust padding, and much more! :) \n \n stuff stuff stuff \n");
+            announceBox.beginText("UNLOCKED PYROBLAST!");
         }
         if (hold2) {
             //overworldState.changeRoom("left");
             //bubblebox.beginText("Here's another example using Comic Sans (lol) and a little thought bubble that could be used in an RPG, or with multiple boxes alive at the same time. I hope some of you will find this sytem useful once it's finished (ie not buggy)");
+        }
+        if (holdP && okToInteract) {
+            gameController.changeState(mainMenuState);
         }
     };
 
@@ -300,22 +315,125 @@ function OverworldState() {
     this.enter = function () {
         if (endingBattle === true) { endingBattle = false; }
         if (typeof player !== "undefined") {
-            player.setGraphics(walkingRightPic, 4, walkingCycleDuration);
-            player.opponent.reset();
-            player.position = this.currentRoom.center;
+            if (firstTime) { player.setGraphics(walkingRightPic, 4, walkingCycleDuration); }
+            if (typeof player.opponent != "undefined") { player.opponent.reset(); }
+            player.position = this.currentRoom.spawnPoints.center;
         }
-        document.removeEventListener("keypress", keyPressed);
-        document.addEventListener("keydown", keyDown); //keypress == only character keys!
+        if (firstTime) {
+            announceBox.beginText("Welcome to the Academy! \b To graduate, you must defeat every enemy outside the school grounds, through the big doorway near you. \b But first, take the time to chat with your classmates to prepare yourself!");
+            firstTime = false;
+        }
+        document.removeEventListener("keypress", keyPressed);//keypress == only character keys!
+        document.addEventListener("keydown", keyDown); 
     };
 }
 
-var battleState = new BattleState();
-var overworldState = new OverworldState();
-//var defaultState = battleState;
-var defaultState = overworldState;
-var gameController = new GameController();
-
 var endingBattle = false;
+
+function BattleState() {
+
+    this.battleType = "Gauntlet";
+    this.img = battlePic;
+    this.music = "SpellSpiel_Battle";
+
+    this.update = function () {
+        spellTimeLapse();
+        rechargeAllExceptCurrent();
+        player.checkState();
+        updateCycles();
+        player.opponent.updateAttack();
+        this.handleInput();
+
+        clearScreen(); //Everything under this is drawn on the small canvas...
+        drawBothBattle();
+        drawParticles();
+
+        updateScreenshake();
+        updateParticles();
+        updateDamage();
+
+        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+        this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
+        this.endCheck(); //Check if battle is over
+
+        resetKeypress();
+    };
+
+    this.currentSpell = "";
+    this.lastLen = 0;
+    this.handleInput = function () {
+
+        if (this.currentSpell === "") {
+            player.isCasting = false;
+            player.picToChange = true;
+        }
+
+        if (keyPressed.data.length === 0) {
+            this.lastLen = 0;
+            return;
+        }
+
+        if (keyPressed.data.length === this.lastLen) return;
+        this.lastLen++;
+
+        // Checks if the pressed key is in the alphabet. If it is, we query the trie
+        // Non-letter input can be used for pausing, etc.
+        var key = String.fromCharCode(keyPressed.data[keyPressed.data.length - 1]);
+        if (key.match(/[a-z ]/i)) {
+            var completion = spellTrie.autoComplete(this.currentSpell + key);
+            if (completion.length) {
+                completion = completion[0];
+                this.currentSpell += key;
+                var progress = player.currentSpell.progress;
+                player.changeSpell(player.availableSpells[completion]);
+                player.currentSpell.catchUp(progress);
+                player.currentSpell.updateResults(true);
+                resetKeypress();
+            } else {
+                // Play a sound, do not advance
+                if (player.currentSpell.name != "No spell") {
+                    player.currentSpell.updateResults(false);
+                    console.log(player.currentSpell.numWrong);
+                }
+            }
+        } else {
+            // Pausing, other input?
+        }
+
+        if (player.currentSpell.name == "No spell") { //Do nothing if no spell selected
+            return;
+        }
+        if (this.currentSpell != "") {
+            player.isCasting = true;
+            if (this.currentSpell.length == 1) {
+                player.picToChange = true;
+            }
+        }
+    };
+
+
+    this.endCheck = function () {
+        if (player.hp == 0 || player.opponent.hp == 0) {
+            resetAllParticles();
+            gameController.changeState(battleEndState);
+        }
+    };
+
+    this.drawOnScaled = function () {
+        player.drawScaled(); //UI text for each character
+        player.opponent.drawScaled();
+        drawSpell(player.currentSpell);
+    };
+    this.enter = function () {
+        console.log("Entered battle");
+        document.removeEventListener("keydown", keyDown);
+        document.addEventListener("keypress", keyPressed); //keypress == only character keys!
+
+        player.position.x = 40;
+        player.position.y = 125;
+
+    };
+}
 
 function BattleEndState() {
 
@@ -393,7 +511,6 @@ function BattleEndState() {
 
     };
 }
-battleEndState = new BattleEndState();
 
 function EndgameState() {
 
@@ -417,23 +534,14 @@ function EndgameState() {
         return;
     };
 }
-endgameState = new EndgameState();
-
-function updateCycles() {
-    if (player.cycleImage) {
-        player.cycleTick();
-    }
-    if (player.opponent) {
-        if (player.opponent.cycleImage) {
-            player.opponent.cycleTick();
-        }
-    }
-}
-
-function resetBattle() {
-    particles = [];
-    msgOnDisplay = [];
-    braceYourselves = [];
-}
 
 allBackgrounds = [battlePic, lavaPic];
+
+var battleState = new BattleState();
+var overworldState = new OverworldState();
+var battleEndState = new BattleEndState();
+var endgameState = new EndgameState();
+var mainMenuState = new MainMenuState();
+var spellMenuState = new SpellMenuState();
+var defaultState = mainMenuState;
+var gameController = new GameController();

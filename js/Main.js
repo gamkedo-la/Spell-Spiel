@@ -8,7 +8,8 @@ var deltaTime;
 var spellTrie;
 
 var pauseState = false;
-var bufferFrames = 5;
+var bufferBoost = 5;
+var bufferFrames = bufferBoost;
 
 const ORIG_WORLD_W = 200;
 const ORIG_WORLD_H = 150;
@@ -62,10 +63,11 @@ function imageLoadingDoneSoStartGame() {
 }
 
 function updateAll() {
+    clicked = false;
+    updateInteractionDelay();
     if (!pauseState) {
         gameController.update();
-        }
-    bufferFrames--;
+        }/*
     if (holdP && bufferFrames <= 0) {
         pauseState = !pauseState;
         bufferFrames = 5;
@@ -75,16 +77,11 @@ function updateAll() {
             colorText("P A U S E D", scaledCanvas.width / 2, 200, "blue");
             scaledContext.textAlign = "left";
         }
-    }
-}
-
-function moveAll() {
-
+    }*/
 }
 
 function clearScreen() {
 
-    //colorRect(0, 0, scaledCanvas.width, scaledCanvas.height, "orange"); //In update!
     canvasContext.drawImage(gameController.getBackground(), 0, 0);
 }
 function resetFont(){
@@ -119,6 +116,16 @@ function updateDamage() {
         }
     });
 }
+function updateCycles() {
+    if (player.cycleImage) {
+        player.cycleTick();
+    }
+    if (player.opponent) {
+        if (player.opponent.cycleImage) {
+            player.opponent.cycleTick();
+        }
+    }
+}
 
 function updateInteractionDelay() {
     interactDelay--;
@@ -135,6 +142,11 @@ function spellTimeLapse() {
     currentTime = date.getTime();
     deltaTime = currentTime - lastTime;
     player.currentSpell.timeElapsed += deltaTime;
+}
+function resetBattle() {
+    particles = [];
+    msgOnDisplay = [];
+    braceYourselves = [];
 }
 function resetSpellWindows() {
     console.log("Resetting");

@@ -7,6 +7,10 @@ const KEY_DOWN_ARROW = 40;
 const KEY_1 = 49;
 const KEY_2 = 50;
 const KEY_P = 80;
+const KEY_S = 83;
+const KEY_C = 67;
+const KEY_M = 77;
+const KEY_H = 72;
 
 var holdLeft = false;
 var holdRight = false;
@@ -16,12 +20,16 @@ var holdSpacebar = false;
 var holdEnter = false;
 var hold1 = false;
 var hold2 = false;
+var holdS = false;
+var holdC = false;
 var holdP = false;
+var holdM = false;
+var holdH = false;
 
 var mouseX = 0;
 var mouseY = 0;
 
-
+var clicked = false;
 var pressedKey = false;
 
 var keyPressed = function (evt) {
@@ -47,8 +55,10 @@ function resetKeypress() {
 function setupInput(){
 
     keyPressed.data = [];
-    //scaledCanvas.addEventListener('mousemove', updateMousePos);
+    scaledCanvas.addEventListener('mousemove', updateMousePos);
+    document.addEventListener("keydown", keyDown);
     document.addEventListener("keyup", keyUp);
+    document.addEventListener("mouseup", mouseUp);
 }
 
 function updateMousePos(evt) {
@@ -57,6 +67,13 @@ function updateMousePos(evt) {
 
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
+    //console.log(mouseX, mouseY);
+}
+
+
+mouseUpSubject = new Subject();
+function mouseUp() {
+    mouseUpSubject.notify();
 }
 
 function setKeyHoldState(thisKey, setTo) {
@@ -84,8 +101,20 @@ function setKeyHoldState(thisKey, setTo) {
     if (thisKey === KEY_2) {
         hold2 = setTo;
     }
+    if (thisKey === KEY_C) {
+        holdC = setTo;
+    }
+    if (thisKey === KEY_S) {
+        holdS = setTo;
+    }
     if (thisKey === KEY_P) {
         holdP = setTo;
+    }
+    if (thisKey === KEY_M) {
+        holdM = setTo;
+    }
+    if (thisKey === KEY_H) {
+        holdH = setTo;
     }
 }
 

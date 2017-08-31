@@ -50,16 +50,16 @@ marieTartine.name = "Marie-Tartine";
 marieTartine.currentMessage = 0;
 marieTartine.position = {
     x: 30,
-    y: 100,
+    y: 90,
 };
 marieTartine.img = marieTartinePic;
 marieTartine.spellUnlocked = false;
 
 marieTartine.onTrigger = function () {
-    if (holdEnter && !pokebox.isAlive && okToInteract) {
+    if (holdEnter && !messageActive && okToInteract) {
         pokebox.subject.addObserver(this.observer);
         if (this.currentMessage == 0) {
-            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! The Academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
+            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! The Academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! \b Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
@@ -98,7 +98,7 @@ guideNPC1.position = {
 };
 guideNPC1.img = guideNPC1Pic;
 guideNPC1.onTrigger = function () {
-    if (holdEnter && !pokebox.isAlive && okToInteract) {
+    if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage == 0) {
             pokebox.beginText(this.name + ": " + "In battle, it's important to keep focusing on your spellcast. If you don't complete your incantation fast enough, it'll fail! Not only that, when you do cast your spell, you'll have less time for the next cast. You have to mix it up and let your spells recharge! \b If you want to practice, pretty sure the Academy has a training room somewhere around here...");
             this.currentMessage++;
@@ -117,7 +117,7 @@ noStyleNPC.position = {
 var completedTraining = true;
 noStyleNPC.img = noStyleNPCPic;
 noStyleNPC.onTrigger = function () {
-    if (holdEnter && !pokebox.isAlive && okToInteract) {
+    if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
             pokebox.beginText(this.name + ": "+ "People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat an enemy in the training facility.");
             this.currentMessage++;

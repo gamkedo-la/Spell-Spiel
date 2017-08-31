@@ -21,6 +21,7 @@ function Character() { //"Character" == base class for anything that can fight
     var currentImg = 0;
     this.imgNumber = 1;
 
+    this.skillpoints = 0;
     //RELATED TO BATTLES
 
     //Eh, implement status effects later
@@ -30,7 +31,7 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.delayedDamage = []; //2D array with [framesLeft, dmg]
 
-    this.opponent = null;
+    this.opponent;
 
     this.reset = function () {
         this.hp = this.maxHP;
@@ -125,7 +126,7 @@ function Character() { //"Character" == base class for anything that can fight
     //Called from clicking a button in skills menu
     this.upgradeSpell = function (spell) {
         spell.levelUp();
-        player.skillPoints--;
+        this.skillPoints--;
     };
 
     //Status effects
@@ -140,10 +141,6 @@ function Character() { //"Character" == base class for anything that can fight
     this.move = function () {
         this.position.x += this.speedX;
         this.position.y += this.speedY;
-        if (this.collider != undefined) {
-            //this.collider.position.x += this.speedX;
-            //this.collider.position.y += this.speedY;
-        }
     }
     this.moveBack = function () {
         this.position.x -= this.speedX;
