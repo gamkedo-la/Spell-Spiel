@@ -21,15 +21,16 @@ function Enemy() {
     var lastTimer = startingTimer;
 
     this.drawBattle = function () {
-        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");
-        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
-        if (typeof this.chosenOne !== "undefined") { colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y, (this.untilNextAttack / lastTimer) * 30, 5, "green"); }
+        colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 44), 61, 41, "#e0ffff");
+        colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 43), 59, 39, "#4d004d");
+        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (47), 30, 5, "black");
+        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (47), (this.hp / this.maxHP) * 30, 5, "red");
+        if (typeof this.chosenOne !== "undefined") { colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (42), (this.untilNextAttack / lastTimer) * 30, 5, "teal"); }
     }
 
     this.updateAttack = function () {
         if (typeof this.chosenOne === "undefined") { this.chooseAttack();}
         this.untilNextAttack--;
-        console.log(this.untilNextAttack);
         if (this.untilNextAttack < 0) {
             this.untilNextAttack = 0; //safety
         }

@@ -86,15 +86,17 @@ function Character() { //"Character" == base class for anything that can fight
         return;
     };
     this.drawScaled = function () { //On scaled canvas
-        colorText("HP: " + this.hp, (this.position.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 10) * PIXEL_SCALE_UP, "red");
+
+        colorText("HP: " + this.hp, (this.position.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 30) * PIXEL_SCALE_UP, "red");
         if (this.shieldHP !== 0) {
             colorText("Shield: " + this.shieldHP, (this.position.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
         }
-        colorText(this.name, (this.position.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 45) * PIXEL_SCALE_UP, "orange");
+        colorText(this.name, (this.position.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 55) * PIXEL_SCALE_UP, "orange");
 
         if (typeof this.chosenOne !== "undefined") {
-            console.log(typeof this.chosenOne);
-            colorText("Next: " + this.chosenOne.name, 400, 550, "orange");
+            colorRectScaled(395, 520, 405, 70, "#e63900");
+            colorRectScaled(400, 525, 395, 60, "#660000");
+            colorText("Next: " + this.chosenOne.name, 405, 570, "#e63900");
         }
     };
 
@@ -190,9 +192,11 @@ function Player() { //Defines the player object
     this.currentSpell = noSpell;
 
     this.drawBattle = function () {
-        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");
-        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
-        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (32), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
+        colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 44), 61, 41, "#e0ffff");
+        colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 43), 59, 39, "#4d004d");
+        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (47), 30, 5, "black");
+        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (47), (this.hp / this.maxHP) * 30, 5, "red");
+        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (42), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
     };
     var idleBattleCycleDuration = 30;
     //This is the replacement of the state machine that the main character would get if it was really needed. Changes his animations depending on situations
