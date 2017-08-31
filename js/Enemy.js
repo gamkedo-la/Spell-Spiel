@@ -131,8 +131,21 @@ ghostChicken.strongAttacks = [waterSquirt];
 ghostChicken.weakShields = [];
 ghostChicken.combineAllAttacks();
 
+//6th enemy in gauntlet
+var eyeMonster = new Enemy();
+eyeMonster.name = "Wiggly Cornea";
+eyeMonster.imgNumber = 8;
+eyeMonster.cycleImage = true;
+eyeMonster.img = eyeMonsterPic;
+eyeMonster.cycleDuration = 5;
+eyeMonster.weakAttacks = [sting];
+eyeMonster.mediumAttacks = [];
+eyeMonster.strongAttacks = [waterSquirt];
+eyeMonster.weakShields = [];
+eyeMonster.combineAllAttacks();
+
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
-var gauntletOrder = [bat, jellyfish, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
+var gauntletOrder = [eyeMonster, bat, jellyfish, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken]; //to use in random battles
