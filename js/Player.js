@@ -90,7 +90,12 @@ function Character() { //"Character" == base class for anything that can fight
         if (this.shieldHP !== 0) {
             colorText("Shield: " + this.shieldHP, (this.position.x - (this.img.width / this.imgNumber) / 2) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 20) * PIXEL_SCALE_UP, "white");
         }
-        colorText(this.name, (this.position.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.position.y - this.img.height -45) * PIXEL_SCALE_UP, "orange");
+        colorText(this.name, (this.position.x - (this.img.width / this.imgNumber) / 2 - 15) * PIXEL_SCALE_UP, (this.position.y - this.img.height - 45) * PIXEL_SCALE_UP, "orange");
+
+        if (typeof this.chosenOne !== "undefined") {
+            console.log(typeof this.chosenOne);
+            colorText("Next: " + this.chosenOne.name, 400, 550, "orange");
+        }
     };
 
     this.cycleTick = function () {

@@ -14,32 +14,40 @@ function Enemy() {
     this.maxHP = 200;
     this.hp = this.maxHP;
     this.expGiven = 0;
-    this.chosenOne = noSpell; //the attack that will be used, as determined by AI
+    this.chosenOne; //the attack that will be used, as determined by AI
 
     this.untilNextAttack = 100; //frames
+    var startingTimer = 100; //before the first enemy attack
+    var lastTimer = startingTimer;
 
     this.drawBattle = function () {
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), 30, 5, "black");
-        colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
+        colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (37), (this.hp / this.maxHP) * 30, 5, "red");
+        if (typeof this.chosenOne !== "undefined") { colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y, (this.untilNextAttack / lastTimer) * 30, 5, "green"); }
     }
 
     this.updateAttack = function () {
+        if (typeof this.chosenOne === "undefined") { this.chooseAttack();}
         this.untilNextAttack--;
+        console.log(this.untilNextAttack);
         if (this.untilNextAttack < 0) {
             this.untilNextAttack = 0; //safety
         }
         if (this.untilNextAttack === 0) {
-            this.chooseAttack();
+            //if (typeof this.chosenOne === "undefined") { this.chooseAttack();} //in case no attack was chosen previously
             if (this.chosenOne.type === "Attack") { this.chosenOne.cast(this.opponent); }
             else if (this.chosenOne.type === "Shield" || "Buff") { this.chosenOne.cast(this); }
             this.untilNextAttack += this.chosenOne.untilNext;
+            this.chooseAttack(); //pick the next one
             console.log("Attack: " + this.chosenOne.name);
+
         }
     }
 
     this.chooseAttack = function () {
         var random = Math.random();
         var index = 0;
+        if (typeof this.chosenOne !== "undefined") { lastTimer = this.chosenOne.untilNext; }
         if (player.hp < player.maxHP * 0.2 && this.weakAttacks.length != 0) {
             index = Math.floor(Math.random() * this.weakAttacks.length);
             this.chosenOne = this.weakAttacks[index];

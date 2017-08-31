@@ -297,6 +297,7 @@ zaWarudo = new ZaWarudo();
 //Fills the spot when no spell selected
 noSpell = new Spell();
 noSpell.name = "No spell";
+noSpell.untilNext = 0;
 
 //Page setups for menu
 var page1 = {

@@ -76,7 +76,7 @@ Sting.prototype = new Spell();
 sting = new Sting();
 
 function WaterSquirt() {
-    this.name = "Water Gun";
+    this.name = "Water Squirt";
     this.type = "Attack";
     this.particle = waterSquirtParty;
     this.power = 75;
