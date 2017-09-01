@@ -3,71 +3,143 @@ function Enemy() {
 
     this.position.x = 155;
     this.position.y = 125;
-    this.img = batPic;
+    this.img = fillerPic;
 
     this.allAttacks = [];
     this.weakAttacks = [];
     this.mediumAttacks = [];
     this.strongAttacks = [];
+
     this.weakShields = [];
+    this.mediumShields = [];
+    this.strongShields = [];
+
+    this.weakBuffs = [];
+    this.mediumBuffs = [];
+    this.strongBuffs = [];
 
     this.maxHP = 200;
     this.hp = this.maxHP;
     this.expGiven = 0;
     this.chosenOne; //the attack that will be used, as determined by AI
 
-    this.untilNextAttack = 100; //frames
-    var startingTimer = 100; //before the first enemy attack
-    var lastTimer = startingTimer;
+    this.untilAttack = 200; //frames
+    var lastAttack;
+    this.goodChoiceMade = false; //good choice == not randomized because I didn't have the attack I wanted
 
     this.drawBattle = function () {
         colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 44), 61, 41, "#e0ffff");
         colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 43), 59, 39, "#4d004d");
         colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (47), 30, 5, "black");
         colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (47), (this.hp / this.maxHP) * 30, 5, "red");
-        if (typeof this.chosenOne !== "undefined") { colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (42), (this.untilNextAttack / lastTimer) * 30, 5, "teal"); }
+        if (typeof this.chosenOne !== "undefined") { colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (42), (this.untilAttack / this.chosenOne.castTime) * 30, 5, "teal"); }
     }
 
     this.updateAttack = function () {
         if (typeof this.chosenOne === "undefined") { this.chooseAttack();}
-        this.untilNextAttack--;
-        if (this.untilNextAttack < 0) {
-            this.untilNextAttack = 0; //safety
+        this.untilAttack--;
+        if (this.untilAttack < 0) {
+            this.untilAttack = 0; //safety
         }
-        if (this.untilNextAttack === 0) {
+        if (this.untilAttack === 0) {
             //if (typeof this.chosenOne === "undefined") { this.chooseAttack();} //in case no attack was chosen previously
             if (this.chosenOne.type === "Attack") { this.chosenOne.cast(this.opponent); }
             else if (this.chosenOne.type === "Shield" || "Buff") { this.chosenOne.cast(this); }
-            this.untilNextAttack += this.chosenOne.untilNext;
             this.chooseAttack(); //pick the next one
-            console.log("Attack: " + this.chosenOne.name);
-
+            this.untilAttack += this.chosenOne.castTime;
         }
     }
 
     this.chooseAttack = function () {
         var random = Math.random();
         var index = 0;
-        if (typeof this.chosenOne !== "undefined") { lastTimer = this.chosenOne.untilNext; }
-        if (player.hp < player.maxHP * 0.2 && this.weakAttacks.length != 0) {
-            index = Math.floor(Math.random() * this.weakAttacks.length);
-            this.chosenOne = this.weakAttacks[index];
+        this.goodChoiceMade = false;
+        //if (typeof this.chosenOne !== "undefined") { lastTimer = this.chosenOne.castTime; } //for the countdown bar
+
+
+            //The player's low! Gonna use weak attacks to finish him!
+        if (player.hp < player.maxHP * 0.2 && player.shieldHP === 0) {
+            this.chosenOne = this.pickRandom("Weak", "Attack");
         }
-        else if (player.hp > player.maxHP * 0.8 && this.strongAttacks.length != 0) {
-            index = Math.floor(Math.random() * this.strongAttacks.length);
-            this.chosenOne = this.strongAttacks[index];
+            //I'm low! Gonna use a shield!
+        else if (this.hp < this.maxHP * 0.5 && this.shieldHP === 0) {
+            this.chosenOne = this.pickRandom("Strong", "Shield");
         }
-        else if (this.hp < this.maxHP * 0.5 && this.weakShields.length != 0 && this.shieldHP===0) {
-            index = Math.floor(Math.random() * this.weakShields.length);
-            this.chosenOne = this.weakShields[index];
+            //The player is using a shield! No point in attacking; gonna buff myself
+        else if (player.shieldHP >= player.maxHP * 0.4) {
+            this.chosenOne = this.pickRandom("Medium", "Buff");
         }
-        //screw it, I'll pick a random attack
+            //I have high HP, I can cast a strong attack safely
+        else if (this.hp >= this.maxHP * 0.8) {
+            this.chosenOne = this.pickRandom("Strong", "Attack");
+        }
+            //The player's health is high. Strong buffs are worth investing in right now
+        else if (player.hp > player.maxHP * 0.8) {
+            this.chosenOne = this.pickRandom("Strong", "Buff");
+        }
+
+            //screw it, I'll pick a random attack
         else {
             console.log("Chose random");
-            var index = Math.floor(Math.random() * this.allAttacks.length);
-            this.chosenOne = this.allAttacks[index];
+            this.chosenOne = this.pickRandom();
         }
     }
+    this.pickRandom = function (strength, type) {
+        var index;
+        var random = Math.random();
+        var toPick;
+        switch (strength) {
+
+            case "Strong":
+                switch (type) {
+                    case "Attack":
+                        toPick = this.strongAttacks;
+                        break;
+                    case "Shield":
+                        toPick = this.strongShields;
+                        break;
+                    case "Buff":
+                        toPick = this.strongBuffs;
+                }
+                if (toPick.length === 0) {
+                    console.log("Empty");
+                    strength = "Medium";
+                }
+                else { break; }
+
+            case "Medium":
+                switch (type) {
+                    case "Attack":
+                        toPick = this.mediumAttacks;
+                    case "Shield":
+                        toPick = this.mediumShields;
+                        break;
+                    case "Buff":
+                        toPick = this.mediumBuffs;
+                }
+                if (toPick.length === 0) { strength = "Weak"; }
+                else { break; }
+
+            case "Weak":
+                switch (type) {
+                    case "Attack":
+                        toPick = this.weakAttacks;
+                        break;
+                    case "Shield":
+                        toPick = this.weakShields;
+                        break;
+                    case "Buff":
+                        toPick = this.weakBuffs;
+                        break;
+                }
+                if (toPick.length === 0) { toPick = this.allAttacks; }
+        }
+        if (typeof toPick === "undefined") { toPick = this.allAttacks; } //if no such attack, pick a random
+        else { this.goodChoiceMade = true; } //we've succesfully picked something not random (intentional randoms (not providing any arguments) is considered good)
+        index = Math.floor(Math.random() * toPick.length);
+        return toPick[index];
+    }
+
     this.combineAllAttacks = function () {
         this.allAttacks = this.weakAttacks.concat(this.mediumAttacks, this.strongAttacks, this.weakShields);
     }
@@ -148,9 +220,9 @@ eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
 eyeMonster.weakAttacks = [sting];
-eyeMonster.mediumAttacks = [];
+eyeMonster.mediumAttacks = [slash];
 eyeMonster.strongAttacks = [waterSquirt];
-eyeMonster.weakShields = [];
+eyeMonster.weakShields = [block];
 eyeMonster.combineAllAttacks();
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]

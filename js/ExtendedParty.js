@@ -51,6 +51,7 @@ function Particle() {
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
         particle = this;
         particles.push(particle);
+        console.log(particles);
         
     }
     
@@ -188,6 +189,17 @@ lifeDrainParty.spriteHeight = 32;
 lifeDrainParty.startX = 155;
 lifeDrainParty.destX = 40;
 lifeDrainParty.init();
+
+dispellParty = new Particle();
+dispellParty.frameCount = 28;
+dispellParty.particleFPS = 28;
+dispellParty.isMoving = false;
+dispellParty.spritesheet = dispellPic;
+dispellParty.spriteWidth = 32;
+dispellParty.spriteHeight = 32;
+dispellParty.startX = 155;
+dispellParty.startY = 110;
+dispellParty.init();
 
 //////////////////////////              Monster Attacks              //////////////////////////
 

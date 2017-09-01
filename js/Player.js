@@ -188,6 +188,7 @@ function Player() { //Defines the player object
         "Toxic Cloud": toxicCloud,
         "Life Drain": lifeDrain,
         "Za Warudo": zaWarudo,
+        "Dispell": dispell
     };
     this.currentSpell = noSpell;
 

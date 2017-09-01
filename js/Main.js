@@ -147,6 +147,7 @@ function resetBattle() {
     particles = [];
     msgOnDisplay = [];
     braceYourselves = [];
+    player.currentSpell = noSpell;
 }
 function resetSpellWindows() {
     console.log("Resetting");

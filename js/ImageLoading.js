@@ -42,6 +42,7 @@ var lifeDrainPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 var waterSquirtPic = document.createElement("img");
 var stingPic = document.createElement("img");
+var dispellPic = document.createElement("img");
 
 //Other
 var pokeboxPic = document.createElement("img");
@@ -105,6 +106,7 @@ function loadImages(){
         { varName: lifeDrainPic, theFile: "lifeDrain.png" },
         { varName: waterSquirtPic, theFile: "waterSquirt.png" },
         { varName: stingPic, theFile: "sting.png" },
+        { varName: dispellPic, theFile: "dispell.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
         { varName: announceBoxPic, theFile: "announceBox.png" },

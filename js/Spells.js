@@ -280,6 +280,23 @@ Shield1 = function () {
 Shield1.prototype = new Spell();
 shield1 = new Shield1();
 
+Dispell = function () {
+    this.name = "Dispell";
+    this.text = "Dispell";
+    this.type = "Attack";
+    this.maxPower = 0;
+    this.particle = dispellParty;
+
+    this.cast = function (target) {
+        //this.basicCast(target);
+        this.particle.party();
+        this.playSound();
+    };
+    this.reset();
+};
+Dispell.prototype = new Spell();
+dispell = new Dispell();
+
 ZaWarudo = function () {
     this.name = "Za Warudo";
     this.text = "Za Warudo";

@@ -5,7 +5,7 @@ function Bite() {
     this.type = "Attack";
     this.particle = biteParty;
     this.power = 50;
-    this.untilNext = 100;
+    this.castTime = 100;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -24,7 +24,7 @@ function Slash() {
     this.type = "Attack";
     this.particle = slashParty;
     this.power = 50;
-    this.untilNext = 100;
+    this.castTime = 100;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -43,7 +43,7 @@ function PoisonSpit() {
     this.type = "Attack";
     this.particle = poisonSpitParty;
     this.power = 20;
-    this.untilNext = 100;
+    this.castTime = 100;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -62,7 +62,7 @@ function Sting() {
     this.type = "Attack";
     this.particle = stingParty;
     this.power = 20;
-    this.untilNext = 100;
+    this.castTime = 100;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -80,7 +80,7 @@ function WaterSquirt() {
     this.type = "Attack";
     this.particle = waterSquirtParty;
     this.power = 75;
-    this.untilNext = 200;
+    this.castTime = 200;
 
     this.cast = function (target) {
         this.basicCast(target);
@@ -97,7 +97,7 @@ function Block() {
     this.name = "Block";
     this.type = "Shield";
     this.power = 25;
-    this.untilNext = 75;
+    this.castTime = 75;
 
     this.cast = function (target) {
         this.basicCast(target);

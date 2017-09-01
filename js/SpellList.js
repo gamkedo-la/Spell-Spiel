@@ -44,7 +44,14 @@ var spellList = `{
         "type": "Shield",
         "max_power": 250,
         "particles": ["fireball"]
-    },
+},
+    "Dispell": {
+        "name": "Dispell",
+        "text": "Dispell",
+        "type": "Special",
+        "max_power": 0,
+        "particles": ["dispell"]
+},
     "ZaWarudo": {
         "name": "Za Warudo",
         "text": "Za Warudo",
