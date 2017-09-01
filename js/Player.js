@@ -12,6 +12,10 @@ function Character() { //"Character" == base class for anything that can fight
 
     this.level = 1;
     this.shieldHP = 0;
+    this.attackMultiplier = 1; //fairly obvious. Buffs will not stack
+    this.defenseMultiplier = 1.8;
+    this.attackBuffRemaining = 0;
+    this.defenseBuffRemaining = 0;
 
     this.isCasting = false;
 
@@ -30,7 +34,7 @@ function Character() { //"Character" == base class for anything that can fight
     ];
 
     this.delayedDamage = []; //2D array with [framesLeft, dmg]
-    this.delayedEffect = []; //2D array with [framesLeft, method call]
+    this.delayedEffect = []; //2D array with [framesLeft, string]
 
     this.opponent;
 
@@ -42,10 +46,13 @@ function Character() { //"Character" == base class for anything that can fight
         }
         this.delayedDamage = [];
         this.delayedEffect = [];
+        this.resetBuffs();
         resetSpellWindows();
     };
     this.dealDamage = function (amount) {
         var toDeal;
+        //Change based on resist
+        amount = amount / this.defenseMultiplier;
         //Remove shield
         if (this.shieldHP != 0 && amount >=0 ) {
             toDeal = amount - this.shieldHP;
@@ -66,13 +73,19 @@ function Character() { //"Character" == base class for anything that can fight
         if (this.hp >= this.maxHP) {
             this.hp = this.maxHP;
         }
+        this.hp = Math.round(this.hp);
     };
     //effects need to take "this" as argument
-    this.updateEffect = function () {
+    this.updateEffects = function () {
         for (var i = 0; i < this.delayedEffect.length; i++) {
             this.delayedEffect[i][0]--; // -1 frame
             if (this.delayedEffect[i][0] <= 0) {
+                console.log(this.delayedEffect[i][1]);
                 switch (this.delayedEffect[i][1]) {
+                    case "Buff Attack 1.2":
+                        this.attackMultiplier = 1.2;
+                        this.attackBuffRemaining = 100;
+                        break;
                     case "castFailed":
                         console.log("Caliss, c'est plate");
                         this.castFailed();
@@ -82,6 +95,22 @@ function Character() { //"Character" == base class for anything that can fight
             };
         }
     };
+    this.updateBuffs = function () {
+        this.attackBuffRemaining--;
+        this.defenseBuffRemaining--;
+        if (this.attackBuffRemaining <= 0) {
+            this.attackMultiplier = 1;
+        }
+        if (this.defenseBuffRemaining <= 0) {
+            this.defenseMultiplier = 1;
+        }
+    }
+    this.resetBuffs = function () {
+        this.attackBuffRemaining = 0;
+        this.defenseBuffRemaining = 0;
+        this.attackMultiplier = 1;
+        this.defenseMultiplier = 1;
+    }
     //Graphics
     this.setGraphics = function (img, imgNumber, cycleDuration) {
         this.img = img;
@@ -204,6 +233,7 @@ function Player() { //Defines the player object
         "Protect": shield1,
         "Toxic Cloud": toxicCloud,
         "Life Drain": lifeDrain,
+        "Time to show this guy": getTilted,
         "Za Warudo": zaWarudo,
         "Dispell": dispell
     };

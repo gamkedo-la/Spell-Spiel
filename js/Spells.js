@@ -97,32 +97,25 @@ function Spell() {
         return; //To override in subclasses
     };
 
-    this.basicCast = function (target, extraDelayFrames, effect) { //Deal damage based on power
+    this.basicCast = function (target, multiplier, extraDelayFrames, effect) { //Deal damage based on power
 
         //effect is a string
+        if (typeof multiplier === "undefined") { multiplier = 1;}
         if (typeof extraDelayFrames === "undefined") { extraDelayFrames = 0 }
         //if (typeof effect === "undefined") { effect = 0;}
         if (this.type === "Attack") {
-            var dmgToPush = this.power;
+            var dmgToPush = this.power * multiplier;
             if (this.particle) {
                 target.delayedDamage.push([(this.particle.duration+extraDelayFrames) * 30 / 1000, dmgToPush]);
             }
             else { target.delayedDamage.push([0, dmgToPush]); }
         }
         if (this.type === "Shield") {
-            var toShield = this.power;
+            var toShield = this.power * multiplier;
             target.shieldHP = toShield;
         }
-        if (this.type === "Buff") { //To do
-            return;
-        }
-        if (this.type === "Special") {
-            //console.log(effect);
-            //var test = [funcToPush(effect),(durationInMS(this.particle.duration + extraDelayFrames))];
-            //console.log(test);
-
+        if (this.type === "Buff" || this.type === "Special") {
             target.delayedEffect.push([(durationInMS(this.particle.duration + extraDelayFrames)), effect]);
-            console.log(target.delayedEffect);
         }
     };
 
@@ -192,7 +185,7 @@ Pyroblast = function () {
     this.particle = fireballParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        this.basicCast(target);
+        this.basicCast(target, player.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
         //this.spawnParticles();
@@ -211,7 +204,7 @@ Lightning = function () {
     this.maxPower = 150;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
         this.spawnParticles(this.particle);
@@ -229,7 +222,7 @@ IceSpike = function () {
     this.maxPower = 50;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.attackMultiplier);
         screenshake(5, durationInMS(this.particle.duration))
         this.particle.party();
     };
@@ -246,7 +239,7 @@ ToxicCloud = function () {
     this.particle = toxicCloudParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        this.basicCast(target);
+        this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
         this.playSound();
         this.particle.party();
@@ -264,7 +257,7 @@ LifeDrain = function () {
     this.particle = lifeDrainParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
-        this.basicCast(target, -this.particle.duration);
+        this.basicCast(target, player.attackMultiplier, -this.particle.duration);
         screenshake(1, durationInMS(this.particle.duration));
         this.playSound();
         this.particle.party();
@@ -282,7 +275,7 @@ Shield1 = function () {
     this.maxPower = 100;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target); //shields don't get buffed (or they might get op)
         this.playSound();
     };
     this.reset();
@@ -298,7 +291,7 @@ Dispell = function () {
     this.particle = dispellParty;
 
     this.cast = function (target) {
-        this.basicCast(target,0, "castFailed");
+        this.basicCast(target, player.attackMultiplier, 0, "castFailed");
         this.particle.party();
         this.playSound();
     };
@@ -306,6 +299,24 @@ Dispell = function () {
 };
 Dispell.prototype = new Spell();
 dispell = new Dispell();
+
+GetTilted = function () {
+    this.name = "Get Tilted";
+    this.text = "Time to show this guy";
+    this.type = "Buff";
+    this.maxPower = 0;
+    this.particle = dispellParty;
+    this.MAX_CAST_WINDOW = 6500;
+
+    this.cast = function (target) {
+        this.basicCast(target, 1, 0, "Buff Attack 1.2");
+        this.particle.party();
+        this.playSound();
+    };
+    this.reset();
+}
+GetTilted.prototype = new Spell();
+getTilted = new GetTilted();
 
 ZaWarudo = function () {
     this.name = "Za Warudo";

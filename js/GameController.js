@@ -351,7 +351,8 @@ function BattleState() {
         updateScreenshake();
         updateParticles();
         updateDamage();
-        updateEffect();
+        updateEffects();
+        updateBuffs();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas

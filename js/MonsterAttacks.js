@@ -8,7 +8,7 @@ function Bite() {
     this.castTime = 100;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
         this.spawnParticles(this.particle);
@@ -27,7 +27,7 @@ function Slash() {
     this.castTime = 100;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         //target.isPoisoned();
         this.playSound();
@@ -46,7 +46,7 @@ function PoisonSpit() {
     this.castTime = 100;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         //target.isPoisoned();
         this.playSound();
@@ -65,7 +65,7 @@ function Sting() {
     this.castTime = 100;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         //target.isStung();
         this.playSound();
@@ -83,7 +83,7 @@ function WaterSquirt() {
     this.castTime = 200;
 
     this.cast = function (target) {
-        this.basicCast(target);
+        this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         this.playSound();
         this.spawnParticles(this.particle);

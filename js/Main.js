@@ -116,12 +116,16 @@ function updateDamage() {
         }
     });
 }
-function updateEffect() {
+function updateEffects() {
     //Update on player and enemy
-    player.updateEffect();
-    player.opponent.updateEffect();
+    player.updateEffects();
+    player.opponent.updateEffects();
 }
-
+function updateBuffs() {
+    //Update on player and enemy
+    player.updateBuffs();
+    player.opponent.updateBuffs();
+}
 function updateCycles() {
     if (player.cycleImage) {
         player.cycleTick();
