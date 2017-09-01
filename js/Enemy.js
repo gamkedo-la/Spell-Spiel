@@ -46,7 +46,7 @@ function Enemy() {
             if (this.chosenOne.type === "Attack") { this.chosenOne.cast(this.opponent); }
             else if (this.chosenOne.type === "Shield" || "Buff") { this.chosenOne.cast(this); }
             this.chooseAttack(); //pick the next one
-            this.untilAttack += this.chosenOne.castTime;
+            this.untilAttack = this.chosenOne.castTime;
         }
     }
 
@@ -139,12 +139,23 @@ function Enemy() {
         index = Math.floor(Math.random() * toPick.length);
         return toPick[index];
     }
-
+    this.castFailed = function () {
+        this.chooseAttack();
+        this.untilAttack = this.chosenOne.castTime; 
+    }
     this.combineAllAttacks = function () {
         this.allAttacks = this.weakAttacks.concat(this.mediumAttacks, this.strongAttacks, this.weakShields);
     }
 }
 Enemy.prototype = new Character();
+
+castFailed = function (enemy) {
+    if (typeof enemy.chosenOne === "undefined") {
+        console.log("Accessed");
+        enemy.chooseAttack();
+        enemy.untilAttack = enemy.chosenOne.castTime;
+    }
+}
 
 /////////////////////////////              Enemy creation                 ////////////////////////////////////
 

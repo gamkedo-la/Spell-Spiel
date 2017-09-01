@@ -51,7 +51,6 @@ function Particle() {
         nextTimestamp = (new Date()).getTime() + this.particleFrameMs;
         particle = this;
         particles.push(particle);
-        console.log(particles);
         
     }
     

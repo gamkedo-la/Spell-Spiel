@@ -30,6 +30,7 @@ function Character() { //"Character" == base class for anything that can fight
     ];
 
     this.delayedDamage = []; //2D array with [framesLeft, dmg]
+    this.delayedEffect = []; //2D array with [framesLeft, method call]
 
     this.opponent;
 
@@ -40,6 +41,7 @@ function Character() { //"Character" == base class for anything that can fight
             currentImg = 0;
         }
         this.delayedDamage = [];
+        this.delayedEffect = [];
         resetSpellWindows();
     };
     this.dealDamage = function (amount) {
@@ -63,6 +65,21 @@ function Character() { //"Character" == base class for anything that can fight
         }
         if (this.hp >= this.maxHP) {
             this.hp = this.maxHP;
+        }
+    };
+    //effects need to take "this" as argument
+    this.updateEffect = function () {
+        for (var i = 0; i < this.delayedEffect.length; i++) {
+            this.delayedEffect[i][0]--; // -1 frame
+            if (this.delayedEffect[i][0] <= 0) {
+                switch (this.delayedEffect[i][1]) {
+                    case "castFailed":
+                        console.log("Caliss, c'est plate");
+                        this.castFailed();
+                        break;
+                }
+                this.delayedEffect.splice(i, 1);
+            };
         }
     };
     //Graphics

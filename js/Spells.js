@@ -59,7 +59,7 @@ function Spell() {
                 return;
             }
             this.power = this.getPower();
-            if (this.type === "Attack") { this.cast(player.opponent);}
+            if (this.type === "Attack" || this.type === "Special") { this.cast(player.opponent);}
             if (this.type === "Shield" || this.type === "Buff") { this.cast(player); } //Yay! :D
             this.currentCastWindow -= 1000;
             this.stopCountdown();
@@ -97,9 +97,11 @@ function Spell() {
         return; //To override in subclasses
     };
 
-    this.basicCast = function (target, extraDelayFrames) { //Deal damage based on power
+    this.basicCast = function (target, extraDelayFrames, effect) { //Deal damage based on power
 
+        //effect is a string
         if (typeof extraDelayFrames === "undefined") { extraDelayFrames = 0 }
+        //if (typeof effect === "undefined") { effect = 0;}
         if (this.type === "Attack") {
             var dmgToPush = this.power;
             if (this.particle) {
@@ -113,6 +115,14 @@ function Spell() {
         }
         if (this.type === "Buff") { //To do
             return;
+        }
+        if (this.type === "Special") {
+            //console.log(effect);
+            //var test = [funcToPush(effect),(durationInMS(this.particle.duration + extraDelayFrames))];
+            //console.log(test);
+
+            target.delayedEffect.push([(durationInMS(this.particle.duration + extraDelayFrames)), effect]);
+            console.log(target.delayedEffect);
         }
     };
 
@@ -283,12 +293,12 @@ shield1 = new Shield1();
 Dispell = function () {
     this.name = "Dispell";
     this.text = "Dispell";
-    this.type = "Attack";
+    this.type = "Special";
     this.maxPower = 0;
     this.particle = dispellParty;
 
     this.cast = function (target) {
-        //this.basicCast(target);
+        this.basicCast(target,0, "castFailed");
         this.particle.party();
         this.playSound();
     };

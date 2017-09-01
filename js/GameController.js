@@ -330,7 +330,6 @@ function OverworldState() {
 }
 
 var endingBattle = false;
-
 function BattleState() {
 
     this.battleType = "Gauntlet";
@@ -352,6 +351,7 @@ function BattleState() {
         updateScreenshake();
         updateParticles();
         updateDamage();
+        updateEffect();
 
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
