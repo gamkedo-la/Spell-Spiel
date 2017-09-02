@@ -59,6 +59,13 @@ var spellList = `{
         "max_power": 0,
         "particles": ["dispell"]
 },
+    "DNDC": {
+        "name": "DNDC",
+        "text": "DNDC: don't know don't care",
+        "type": "Buff",
+        "max_power": 0,
+        "particles": ["dispell"]
+},
     "ZaWarudo": {
         "name": "Za Warudo",
         "text": "Za Warudo",

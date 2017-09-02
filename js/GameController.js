@@ -381,7 +381,8 @@ function BattleState() {
         // Checks if the pressed key is in the alphabet. If it is, we query the trie
         // Non-letter input can be used for pausing, etc.
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length - 1]);
-        if (key.match(/[a-z ]/i)) {
+ 
+        if (key.match(/[a-z ':, ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell + key);
             if (completion.length) {
                 completion = completion[0];
@@ -447,8 +448,7 @@ function BattleEndState() {
     this.img = battleState.img;
 
     this.handleInput = function () {
-
-        if (pressedKey) {
+        if (!messageActive) {
             gameController.changeState(overworldState);
             resetBattle();
             resetKeypress();
@@ -460,20 +460,7 @@ function BattleEndState() {
     };
 
     this.drawOnScaled = function () {
-        if (this.win === true) {
-            scaledContext.textAlign = "center";
-            colorText("You win!", scaledCanvas.width / 2, 180, "black");
-            colorText("Beam got " + enemy.expGiven + " exp!", scaledCanvas.width / 2, 220, "black");
-            if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 290, "black"); }
-            scaledContext.textAlign = "left";
-        }
-        else if (this.win === false) {
-            scaledContext.textAlign = "center";
-            colorText("You lose...", scaledCanvas.width / 2, 200, "black");
-            if (flicker) { colorText("Press any key to continue", scaledCanvas.width / 2, 245, "black"); }
-            scaledContext.textAlign = "left";
-        }
-    };
+    }
     this.updateFlicker = function () {
         currentFlicker++;
         if (currentFlicker >= flickerDuration) {
@@ -486,32 +473,42 @@ function BattleEndState() {
     this.update = function () {
 
         clearScreen(); //Everything under this is drawn on the small canvas...
-        this.updateFlicker();
+        //this.updateFlicker();
         updateCycles();
-        player.draw();
-        player.drawBattle();
-        player.opponent.draw();
-        player.opponent.drawBattle();
+        drawBothBattle();
+        drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
-        this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
+        updateMessages();
         this.handleInput(); //can trigger a state change
 
     };
-    this.enter = function () {
-        this.currentFlicker = 0;
+    this.enter = function () {       
+        //this.currentFlicker = 0;
         endingBattle = true;
-        if (player.hp == 0) { this.win = false; }
-        else if (player.opponent.hp == 0) { this.win = true; }
-        if (this.win) {
+        var leveledUp = false;
+        if (player.hp == 0) {
+            this.win = false;
+            announceBox.beginText("Beam was defeated! \b Gonna need more practice!");
+        }
+        else if (player.opponent.hp == 0) {
+            this.win = true;
             player.exp += enemy.expGiven;
+            console.log(player.exp, player.expNeeded);
+            if (player.exp >= player.expNeeded) {
+                player.levelUp(); //Awesome!
+                leveledUp = true;
+            }
             if (battleState.battleType === "Gauntlet") {
                 gauntletProgress++;
                 if (gauntletProgress >= gauntletOrder.length) {
                     gameController.changeState(endgameState);
                 }
             }
+            if (leveledUp) { announceBox.beginText("Beam was victorious! \b Earned " + enemy.expGiven + " exp. \b Beam leveled up! Now level " + player.level + "! \b Gained " + player.hpLadder[player.level] + "hp. \b Gained one skill point to spend."); }
+            else { announceBox.beginText("Beam was victorious! \b Earned " + enemy.expGiven + " exp.");}
         }
-
+        document.removeEventListener("keypress", keyPressed);//keypress == only character keys!
+        document.addEventListener("keydown", keyDown);
     };
 }
 

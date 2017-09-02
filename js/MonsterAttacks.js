@@ -6,6 +6,7 @@ function Bite() {
     this.particle = biteParty;
     this.power = 50;
     this.castTime = 100;
+    this.selfcast = false;
 
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
@@ -25,6 +26,7 @@ function Slash() {
     this.particle = slashParty;
     this.power = 50;
     this.castTime = 100;
+    this.selfcast = false;
 
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
@@ -44,6 +46,7 @@ function PoisonSpit() {
     this.particle = poisonSpitParty;
     this.power = 20;
     this.castTime = 100;
+    this.selfcast = false;
 
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
@@ -63,6 +66,7 @@ function Sting() {
     this.particle = stingParty;
     this.power = 20;
     this.castTime = 100;
+    this.selfcast = false;
 
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
@@ -81,6 +85,7 @@ function WaterSquirt() {
     this.particle = waterSquirtParty;
     this.power = 75;
     this.castTime = 200;
+    this.selfcast = false;
 
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
@@ -106,3 +111,20 @@ function Block() {
 }
 Block.prototype = new Spell();
 block = new Block();
+
+function EerieLook() {
+    this.name = "Eerie Look";
+    this.type = "Debuff";
+    this.power = 0;
+    this.castTime = 95;
+    this.particle = poisonSpitParty;
+    this.selfcast = false;
+
+    this.cast = function (target) {
+        this.basicCast(target,1,0, "Buff Defense 0.6");
+        this.particle.party();
+        this.playSound();
+    }
+}
+EerieLook.prototype = new Spell();
+eerieLook = new EerieLook();

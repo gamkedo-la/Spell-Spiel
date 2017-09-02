@@ -16,6 +16,7 @@ function Character() { //"Character" == base class for anything that can fight
     this.defenseMultiplier = 1.8;
     this.attackBuffRemaining = 0;
     this.defenseBuffRemaining = 0;
+    this.buffDuration = 1000;
 
     this.isCasting = false;
 
@@ -60,6 +61,7 @@ function Character() { //"Character" == base class for anything that can fight
                 toDeal = 0;
             }
             this.shieldHP = this.shieldHP - amount;
+            this.shieldHP = Math.round(this.shieldHP);
             if (this.shieldHP < 0) {
                 this.shieldHP = 0;
             }
@@ -84,7 +86,19 @@ function Character() { //"Character" == base class for anything that can fight
                 switch (this.delayedEffect[i][1]) {
                     case "Buff Attack 1.2":
                         this.attackMultiplier = 1.2;
-                        this.attackBuffRemaining = 100;
+                        this.attackBuffRemaining = this.buffDuration;
+                        break;
+                    case "Buff Defense 0.6":
+                        this.defenseMultiplier = 0.6;
+                        this.defenseBuffRemaining = this.buffDuration;
+                        break;
+                    case "Buff Defense 1.5":
+                        this.defenseMultiplier = 1.5;
+                        this.defenseBuffRemaining = this.buffDuration;
+                        break;
+                    case "Buff Defense 5":
+                        this.defenseMultiplier = 5;
+                        this.defenseBuffRemaining = this.buffDuration / 15;
                         break;
                     case "castFailed":
                         console.log("Caliss, c'est plate");
@@ -164,8 +178,10 @@ function Character() { //"Character" == base class for anything that can fight
     ////////////       Spell mechanics         ///////////
     this.levelUp = function () {
         this.level++;
-        this.maxHP += this.hpLadder[this.level - 1];
+        this.maxHP += this.hpLadder[this.level];
         this.skillPoints++;
+        this.exp -= this.expNeeded;
+        this.expNeeded = this.expLadder[this.level];
     };
     this.changeSpell = function (spell) {
         if(spell != this.currentSpell) {
@@ -220,8 +236,10 @@ function Player() { //Defines the player object
     this.maxHP = 350;
     this.hp = this.maxHP;
     this.hp = 100;
-    this.hpLadder = [0, 25, 50, 75]; //Hp upgrades for each level
+    this.hpLadder = [0, 0, 25, 50, 75]; //Hp upgrades for each level
     this.exp = 0;
+    this.expLadder = [0, 100, 200, 300];
+    this.expNeeded = this.expLadder[this.level];
 
     // TODO this must be refactored to use the json
     // Maybe we don't have an object for each spell, or the objects are dynamically
@@ -235,16 +253,30 @@ function Player() { //Defines the player object
         "Life Drain": lifeDrain,
         "Time to show this guy": getTilted,
         "Za Warudo": zaWarudo,
-        "Dispell": dispell
+        "DNDC: don't know don't care" : dndc,
+        "Dispell": dispell,
     };
     this.currentSpell = noSpell;
 
     this.drawBattle = function () {
-        colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 44), 61, 41, "#e0ffff");
-        colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 43), 59, 39, "#4d004d");
+        colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 52), 61, 49, "#e0ffff");
+        colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 51), 59, 47, "#4d004d");
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (47), 30, 5, "black");
         colorRect(this.position.x - (this.img.width/this.imgNumber) / 2, this.position.y - (47), (this.hp / this.maxHP) * 30, 5, "red");
         colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (42), ((this.currentSpell.currentCastWindow - this.currentSpell.timeElapsed) / this.currentSpell.currentCastWindow) * 30, 5, "green");
+
+        if (this.attackMultiplier > 1) {
+            canvasContext.drawImage(attackBuffPic, (this.position.x - 2 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
+        if (this.attackMultiplier < 1) {
+            canvasContext.drawImage(attackDebuffPic, (this.position.x - 2 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
+        if (this.defenseMultiplier > 1) {
+            canvasContext.drawImage(defenseBuffPic, (this.position.x + 8 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
+        if (this.defenseMultiplier < 1) {
+            canvasContext.drawImage(defenseDebuffPic, (this.position.x + 8 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
     };
     var idleBattleCycleDuration = 30;
     //This is the replacement of the state machine that the main character would get if it was really needed. Changes his animations depending on situations

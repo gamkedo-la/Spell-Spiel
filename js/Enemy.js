@@ -18,21 +18,39 @@ function Enemy() {
     this.mediumBuffs = [];
     this.strongBuffs = [];
 
+    this.weakDebuffs = [];
+    this.mediumDebuffs = [];
+    this.strongDebuffs = [];
+
     this.maxHP = 200;
     this.hp = this.maxHP;
     this.expGiven = 0;
     this.chosenOne; //the attack that will be used, as determined by AI
 
     this.untilAttack = 200; //frames
+    //this.untilAttack = 10; //frames
     var lastAttack;
     this.goodChoiceMade = false; //good choice == not randomized because I didn't have the attack I wanted
 
     this.drawBattle = function () {
-        colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 44), 61, 41, "#e0ffff");
-        colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 43), 59, 39, "#4d004d");
+        colorRect((this.position.x - 4 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 52), 61, 49, "#e0ffff");
+        colorRect((this.position.x - 3 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 51), 59, 47, "#4d004d");
         colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (47), 30, 5, "black");
         colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (47), (this.hp / this.maxHP) * 30, 5, "red");
         if (typeof this.chosenOne !== "undefined") { colorRect(this.position.x - (this.img.width / this.imgNumber) / 2, this.position.y - (42), (this.untilAttack / this.chosenOne.castTime) * 30, 5, "teal"); }
+
+        if (this.attackMultiplier > 1) {
+            canvasContext.drawImage(attackBuffPic, (this.position.x - 2 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
+        if (this.attackMultiplier < 1) {
+            canvasContext.drawImage(attackDebuffPic, (this.position.x - 2 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
+        if (this.defenseMultiplier > 1) {
+            canvasContext.drawImage(defenseBuffPic, (this.position.x + 8  - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
+        if (this.defenseMultiplier < 1) {
+            canvasContext.drawImage(defenseDebuffPic, (this.position.x + 8 - (this.img.width / this.imgNumber) / 2), (this.position.y - this.img.height - 50));
+        }
     }
 
     this.updateAttack = function () {
@@ -42,9 +60,8 @@ function Enemy() {
             this.untilAttack = 0; //safety
         }
         if (this.untilAttack === 0) {
-            //if (typeof this.chosenOne === "undefined") { this.chooseAttack();} //in case no attack was chosen previously
-            if (this.chosenOne.type === "Attack") { this.chosenOne.cast(this.opponent); }
-            else if (this.chosenOne.type === "Shield" || "Buff") { this.chosenOne.cast(this); }
+            if (this.chosenOne.selfcast === true) { this.chosenOne.cast(this); }
+            else { this.chosenOne.cast(this.opponent); }
             this.chooseAttack(); //pick the next one
             this.untilAttack = this.chosenOne.castTime;
         }
@@ -65,17 +82,23 @@ function Enemy() {
         else if (this.hp < this.maxHP * 0.5 && this.shieldHP === 0) {
             this.chosenOne = this.pickRandom("Strong", "Shield");
         }
-            //The player is using a shield! No point in attacking; gonna buff myself
-        else if (player.shieldHP >= player.maxHP * 0.4) {
+            //The player is using a shield! No point in attacking; gonna buff
+        else if (player.shieldHP >= player.maxHP * 0.1) {
+            console.log("!!!");
             this.chosenOne = this.pickRandom("Medium", "Buff");
         }
             //I have high HP, I can cast a strong attack safely
         else if (this.hp >= this.maxHP * 0.8) {
             this.chosenOne = this.pickRandom("Strong", "Attack");
         }
-            //The player's health is high. Strong buffs are worth investing in right now
+            //The player's health is high. Strong buffs/debuffs are worth investing in right now
         else if (player.hp > player.maxHP * 0.8) {
-            this.chosenOne = this.pickRandom("Strong", "Buff");
+            if (this.attackMultiplier <= 1 && this.defenseMultiplier <= 1) {
+                this.chosenOne = this.pickRandom("Strong", "Buff");
+            }
+            else if (player.attackMultiplier >= 1 && player.defenseMultiplier >= 1) {
+                this.chosenOne = this.pickRandom("Strong", "Debuff");
+            }
         }
 
             //screw it, I'll pick a random attack
@@ -100,9 +123,12 @@ function Enemy() {
                         break;
                     case "Buff":
                         toPick = this.strongBuffs;
+                        break;
+                    case "Debuff":
+                        toPick = this.strongDebuffs;
+                        break;
                 }
                 if (toPick.length === 0) {
-                    console.log("Empty");
                     strength = "Medium";
                 }
                 else { break; }
@@ -116,6 +142,10 @@ function Enemy() {
                         break;
                     case "Buff":
                         toPick = this.mediumBuffs;
+                        break;
+                    case "Debuff":
+                        toPick = this.mediumDebuffs;
+                        break;
                 }
                 if (toPick.length === 0) { strength = "Weak"; }
                 else { break; }
@@ -131,6 +161,9 @@ function Enemy() {
                     case "Buff":
                         toPick = this.weakBuffs;
                         break;
+                    case "Debuff":
+                        toPick = this.weakDebuffs;
+                        break;
                 }
                 if (toPick.length === 0) { toPick = this.allAttacks; }
         }
@@ -144,7 +177,7 @@ function Enemy() {
         this.untilAttack = this.chosenOne.castTime; 
     }
     this.combineAllAttacks = function () {
-        this.allAttacks = this.weakAttacks.concat(this.mediumAttacks, this.strongAttacks, this.weakShields);
+        this.allAttacks = this.weakAttacks.concat(this.mediumAttacks, this.strongAttacks, this.weakShields, this.mediumShields, this.strongShields, this.weakBuffs, this.mediumBuffs, this.strongBuffs, this.weakDebuffs, this.mediumDebuffs, this.strongDebuffs);
     }
 }
 Enemy.prototype = new Character();
@@ -227,13 +260,16 @@ ghostChicken.combineAllAttacks();
 var eyeMonster = new Enemy();
 eyeMonster.name = "Wiggly Cornea";
 eyeMonster.imgNumber = 8;
+eyeMonster.maxHP = 350;
+eyeMonster.expGiven = 100;
 eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
-eyeMonster.weakAttacks = [sting];
-eyeMonster.mediumAttacks = [slash];
+//eyeMonster.weakAttacks = [sting];
+//eyeMonster.mediumAttacks = [slash];
 eyeMonster.strongAttacks = [waterSquirt];
-eyeMonster.weakShields = [block];
+//eyeMonster.weakShields = [block];
+eyeMonster.mediumDebuffs = [eerieLook];
 eyeMonster.combineAllAttacks();
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]

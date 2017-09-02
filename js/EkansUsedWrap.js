@@ -72,6 +72,7 @@ function MessageBox (x, y, options) {
     this.subject = new Subject(); //optional, if using the Observer pattern to notify entities that the message is over
 
     this.beginText = function (newText) {
+
         this.isAlive = true;
         //currentLine = 0;
         messageDone = false;
@@ -114,44 +115,52 @@ function MessageBox (x, y, options) {
         scaledContext.font = "normal " + fontsize + "px" + " " + font;
         currentx = padx + x*4; //start at edge of box + padding
         currentline = 1;
+        var lastWord = false;
+        var fits = false;
 
         var spaceWidth = scaledContext.measureText(" ").width;
 
         for (i = 0; i < words.length; i++) {
-
             var wordWidth = scaledContext.measureText(words[i]).width;
 
             //catches the end of the message
             if (i === words.length - 1) {
-                messageDone = true;
-                standbyForInput = true;
+                lastWord = true;
             }
 
             //draw on current line if it fits
-            if (currentx + wordWidth < x * 4 + width - padx) {
-                if (words[i] === "\n") {
-                    if (currentline < numlines) {
-                        newLine();
-                    }
-                    else if (currentline === numlines) {
-                        stopDrawing(i+1); //+1 to cut the line skip
-                        break;
-                    }
-                }//for line skips, \n needs to be surrounded by spaces :O
-                else if (words[i] === "\b") {
-                    stopDrawing(i + 1);
+            if (words[i] === "\n") {
+                if (currentline < numlines) {
+                    newLine();
+                }
+                else if (currentline === numlines) {
+                    stopDrawing(i + 1); //+1 to cut the line skip
                     break;
                 }
-                else {
+            }//for line skips, \n needs to be surrounded by spaces :O
+            else if (words[i] === "\b") {
+                stopDrawing(i + 1);
+                break;
+            }
+            if (currentx + wordWidth < x * 4 + width - padx) {
+                fits = true
                     colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
                     currentx = currentx + wordWidth + spaceWidth;
+                if (lastWord && fits) {
+                    messageDone = true;
+                    standbyForInput = true;
                 }
             }
             //if we have no space but lines left, skip to next
             else if (currentline < numlines) {
+                fits = true;
                 newLine();
                 colorText(words[i], currentx, y * 4 + pady + fontsize * (currentline), textcolor);
                 currentx = currentx + wordWidth + spaceWidth;
+                if (lastWord && fits) {
+                    messageDone = true;
+                    standbyForInput = true;
+                }
             }
             //we have no more space! Gotta press something
             else {

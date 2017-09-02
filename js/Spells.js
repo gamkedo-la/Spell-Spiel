@@ -59,8 +59,8 @@ function Spell() {
                 return;
             }
             this.power = this.getPower();
-            if (this.type === "Attack" || this.type === "Special") { this.cast(player.opponent);}
-            if (this.type === "Shield" || this.type === "Buff") { this.cast(player); } //Yay! :D
+            if (this.selfcast === true) { this.cast(player); } //Yay! :D
+            else { this.cast(player.opponent);}
             this.currentCastWindow -= 1000;
             this.stopCountdown();
             this.reset();
@@ -106,7 +106,7 @@ function Spell() {
         if (this.type === "Attack") {
             var dmgToPush = this.power * multiplier;
             if (this.particle) {
-                target.delayedDamage.push([(this.particle.duration+extraDelayFrames) * 30 / 1000, dmgToPush]);
+                target.delayedDamage.push([durationInMS(this.particle.duration+extraDelayFrames), dmgToPush]);
             }
             else { target.delayedDamage.push([0, dmgToPush]); }
         }
@@ -114,7 +114,7 @@ function Spell() {
             var toShield = this.power * multiplier;
             target.shieldHP = toShield;
         }
-        if (this.type === "Buff" || this.type === "Special") {
+        if (this.type === "Buff" || this.type === "Debuff" || this.type === "Special") {
             target.delayedEffect.push([(durationInMS(this.particle.duration + extraDelayFrames)), effect]);
         }
     };
@@ -307,6 +307,7 @@ GetTilted = function () {
     this.maxPower = 0;
     this.particle = dispellParty;
     this.MAX_CAST_WINDOW = 6500;
+    this.selfcast = true;
 
     this.cast = function (target) {
         this.basicCast(target, 1, 0, "Buff Attack 1.2");
@@ -317,6 +318,25 @@ GetTilted = function () {
 }
 GetTilted.prototype = new Spell();
 getTilted = new GetTilted();
+
+DNDC = function () {
+    this.name = "DNDC";
+    this.text = "DNDC: don't know don't care";
+    this.type = "Buff";
+    this.maxPower = 0;
+    this.particle = dispellParty;
+    this.MAX_CAST_WINDOW = 8500;
+    this.selfcast = true;
+
+    this.cast = function (target) {
+        this.basicCast(target, 1, 0, "Buff Defense 1.5");
+        this.particle.party();
+        this.playSound();
+    };
+    this.reset();
+}
+DNDC.prototype = new Spell();
+dndc = new DNDC();
 
 ZaWarudo = function () {
     this.name = "Za Warudo";

@@ -48,6 +48,10 @@ var dispellPic = document.createElement("img");
 var pokeboxPic = document.createElement("img");
 var announceBoxPic = document.createElement("img");
 var bubbleBoxPic = document.createElement("img");
+var attackBuffPic = document.createElement("img");
+var defenseBuffPic = document.createElement("img");
+var attackDebuffPic = document.createElement("img");
+var defenseDebuffPic = document.createElement("img");
 
 var picsToLoad = 0; //set automatically in loadImages()
 
@@ -110,7 +114,11 @@ function loadImages(){
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
         { varName: announceBoxPic, theFile: "announceBox.png" },
-        { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" }
+        { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" },
+        { varName: attackBuffPic, theFile: "attackBuff.png" },
+        { varName: defenseBuffPic, theFile: "defenseBuff.png" },
+        { varName: attackDebuffPic, theFile: "attackDebuff.png" },
+        { varName: defenseDebuffPic, theFile: "defenseDebuff.png" }
     ]
 
     picsToLoad = imageList.length; //This method avoids a race condition
