@@ -71,7 +71,7 @@ function MainMenuState() {
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
     }
     this.handleInput = function () {
-       
+
         if (holdP && okToInteract) {
             gameController.changeState(overworldState);
         }
@@ -377,7 +377,7 @@ function OverworldState() {
             firstTime = false;
         }
         document.removeEventListener("keypress", keyPressed);//keypress == only character keys!
-        document.addEventListener("keydown", keyDown); 
+        document.addEventListener("keydown", keyDown);
     };
 }
 
@@ -391,6 +391,7 @@ function BattleState() {
     this.update = function () {
         spellTimeLapse();
         rechargeAllExceptCurrent();
+        player.poisonUpdate();
         player.checkState();
         updateCycles();
         player.opponent.updateAttack();
@@ -433,7 +434,7 @@ function BattleState() {
         // Checks if the pressed key is in the alphabet. If it is, we query the trie
         // Non-letter input can be used for pausing, etc.
         var key = String.fromCharCode(keyPressed.data[keyPressed.data.length - 1]);
- 
+
         if (key.match(/[a-z ':, ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell + key);
             if (completion.length && player.availableSpells[completion[0]].isUnlocked) {
@@ -534,7 +535,7 @@ function BattleEndState() {
         this.handleInput(); //can trigger a state change
 
     };
-    this.enter = function () {       
+    this.enter = function () {
         //this.currentFlicker = 0;
         endingBattle = true;
         var leveledUp = false;

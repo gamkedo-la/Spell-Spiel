@@ -32,6 +32,7 @@ function Slash() {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         //target.isPoisoned();
+        target.makePoisoned(3,5);
         this.playSound();
         this.spawnParticles(this.particle);
     }

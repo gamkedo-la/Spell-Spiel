@@ -26,12 +26,19 @@ function Character() { //"Character" == base class for anything that can fight
     var currentImg = 0;
     this.imgNumber = 1;
 
+
     //RELATED TO BATTLES
 
     //Eh, implement status effects later
     this.ticks = [
         {poison:0}
     ];
+
+    //Poison check
+    var poisonTick = 0;
+    this.isPoisoned = false;
+    var poisonDamage = 0;
+    var poisonTime = 0;
 
     this.delayedDamage = []; //2D array with [framesLeft, dmg]
     this.delayedEffect = []; //2D array with [framesLeft, string]
@@ -198,8 +205,35 @@ function Character() { //"Character" == base class for anything that can fight
     };
 
     //Status effects
-    this.isPoisoned = function () {
-        this.ticks[0].poison = 5;
+
+    this.makePoisoned= function(damage,time){
+      this.poisonDamage = damage;
+      this.poisonTime = time;
+      this.isPoisoned = true;
+    };
+    this.poisonUpdate = function (){
+      if (this.isPoisoned){
+        if (this.poisonTick < this.poisonTime *30 +1){
+          if ((this.poisonTick) % 30 == 0){
+            console.log(this.poisonTick + "tickNumber");
+            if (this.shieldHP == 0) {
+              this.hp -= this.poisonDamage;
+            }
+            else {
+              this.shieldHP -= this.poisonDamage;
+            }
+          }
+        }
+        else{
+          this.poisonTick = 0;
+          this.isPoisoned = false;
+        }
+        this.poisonTick ++
+      }
+      else{
+        this.poisonTick = 0;
+      }
+        //this.ticks[0].poison = 5;
         //console.log(this.ticks[0]["poison"]);
     };
 
