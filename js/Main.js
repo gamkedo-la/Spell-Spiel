@@ -94,6 +94,7 @@ function drawBothBattle() {
     player.opponent.draw();
     player.opponent.drawBattle();
 }
+
 function setOpponentsBoth(enemy) {
     player.opponent = enemy;
     enemy.opponent = player;

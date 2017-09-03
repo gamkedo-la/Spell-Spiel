@@ -117,7 +117,7 @@ function EerieLook() {
     this.type = "Debuff";
     this.power = 0;
     this.castTime = 95;
-    this.particle = poisonSpitParty;
+    this.particle = eerieLookParty;
     this.selfcast = false;
 
     this.cast = function (target) {

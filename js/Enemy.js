@@ -265,7 +265,7 @@ eyeMonster.expGiven = 100;
 eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
-//eyeMonster.weakAttacks = [sting];
+eyeMonster.weakAttacks = [sting];
 //eyeMonster.mediumAttacks = [slash];
 eyeMonster.strongAttacks = [waterSquirt];
 //eyeMonster.weakShields = [block];
@@ -273,7 +273,7 @@ eyeMonster.mediumDebuffs = [eerieLook];
 eyeMonster.combineAllAttacks();
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
-var gauntletOrder = [eyeMonster, bat, jellyfish, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
+var gauntletOrder = [eyeMonster, jellyfish, bat, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken]; //to use in random battles

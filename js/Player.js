@@ -26,7 +26,6 @@ function Character() { //"Character" == base class for anything that can fight
     var currentImg = 0;
     this.imgNumber = 1;
 
-    this.skillpoints = 0;
     //RELATED TO BATTLES
 
     //Eh, implement status effects later
@@ -179,8 +178,8 @@ function Character() { //"Character" == base class for anything that can fight
     this.levelUp = function () {
         this.level++;
         this.maxHP += this.hpLadder[this.level];
-        this.skillPoints++;
-        this.exp -= this.expNeeded;
+        this.skillpoints++;
+        //this.exp -= this.expNeeded;
         this.expNeeded = this.expLadder[this.level];
     };
     this.changeSpell = function (spell) {
@@ -193,9 +192,9 @@ function Character() { //"Character" == base class for anything that can fight
         this.currentSpell = spell;
     };
     //Called from clicking a button in skills menu
-    this.upgradeSpell = function (spell) {
+    this.levelUpSpell = function (spell) {
         spell.levelUp();
-        this.skillPoints--;
+        this.skillpoints--;
     };
 
     //Status effects
@@ -232,7 +231,7 @@ function Player() { //Defines the player object
     this.picToChange = false;
     this.movingDirection = ""; //can be "up", "down", "left", "right"
     this.cycleDuration = 30;
-
+    this.skillpoints = 100;
     this.maxHP = 350;
     this.hp = this.maxHP;
     this.hp = 100;
@@ -247,7 +246,7 @@ function Player() { //Defines the player object
     this.availableSpells = {
         "Pyroblast": pyroblast,
         "Ice Spike": iceSpike,
-        "Lightning strike of doom": lightning,
+        "Lightning Strike of Doom": lightning,
         "Protect": shield1,
         "Toxic Cloud": toxicCloud,
         "Life Drain": lifeDrain,

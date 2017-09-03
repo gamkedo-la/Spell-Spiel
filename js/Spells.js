@@ -13,15 +13,18 @@ function Spell() {
     this.currentCastWindow = 5000; //in milliseconds
     this.usedByAI = false; //TBD
     this.particle = null;
+    this.isUnlocked = false;
 
     this.maxPower = 100;
     this.power = this.maxPower;
-    this.powerLadder = [0,15,20,35];
+    this.powerLadder = [0,15,20,35,55];
     this.level = 1;
 
     this.levelUp = function () {
         this.level++;
-        this.maxPower += this.powerLadder[this.level-1];
+        this.maxPower += this.powerLadder[this.level - 1];
+        console.log("Level up! Now level: " + this.level);
+        console.log(this.maxPower);
     }
 
     this.reset = function () {
@@ -182,6 +185,7 @@ Pyroblast = function () {
     this.text = "Pyroblast";
     this.type = "Attack";
     this.maxPower = 50;
+    this.isUnlocked = true;
     this.particle = fireballParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
@@ -198,10 +202,12 @@ pyroblast = new Pyroblast();
 
 Lightning = function () {
     this.name = "Lightning";
-    this.text = "Lightning strike of doom";
+    this.text = "Lightning Strike of Doom";
     this.type = "Attack";
     this.particle = lightningParty;
     this.maxPower = 150;
+    this.MAX_CAST_WINDOW = 6500;
+    this.isUnlocked = true;
 
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier);
@@ -219,6 +225,7 @@ IceSpike = function () {
     this.text = "Ice Spike";
     this.type = "Attack";
     this.particle = iceSpikeParty;
+    this.isUnlocked = true;
     this.maxPower = 50;
 
     this.cast = function (target) {
@@ -273,6 +280,8 @@ Shield1 = function () {
     this.text = "Protect";
     this.type = "Shield";
     this.maxPower = 100;
+    this.selfcast = true;
+    this.isUnlocked = true;
 
     this.cast = function (target) {
         this.basicCast(target); //shields don't get buffed (or they might get op)

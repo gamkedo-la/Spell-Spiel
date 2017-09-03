@@ -41,12 +41,14 @@ var toxicCloudPic = document.createElement("img");
 var lifeDrainPic = document.createElement("img");
 var poisonSpitPic = document.createElement("img");
 var waterSquirtPic = document.createElement("img");
+var eerieLookPic = document.createElement("img");
 var stingPic = document.createElement("img");
 var dispellPic = document.createElement("img");
 
 //Other
 var pokeboxPic = document.createElement("img");
 var announceBoxPic = document.createElement("img");
+var checkmarkPic = document.createElement("img");
 var bubbleBoxPic = document.createElement("img");
 var attackBuffPic = document.createElement("img");
 var defenseBuffPic = document.createElement("img");
@@ -109,11 +111,13 @@ function loadImages(){
         { varName: toxicCloudPic, theFile: "toxicCloud.png" },
         { varName: lifeDrainPic, theFile: "lifeDrain.png" },
         { varName: waterSquirtPic, theFile: "waterSquirt.png" },
+        { varName: eerieLookPic, theFile: "eerieLook.png" },
         { varName: stingPic, theFile: "sting.png" },
         { varName: dispellPic, theFile: "dispell.png" },
 
         { varName: pokeboxPic, theFile: "pokeboxBrown.png" },
         { varName: announceBoxPic, theFile: "announceBox.png" },
+        { varName: checkmarkPic, theFile: "checkmark.png" },
         { varName: bubbleBoxPic, theFile: "exampleDialogBox.png" },
         { varName: attackBuffPic, theFile: "attackBuff.png" },
         { varName: defenseBuffPic, theFile: "defenseBuff.png" },

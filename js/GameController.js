@@ -91,28 +91,36 @@ function SpellMenuState() {
     this.img = spellMenuPic;
     this.music = "SpellSpiel_Battle";
     var firstTime = true;
-
+    var firstTime = false;
     this.currentPage = 0;
 
     //this is a workaround to catch mouseUp events
     this.observer = new Observer();
     this.observer.onNotify = function () {
-        if (mouseX <= 400 && mouseY <= 300) {
-            console.log(spellMenuState.currentPage.spells[0]);
-        }
-        if (mouseX > 400 && mouseY <= 300) {
-            console.log(spellMenuState.currentPage.spells[1]);
-        }
-        if (mouseX <= 400 && mouseY > 300) {
-            console.log(spellMenuState.currentPage.spells[2]);
-        }
-        if (mouseX > 400 && mouseY > 300) {
-            console.log(spellMenuState.currentPage.spells[3]);
+        if (!messageActive) {
+            var clickedOn;
+            if (mouseX <= 400 && mouseY <= 300) {
+                clickedOn = spellMenuState.currentPage.spells[0];
+            }
+            if (mouseX > 400 && mouseY <= 300) {
+                clickedOn = spellMenuState.currentPage.spells[1];
+            }
+            if (mouseX <= 400 && mouseY > 300) {
+                clickedOn = spellMenuState.currentPage.spells[2];
+            }
+            if (mouseX > 400 && mouseY > 300) {
+                clickedOn = spellMenuState.currentPage.spells[3];
+            }
+            if (!clickedOn.isUnlocked) { announceBox.beginText("You gotta unlock spells by helping out in school first!");}
+            else if (clickedOn.level < 5 && player.skillpoints > 0) {
+                player.levelUpSpell(clickedOn);
+            }
         }
     }
     this.update = function () {
         clearScreen(); //All this is drawn on the small canvas...
         this.handleInput();
+        this.drawCheckmarks();
         drawMessagesIfAlive(); //split cus it has to be drawn on small canvas while words are on big one...
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
         updateMessages();
@@ -129,7 +137,7 @@ function SpellMenuState() {
         }
         if (holdS && okToInteract) {
             didInteraction();
-            announceBox.beginText("Current level: " + player.level + " \b Current points to spend: " + player.skillpoints);
+            announceBox.beginText("Current level: " + player.level + " \b Current exp needed for next: " + (player.expNeeded - player.exp) + " \b Current points to spend: " + player.skillpoints);
         }
         if (holdLeft && okToInteract) {
             this.changePage("previous");
@@ -167,12 +175,35 @@ function SpellMenuState() {
         }
         didInteraction();
     }
+    this.drawCheckmarks = function () {
+        var spells = this.currentPage.spells;
+        if (spells[0].isUnlocked) {
+            for (i = 0; i < spells[0].level; i++) {
+                canvasContext.drawImage(checkmarkPic, 47 + i * 9, 59);
+            };
+        }
+        if (spells[1].isUnlocked) {
+            for (i = 0; i < spells[1].level; i++) {
+                canvasContext.drawImage(checkmarkPic, 147 + i * 9, 59);
+            };
+        }
+        if (spells[2].isUnlocked) {
+            for (i = 0; i < spells[2].level; i++) {
+                canvasContext.drawImage(checkmarkPic, 47 + i * 9, 133);
+            };
+        }
+        if (spells[3].isUnlocked) {
+            for (i = 0; i < spells[3].level; i++) {
+                canvasContext.drawImage(checkmarkPic, 147 + i * 9, 133);
+            };
+        }
+    }
 
     this.enter = function () {
         mouseUpSubject.addObserver(this.observer);
         this.changePage(page1);
         if (firstTime) {
-            announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school \b You can upgrade your spells by battling and leveling up your character, Beam.");
+            announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school. \b You can upgrade your spells by battling and leveling up your character, Beam.");
             firstTime = false;
         }
     }
@@ -384,7 +415,7 @@ function BattleState() {
  
         if (key.match(/[a-z ':, ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell + key);
-            if (completion.length) {
+            if (completion.length && player.availableSpells[completion[0]].isUnlocked) {
                 completion = completion[0];
                 this.currentSpell += key;
                 var progress = player.currentSpell.progress;

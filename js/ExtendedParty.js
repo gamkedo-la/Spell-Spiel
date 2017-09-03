@@ -251,6 +251,15 @@ waterSquirtParty.startX = 155;
 waterSquirtParty.destX = 40;
 waterSquirtParty.init();
 
+eerieLookParty = new Particle();
+eerieLookParty.frameCount = 9;
+eerieLookParty.particleFPS = 9;
+eerieLookParty.isMoving = false;
+eerieLookParty.spritesheet = eerieLookPic;
+eerieLookParty.spriteWidth = 64;
+eerieLookParty.spriteHeight = 64;
+eerieLookParty.init();
+
 ///////////////////////           All of this is experimental, not in the game            //////////////////////////////////
 createParticle = function (party) {
 
