@@ -206,8 +206,6 @@ function Room() {
             for (i = 0; i < this.objectList.length; i++) {
                 if (drawColliders) {
                     player.collider.draw();
-                    console.log(this.objectList[i].collider);
-                    console.log(counter);
                     this.objectList[i].collider.draw();
                 }
                 if (player.collider.checkCollision(this.objectList[i].collider)) {
@@ -218,12 +216,23 @@ function Room() {
         }
     }
     this.checkTriggers = function () {
+        var closestObject;
+        var toCompare = [];
+        var objectsChecked = [];
         this.triggerList.forEach(function (obj) {
             if (player.collider.checkTrigger(obj.collider)) {
-                //console.log("Triggered");
-                obj.onTrigger();
+                toCompare.push(distance(player.position, obj.position));
+                objectsChecked.push(obj);
+                //console.log(toCompare);
+                //obj.onTrigger();
             }
         })
+        if (toCompare.length != 0) {
+            console.log(toCompare);
+            closestObject = objectsChecked[toCompare.indexOf(ArraySmallest(toCompare))];
+            console.log(closestObject)
+            closestObject.onTrigger();
+        }
     }
     this.makeColliders = function () {
         if (!player.hasOwnProperty("collider") && player.img.width && player.img.height) {

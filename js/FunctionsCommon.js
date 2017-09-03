@@ -17,3 +17,12 @@ function ArraySum(array) {
     }
     return sum;
 }
+function ArraySmallest(array) {
+    var smallestNum = array[0];
+    if (array.length == 1) { return smallestNum; }
+    for (i = 1; i < array.length; i++) {
+        var num = array[i];
+        if (num <= smallestNum) { smallestNum = num; }
+    }
+    return smallestNum; //the dumbest method lol
+}
