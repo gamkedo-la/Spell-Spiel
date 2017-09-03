@@ -372,8 +372,8 @@ var page1 = {
     img : spellMenuPic
 }
 var page2 = {
-    spells: [toxicCloud, lifeDrain, noSpell, noSpell],
-    img: lavaPic
+    spells: [lifeDrain, dispell, toxicCloud, dndc],
+    img: spellMenu2Pic
 }
 page1.next = page2;
 page2.previous = page1;

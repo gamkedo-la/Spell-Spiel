@@ -25,6 +25,8 @@ var lavaPic = document.createElement("img");
 
 var mainMenuPic = document.createElement("img");
 var spellMenuPic = document.createElement("img");
+var spellMenu2Pic = document.createElement("img");
+var creditsMenuPic = document.createElement("img");
 
 var mainRoomPic = document.createElement("img");
 var hallwayPic = document.createElement("img");
@@ -88,6 +90,8 @@ function loadImages(){
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: mainMenuPic, theFile: "mainMenu.png" },
         { varName: spellMenuPic, theFile: "upgradeMenu.png" },
+        { varName: spellMenu2Pic, theFile: "upgradeMenu2.png" },
+        { varName: creditsMenuPic, theFile: "credits.png" },
         { varName: battlePic, theFile: "canyon_of_the_castle.png" },
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },

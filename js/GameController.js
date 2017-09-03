@@ -79,8 +79,10 @@ function MainMenuState() {
             gameController.changeState(spellMenuState);
         }
         if (holdC && okToInteract) {
-            didInteraction();
-            console.log("Credits");
+            gameController.changeState(creditsMenuState);
+        }
+        if (holdQ && okToInteract) {
+            window.close();
         }
     }
     this.enter = function () {
@@ -206,6 +208,25 @@ function SpellMenuState() {
             announceBox.beginText("Click on a spell to upgrade it. \b Press arrow keys to turn pages. \b New spells are unlocked by interacting in school. \b You can upgrade your spells by battling and leveling up your character, Beam.");
             firstTime = false;
         }
+    }
+}
+
+function CreditsMenuState() {
+    this.img = creditsMenuPic;
+    this.music = "SpellSpiel_Battle";
+
+    this.update = function () {
+        clearScreen(); //All this is drawn on the small canvas...
+        this.handleInput();
+        scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
+    }
+    this.handleInput = function () {
+
+        if (holdM && okToInteract) {
+            gameController.changeState(mainMenuState);
+        }
+    }
+    this.enter = function () {
     }
 }
 
@@ -574,5 +595,6 @@ var battleEndState = new BattleEndState();
 var endgameState = new EndgameState();
 var mainMenuState = new MainMenuState();
 var spellMenuState = new SpellMenuState();
+var creditsMenuState = new CreditsMenuState();
 var defaultState = mainMenuState;
 var gameController = new GameController();
