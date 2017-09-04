@@ -328,23 +328,28 @@ function OverworldState() {
 
     this.changeRoom = function (room) {
         var toGo;
+        //var initialPos = 
         if (typeof room === "string") {
             switch (room) {
                 case "up":
                     toGo = this.currentRoom.upRoom;
-                    player.position.y = 190;
+                    if (toGo) { player.position.y = 150; }
+                    else player.moveBack();
                     break;
                 case "down":
                     toGo = this.currentRoom.downRoom;
-                    player.position.y = 10;
+                    if (toGo) { player.position.y = 10; }
+                    else player.moveBack();
                     break;
                 case "left":
                     toGo = this.currentRoom.leftRoom;
-                    player.position.x = 190;
+                    if (toGo) { player.position.x = 190; }
+                    else player.moveBack();
                     break;
                 case "right":
                     toGo = this.currentRoom.rightRoom;
-                    player.position.x = 10;
+                    if (toGo) { player.position.x = 10; }
+                    else player.moveBack();
                     break;
                 default: console.log("Not a valid direction!");
             }

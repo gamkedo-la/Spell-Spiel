@@ -30,6 +30,8 @@ var creditsMenuPic = document.createElement("img");
 
 var mainRoomPic = document.createElement("img");
 var hallwayPic = document.createElement("img");
+var hallwayDownPic = document.createElement("img");
+var destroyedRoomPic = document.createElement("img");
 var lowerWallTransparentPic = document.createElement("img");
 
 //Spell VFX
@@ -96,6 +98,8 @@ function loadImages(){
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
         { varName: hallwayPic, theFile: "mainHallway.png" },
+        { varName: hallwayDownPic, theFile: "hallwayDown.png" },
+        { varName: destroyedRoomPic, theFile: "destroyedRoom.png" },
         { varName: lowerWallTransparentPic, theFile: "lowerWallTransparent.png" },
 
         { varName: batPic, theFile: "bat.png" },

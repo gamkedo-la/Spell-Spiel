@@ -157,7 +157,7 @@ upperWall.position = {
     y: 65,
 };
 upperWall.img = {
-    width: 200,
+    width: 240,
     height: 45,
 };
 
@@ -167,6 +167,7 @@ lowerWallTransparent.position = {
     y: 160,
 };
 lowerWallTransparent.img = lowerWallTransparentPic;
+//lowerWallTransparent.img.width = 240;
 
 ////////////////////              ROOMS              //////////////////////
 //Base class
@@ -271,9 +272,36 @@ hallwayRoom.objectList = [upperWall, lowerWallTransparent];
 hallwayRoom.triggerList = [];
 hallwayRoom.toDrawOnTop = [lowerWallTransparent];
 
+hallwayRightRoom = new Room();
+hallwayRightRoom.name = "Hallway Right";
+hallwayRightRoom.img = hallwayPic;
+hallwayRightRoom.objectList = [upperWall, lowerWallTransparent];
+hallwayRightRoom.triggerList = [];
+hallwayRightRoom.toDrawOnTop = [lowerWallTransparent];
+
+hallwayDownRoom = new Room();
+hallwayDownRoom.name = "Hallway Down";
+hallwayDownRoom.img = hallwayDownPic;
+hallwayDownRoom.objectList = [lowerWallTransparent];
+hallwayDownRoom.triggerList = [];
+hallwayDownRoom.toDrawOnTop = [lowerWallTransparent];
+
+destroyedRoom = new Room();
+destroyedRoom.name = "Destroyed Room";
+destroyedRoom.img = destroyedRoomPic;
+destroyedRoom.objectList = [upperWall];
+destroyedRoom.triggerList = [];
+destroyedRoom.toDrawOnTop = [];
+
 //This is so not the best way to do this but DNDC: don't know don't care!
 mainRoom.leftRoom = hallwayRoom;
+mainRoom.rightRoom = hallwayRightRoom;
+mainRoom.downRoom = hallwayDownRoom;
 hallwayRoom.rightRoom = mainRoom;
+hallwayRightRoom.leftRoom = mainRoom;
+hallwayRightRoom.rightRoom = destroyedRoom;
+hallwayDownRoom.upRoom = mainRoom;
+destroyedRoom.leftRoom = hallwayRightRoom;
 
 overworldState.changeRoom(mainRoom);
 

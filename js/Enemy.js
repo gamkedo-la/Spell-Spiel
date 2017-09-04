@@ -265,11 +265,11 @@ eyeMonster.expGiven = 100;
 eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
-eyeMonster.weakAttacks = [sting];
-//eyeMonster.mediumAttacks = [slash];
-eyeMonster.strongAttacks = [waterSquirt];
+//eyeMonster.weakAttacks = [sting];
+eyeMonster.mediumAttacks = [slash];
+//eyeMonster.strongAttacks = [waterSquirt];
 //eyeMonster.weakShields = [block];
-eyeMonster.mediumDebuffs = [eerieLook];
+//eyeMonster.mediumDebuffs = [eerieLook];
 eyeMonster.combineAllAttacks();
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]

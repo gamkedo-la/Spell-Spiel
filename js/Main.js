@@ -178,7 +178,7 @@ function checkForRoomChange() {
     else if (player.position.y <= 0) {
         overworldState.changeRoom("up");
     }
-    else if (player.position.y >= 200) {
+    else if (player.position.y >= 160) {
         overworldState.changeRoom("down");
     }
 }
