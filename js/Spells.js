@@ -14,6 +14,7 @@ function Spell() {
     this.usedByAI = false; //TBD
     this.particle = null;
     this.isUnlocked = false;
+    this.isUnlocked = true;
 
     this.maxPower = 100;
     this.power = this.maxPower;
@@ -191,7 +192,7 @@ Pyroblast = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        this.playSound();
+        Sound.play("pyroblast");
         //this.spawnParticles();
         this.particle.party();
     };
@@ -212,7 +213,7 @@ Lightning = function () {
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        this.playSound();
+        Sound.play("lightning");
         this.spawnParticles(this.particle);
     };
     this.reset();
@@ -231,6 +232,7 @@ IceSpike = function () {
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier);
         screenshake(5, durationInMS(this.particle.duration))
+        Sound.play("iceSpike");
         this.particle.party();
     };
     this.reset();
@@ -248,7 +250,7 @@ ToxicCloud = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
-        this.playSound();
+        Sound.play("toxicCloud");
         this.particle.party();
     };
     this.reset();
@@ -266,7 +268,7 @@ LifeDrain = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier, -this.particle.duration);
         screenshake(1, durationInMS(this.particle.duration));
-        this.playSound();
+        Sound.play("lifeDrain");
         this.particle.party();
         player.delayedDamage.push([durationInMS(this.particle.duration), -this.maxPower / 2]); //delayed healing
     };
@@ -340,7 +342,7 @@ DNDC = function () {
     this.cast = function (target) {
         this.basicCast(target, 1, 0, "Buff Defense 1.5");
         this.particle.party();
-        this.playSound();
+        Sound.play("dndc");
     };
     this.reset();
 }

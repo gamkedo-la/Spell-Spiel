@@ -184,6 +184,5 @@ function checkForRoomChange() {
 }
 function distance(position1, position2) {
     dist = Math.sqrt(Math.pow(position2.x - position1.x, 2) + Math.pow(position2.y - position1.y,2));
-    console.log("Distance: " + dist);
     return Math.round(dist);
 }

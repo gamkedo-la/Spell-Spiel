@@ -229,9 +229,7 @@ function Room() {
             }
         })
         if (toCompare.length != 0) {
-            console.log(toCompare);
             closestObject = objectsChecked[toCompare.indexOf(ArraySmallest(toCompare))];
-            console.log(closestObject)
             closestObject.onTrigger();
         }
     }
