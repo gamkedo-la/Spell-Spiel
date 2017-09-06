@@ -17,6 +17,7 @@ var eyeMonsterPic = document.createElement("img");
 var marieTartinePic = document.createElement("img");
 var guideNPC1Pic = document.createElement("img");
 var noStyleNPCPic = document.createElement("img");
+var stylishNPCPic = document.createElement("img");
 
 //Environments
 var fillerPic = document.createElement("img");
@@ -88,6 +89,7 @@ function loadImages(){
         { varName: marieTartinePic, theFile: "marieTartine.png" },
         { varName: guideNPC1Pic, theFile: "guideNPC1.png" },
         { varName: noStyleNPCPic, theFile: "noStyleNPC.png" },
+        { varName: stylishNPCPic, theFile: "stylishNPC.png" },
 
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: mainMenuPic, theFile: "mainMenu.png" },

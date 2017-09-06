@@ -375,7 +375,9 @@ function OverworldState() {
             if (firstTime || endingBattle) { player.setGraphics(walkingRightPic, 4, walkingCycleDuration); }
             if (typeof player.opponent != "undefined") { player.opponent.reset(); }
             player.position = this.currentRoom.spawnPoints.center;
+            player.collider.position = player.position;
         }
+        console.log(this.currentRoom);
         if (endingBattle === true) { endingBattle = false; }
         if (firstTime) {
             announceBox.beginText("Welcome to the Academy! \b To graduate, you must defeat every enemy outside the school grounds, through the big doorway near you. \b But first, take the time to chat with your classmates to prepare yourself!");
