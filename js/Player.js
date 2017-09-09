@@ -215,7 +215,7 @@ function Character() { //"Character" == base class for anything that can fight
       if (this.isPoisoned){
         if (this.poisonTick < this.poisonTime *30 +1){
           if ((this.poisonTick) % 30 == 0){
-            console.log(this.poisonTick + "tickNumber");
+            //console.log(this.poisonTick + "tickNumber");
             if (this.shieldHP == 0) {
               this.hp -= this.poisonDamage;
             }

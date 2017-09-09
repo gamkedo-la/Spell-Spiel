@@ -135,6 +135,32 @@ noStyleNPC.onTrigger = function () {
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+var randomBattleNPC = new WorldObject();
+randomBattleNPC.name = "Robby";
+randomBattleNPC.currentMessage = 0;
+randomBattleNPC.position = {
+    x: 120,
+    y: 110,
+};
+randomBattleNPC.img = stylishNPCPic;
+randomBattleNPC.onTrigger = function () {
+    if (holdEnter && !messageActive && okToInteract) {
+        if (this.currentMessage === 0) {
+            pokebox.beginText(this.name + ": " + "Hey, Beam, my man! Don't worry bro, our club's got everything under control here. You go man the front door. \b Though if you want, we've been keepin' a few monsters on the side for ya. You know, if you wanna practice a lil' bit. Anyway, if you wanna try your hand at it, you just gimme the word.");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage >= 1) {
+            pokebox.subject.addObserver(randomBattleNPC.observer);
+            pokebox.beginText(this.name + ": " + "You wanna fight one of our spare targets? Come over here, we got a good one for ya!");
+        }
+    }
+}
+randomBattleNPC.observer = new Observer();
+randomBattleNPC.observer.onNotify = function (entity, event) {
+    gameController.startRandomBattle();
+    pokebox.subject.removeObserver(marieTartine.observer);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 var gauntletDoor = new WorldObject();
 gauntletDoor.name = "Gauntlet Door";
 gauntletDoor.position = {
@@ -157,7 +183,7 @@ upperWall.position = {
     y: 65,
 };
 upperWall.img = {
-    width: 200,
+    width: 240,
     height: 45,
 };
 
@@ -167,6 +193,7 @@ lowerWallTransparent.position = {
     y: 160,
 };
 lowerWallTransparent.img = lowerWallTransparentPic;
+//lowerWallTransparent.img.width = 240;
 
 ////////////////////              ROOMS              //////////////////////
 //Base class
@@ -228,20 +255,21 @@ function Room() {
             }
         })
         if (toCompare.length != 0) {
-            console.log(toCompare);
             closestObject = objectsChecked[toCompare.indexOf(ArraySmallest(toCompare))];
-            console.log(closestObject)
             closestObject.onTrigger();
         }
     }
     this.makeColliders = function () {
         if (!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
+            console.log(player.position);
             player.collider = new Collider(player.position, player.img.width / player.imgNumber, player.img.height);
+            console.log(player.collider.position);
         }
         //Covers both triggers and triggers+colliders
         var toMake = this.objectList.concat(this.triggerList);
         toMake.forEach(function (obj) {
             if (!obj.hasOwnProperty("collider") && obj.img.width && obj.img.height) {
+                console.log("Made collider");
                 obj.collider = new Collider(obj.position, obj.img.width / obj.imgNumber, obj.img.height);
             }
         })
@@ -271,9 +299,37 @@ hallwayRoom.objectList = [upperWall, lowerWallTransparent];
 hallwayRoom.triggerList = [];
 hallwayRoom.toDrawOnTop = [lowerWallTransparent];
 
+hallwayRightRoom = new Room();
+hallwayRightRoom.name = "Hallway Right";
+hallwayRightRoom.img = hallwayPic;
+hallwayRightRoom.objectList = [upperWall, lowerWallTransparent];
+hallwayRightRoom.triggerList = [];
+hallwayRightRoom.toDrawOnTop = [lowerWallTransparent];
+
+hallwayDownRoom = new Room();
+hallwayDownRoom.name = "Hallway Down";
+hallwayDownRoom.img = hallwayDownPic;
+hallwayDownRoom.objectList = [lowerWallTransparent];
+hallwayDownRoom.triggerList = [];
+hallwayDownRoom.toDrawOnTop = [lowerWallTransparent];
+
+destroyedRoom = new Room();
+destroyedRoom.name = "Destroyed Room";
+destroyedRoom.img = destroyedRoomPic;
+destroyedRoom.objectList = [randomBattleNPC, upperWall];
+destroyedRoom.triggerList = [randomBattleNPC];
+destroyedRoom.toDraw = [randomBattleNPC];
+destroyedRoom.toDrawOnTop = [];
+
 //This is so not the best way to do this but DNDC: don't know don't care!
 mainRoom.leftRoom = hallwayRoom;
+mainRoom.rightRoom = hallwayRightRoom;
+mainRoom.downRoom = hallwayDownRoom;
 hallwayRoom.rightRoom = mainRoom;
+hallwayRightRoom.leftRoom = mainRoom;
+hallwayRightRoom.rightRoom = destroyedRoom;
+hallwayDownRoom.upRoom = mainRoom;
+destroyedRoom.leftRoom = hallwayRightRoom;
 
 overworldState.changeRoom(mainRoom);
 

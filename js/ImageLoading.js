@@ -17,6 +17,7 @@ var eyeMonsterPic = document.createElement("img");
 var marieTartinePic = document.createElement("img");
 var guideNPC1Pic = document.createElement("img");
 var noStyleNPCPic = document.createElement("img");
+var stylishNPCPic = document.createElement("img");
 
 //Environments
 var fillerPic = document.createElement("img");
@@ -30,6 +31,8 @@ var creditsMenuPic = document.createElement("img");
 
 var mainRoomPic = document.createElement("img");
 var hallwayPic = document.createElement("img");
+var hallwayDownPic = document.createElement("img");
+var destroyedRoomPic = document.createElement("img");
 var lowerWallTransparentPic = document.createElement("img");
 
 //Spell VFX
@@ -86,6 +89,7 @@ function loadImages(){
         { varName: marieTartinePic, theFile: "marieTartine.png" },
         { varName: guideNPC1Pic, theFile: "guideNPC1.png" },
         { varName: noStyleNPCPic, theFile: "noStyleNPC.png" },
+        { varName: stylishNPCPic, theFile: "stylishNPC.png" },
 
         { varName: fillerPic, theFile: "pommier3.png" },
         { varName: mainMenuPic, theFile: "mainMenu.png" },
@@ -96,6 +100,8 @@ function loadImages(){
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
         { varName: hallwayPic, theFile: "mainHallway.png" },
+        { varName: hallwayDownPic, theFile: "hallwayDown.png" },
+        { varName: destroyedRoomPic, theFile: "destroyedRoom.png" },
         { varName: lowerWallTransparentPic, theFile: "lowerWallTransparent.png" },
 
         { varName: batPic, theFile: "bat.png" },

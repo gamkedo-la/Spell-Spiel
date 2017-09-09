@@ -328,23 +328,28 @@ function OverworldState() {
 
     this.changeRoom = function (room) {
         var toGo;
+        //var initialPos = 
         if (typeof room === "string") {
             switch (room) {
                 case "up":
                     toGo = this.currentRoom.upRoom;
-                    player.position.y = 190;
+                    if (toGo) { player.position.y = 150; }
+                    else player.moveBack();
                     break;
                 case "down":
                     toGo = this.currentRoom.downRoom;
-                    player.position.y = 10;
+                    if (toGo) { player.position.y = 10; }
+                    else player.moveBack();
                     break;
                 case "left":
                     toGo = this.currentRoom.leftRoom;
-                    player.position.x = 190;
+                    if (toGo) { player.position.x = 190; }
+                    else player.moveBack();
                     break;
                 case "right":
                     toGo = this.currentRoom.rightRoom;
-                    player.position.x = 10;
+                    if (toGo) { player.position.x = 10; }
+                    else player.moveBack();
                     break;
                 default: console.log("Not a valid direction!");
             }
@@ -370,7 +375,9 @@ function OverworldState() {
             if (firstTime || endingBattle) { player.setGraphics(walkingRightPic, 4, walkingCycleDuration); }
             if (typeof player.opponent != "undefined") { player.opponent.reset(); }
             player.position = this.currentRoom.spawnPoints.center;
+            player.collider.position = player.position;
         }
+        console.log(this.currentRoom);
         if (endingBattle === true) { endingBattle = false; }
         if (firstTime) {
             announceBox.beginText("Welcome to the Academy! \b To graduate, you must defeat every enemy outside the school grounds, through the big doorway near you. \b But first, take the time to chat with your classmates to prepare yourself!");

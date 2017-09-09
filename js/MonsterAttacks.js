@@ -33,7 +33,7 @@ function Slash() {
         screenshake(10, durationInMS(this.particle.duration));
         //target.isPoisoned();
         target.makePoisoned(3,5);
-        this.playSound();
+        Sound.play("slash");
         this.spawnParticles(this.particle);
     }
 }
@@ -53,7 +53,7 @@ function PoisonSpit() {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         //target.isPoisoned();
-        this.playSound();
+        Sound.play("waterSquirt");
         this.spawnParticles(this.particle);
     }
 }
@@ -91,7 +91,7 @@ function WaterSquirt() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        this.playSound();
+        Sound.play("waterSquirt");
         this.spawnParticles(this.particle);
     }
 }
