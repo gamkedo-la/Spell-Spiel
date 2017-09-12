@@ -275,7 +275,7 @@ eyeMonster.mediumAttacks = [slash];
 eyeMonster.combineAllAttacks();
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
-var gauntletOrder = [bat, eyeMonster, jellyfish, bat, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
+var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;
 
-var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken]; //to use in random battles
+var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles

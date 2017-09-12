@@ -203,7 +203,7 @@ pyroblast = new Pyroblast();
 
 Lightning = function () {
     this.name = "Lightning";
-    this.text = "Lightning Strike of Doom";
+    this.text = "XxX Lightning Smite Eternal XxX";
     this.type = "Attack";
     this.particle = lightningParty;
     this.maxPower = 150;

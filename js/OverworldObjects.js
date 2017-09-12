@@ -72,7 +72,7 @@ marieTartine.onTrigger = function () {
         }
         else if ((this.currentMessage == 3 && gauntletProgress >= 2 && !this.spellUnlocked)) {
             pokebox.beginText(this.name + ": " + "Wow! You did it! Ok, then I'll show you the spell I've been working on. The words are 'Toxic Cloud'. It poisons any enemy that breathes it. Those are the secret words that I made myself though: don't go stealing them!");
-            //unlockSpell(toxicCloud); //todo
+            toxicCloud.isUnlocked = true;
             this.spellUnlocked = true;
             this.currentMessage++;
         }
@@ -158,7 +158,47 @@ randomBattleNPC.onTrigger = function () {
 randomBattleNPC.observer = new Observer();
 randomBattleNPC.observer.onNotify = function (entity, event) {
     gameController.startRandomBattle();
-    pokebox.subject.removeObserver(marieTartine.observer);
+    pokebox.subject.removeObserver(randomBattleNPC.observer);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+var libraryNPC = new WorldObject();
+libraryNPC.name = "Funder";
+libraryNPC.currentMessage = 0;
+libraryNPC.position = {
+    x: 80,
+    y: 70,
+};
+libraryNPC.img = libraryNPCPic;
+libraryNPC.onTrigger = function () {
+    if (holdEnter && !messageActive && okToInteract) {
+        if (this.currentMessage === 0) {
+            pokebox.beginText(this.name + ": " + "Again, monsters around school! It's a shame I have too many studies to go and help out! (hehe...) \b Besides, Robby and his gang would probably take all the glory anyway, no point in going. \b ... \b What? You say you're gonna fight them too? That's insane! \b I mean... now I really want to go...");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage == 1) {
+            pokebox.subject.addObserver(libraryNPC.observer);
+            pokebox.beginText(this.name + ": " + "Listen, if you're helping with school defense, I might as well show you what I've been working on around here. \b Have a look at that! It's a super powerful lightning spell, and the incantation is pretty long too. I'll show you, but first I need you to do me a favor. There's this... avian invader. A sort of Spectral Fowl. It haunts me every night, and it... disrupts my studies. Defeat it, and I'll show you that lightning I was talking to you about.");
+            this.currentMessage++;
+        }
+        else if ((this.currentMessage == 2 && gauntletProgress >= 2 && !this.spellUnlocked)) {
+            pokebox.beginText(this.name + ": " + "YOU DID IT! \b I mean... nice going! I can feel the ethereal pecking ceasing. The words for my super spell are 'XxX Lightning Smite Eternal XxX'. Look, I didn't come up with them. Don't judge, the author's probably a genius... \b Aaaaanyway, good luck!");
+            //unlockSpell(toxicCloud); //todo
+            this.spellUnlocked = true;
+            lightning.isUnlocked = true;
+            this.currentMessage++;
+        }
+        else if ((this.currentMessage == 2 && gauntletProgress < 4 && !this.spellUnlocked)) {
+            pokebox.beginText(this.name + ": " + " Make the pecking stop, I beg of you!!! ");
+        }
+        else if (this.currentMessage == 3) {
+            pokebox.beginText("Thanks agin my dear friend!");
+        }
+    }
+}
+libraryNPC.observer = new Observer();
+libraryNPC.observer.onNotify = function (entity, event) {
+    //gameController.startRandomBattle();
+    pokebox.subject.removeObserver(libraryNPC.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var gauntletDoor = new WorldObject();
@@ -299,6 +339,14 @@ hallwayRoom.objectList = [upperWall, lowerWallTransparent];
 hallwayRoom.triggerList = [];
 hallwayRoom.toDrawOnTop = [lowerWallTransparent];
 
+libraryRoom = new Room();
+libraryRoom.name = "Library";
+libraryRoom.img = libraryPic;
+libraryRoom.objectList = [upperWall, lowerWallTransparent, libraryNPC];
+libraryRoom.triggerList = [libraryNPC];
+libraryRoom.toDraw = [libraryNPC];
+libraryRoom.toDrawOnTop = [lowerWallTransparent];
+
 hallwayRightRoom = new Room();
 hallwayRightRoom.name = "Hallway Right";
 hallwayRightRoom.img = hallwayPic;
@@ -329,6 +377,8 @@ hallwayRoom.rightRoom = mainRoom;
 hallwayRightRoom.leftRoom = mainRoom;
 hallwayRightRoom.rightRoom = destroyedRoom;
 hallwayDownRoom.upRoom = mainRoom;
+hallwayDownRoom.rightRoom = libraryRoom;
+libraryRoom.leftRoom = hallwayDownRoom;
 destroyedRoom.leftRoom = hallwayRightRoom;
 
 overworldState.changeRoom(mainRoom);

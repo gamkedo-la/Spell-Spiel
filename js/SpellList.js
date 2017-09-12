@@ -8,7 +8,7 @@ var spellList = `{
     },
     "Lightning": {
         "name": "Lightning",
-        "text": "Lightning Strike of Doom",
+        "text": "XxX Lightning Smite Eternal XxX",
         "type": "Attack",
         "max_power": 200,
         "anim_frames": 30,

@@ -280,7 +280,7 @@ function Player() { //Defines the player object
     this.availableSpells = {
         "Pyroblast": pyroblast,
         "Ice Spike": iceSpike,
-        "Lightning Strike of Doom": lightning,
+        "XxX Lightning Smite Eternal XxX": lightning,
         "Protect": shield1,
         "Toxic Cloud": toxicCloud,
         "Life Drain": lifeDrain,
