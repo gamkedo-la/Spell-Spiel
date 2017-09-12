@@ -107,7 +107,7 @@ function loadImages(){
         { varName: hallwayDownPic, theFile: "hallwayDown.png" },
         { varName: destroyedRoomPic, theFile: "destroyedRoom.png" },
         { varName: libraryPic, theFile: "library.png" },
-        { varName: trainingPic, theFile: "bigroom.png" },
+        { varName: trainingPic, theFile: "dojo.png" },
         { varName: lowerWallTransparentPic, theFile: "lowerWallTransparent.png" },
 
         { varName: batPic, theFile: "bat.png" },
