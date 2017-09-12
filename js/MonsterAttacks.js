@@ -103,6 +103,7 @@ function Block() {
     this.name = "Block";
     this.type = "Shield";
     this.power = 25;
+    this.selfcast = true;
     this.castTime = 75;
 
     this.cast = function (target) {

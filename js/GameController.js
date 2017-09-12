@@ -45,8 +45,8 @@ function GameController() {
         gameController.changeState(battleState);
     };
     this.startRandomBattle = function () {
-        var random = Math.floor(Math.random() * allEnemies.length);
-        enemy = allEnemies[random];
+        var random = Math.floor(Math.random() * gauntletProgress);
+        enemy = gauntletOrder[random];
         random = Math.floor(Math.random() * allBackgrounds.length);
         battleState.img = allBackgrounds[random];
         battleEndState.img = allBackgrounds[random];
@@ -303,7 +303,7 @@ function OverworldState() {
             }
 
             if (holdSpacebar) {
-                gameController.startRandomBattle();
+                gameController.startBattle(dummy);
             }
         }
         else {

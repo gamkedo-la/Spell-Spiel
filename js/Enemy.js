@@ -274,6 +274,15 @@ eyeMonster.mediumAttacks = [slash];
 //eyeMonster.mediumDebuffs = [eerieLook];
 eyeMonster.combineAllAttacks();
 
+//Dummy for training
+var dummy = new Enemy();
+dummy.name = "Training Dummy";
+dummy.img = dummyPic;
+dummy.chooseAttack = function () {
+    this.chosenOne = new Spell();
+    this.chosenOne.name = "Lol";
+}
+
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletProgress = 0;

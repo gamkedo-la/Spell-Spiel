@@ -12,6 +12,7 @@ var zombiePic = document.createElement("img");
 var lizardPic = document.createElement("img");
 var jellyfishPic = document.createElement("img");
 var ghostChickenPic = document.createElement("img");
+var dummyPic = document.createElement("img");
 var eyeMonsterPic = document.createElement("img");
 
 var marieTartinePic = document.createElement("img");
@@ -116,6 +117,7 @@ function loadImages(){
         { varName: jellyfishPic, theFile: "jellyfishIdle.png" }, //spritesheet animation
         { varName: ghostChickenPic, theFile: "CGSpritesheet.png" }, //spritesheet animation
         { varName: eyeMonsterPic, theFile: "eyeMonster.png" }, //spritesheet animation
+        { varName: dummyPic, theFile: "dummy.png" },
 
         { varName: fireballSheet, theFile: "fireball.png" },
         { varName: iceSpikePic, theFile: "iceSpike.png" },
