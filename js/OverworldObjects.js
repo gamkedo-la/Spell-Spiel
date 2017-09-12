@@ -227,6 +227,26 @@ upperWall.img = {
     height: 45,
 };
 
+var sideWallRight = new WorldObject();
+sideWallRight.position = {
+    x: 195,
+    y: 160,
+};
+sideWallRight.img = {
+    width: 40,
+    height: 165,
+};
+
+var sideWallLeft = new WorldObject();
+sideWallLeft.position = {
+    x: 0,
+    y: 160,
+};
+sideWallLeft.img = {
+    width: 50,
+    height: 165,
+};
+
 var lowerWallTransparent = new WorldObject();
 lowerWallTransparent.position = {
     x: 100,
@@ -332,20 +352,28 @@ mainRoom.objectList = [marieTartine, upperWall, guideNPC1, noStyleNPC, gauntletD
 mainRoom.triggerList = [marieTartine, guideNPC1, noStyleNPC, gauntletDoor];
 mainRoom.toDraw = [marieTartine, guideNPC1, noStyleNPC];
 
-hallwayRoom = new Room();
-hallwayRoom.name = "Hallway";
-hallwayRoom.img = hallwayPic;
-hallwayRoom.objectList = [upperWall, lowerWallTransparent];
-hallwayRoom.triggerList = [];
-hallwayRoom.toDrawOnTop = [lowerWallTransparent];
+hallwayRoomLeft = new Room();
+hallwayRoomLeft.name = "Hallway";
+hallwayRoomLeft.img = hallwayPic;
+hallwayRoomLeft.objectList = [upperWall, lowerWallTransparent];
+hallwayRoomLeft.triggerList = [];
+hallwayRoomLeft.toDrawOnTop = [lowerWallTransparent];
 
 libraryRoom = new Room();
 libraryRoom.name = "Library";
 libraryRoom.img = libraryPic;
-libraryRoom.objectList = [upperWall, lowerWallTransparent, libraryNPC];
+libraryRoom.objectList = [upperWall, lowerWallTransparent, libraryNPC, sideWallRight];
 libraryRoom.triggerList = [libraryNPC];
 libraryRoom.toDraw = [libraryNPC];
 libraryRoom.toDrawOnTop = [lowerWallTransparent];
+
+trainingRoom = new Room();
+trainingRoom.name = "Training Room";
+trainingRoom.img = trainingPic;
+trainingRoom.objectList = [upperWall, lowerWallTransparent, sideWallLeft];
+trainingRoom.triggerList = [];
+trainingRoom.toDraw = [];
+trainingRoom.toDrawOnTop = [lowerWallTransparent];
 
 hallwayRightRoom = new Room();
 hallwayRightRoom.name = "Hallway Right";
@@ -357,7 +385,7 @@ hallwayRightRoom.toDrawOnTop = [lowerWallTransparent];
 hallwayDownRoom = new Room();
 hallwayDownRoom.name = "Hallway Down";
 hallwayDownRoom.img = hallwayDownPic;
-hallwayDownRoom.objectList = [lowerWallTransparent];
+hallwayDownRoom.objectList = [lowerWallTransparent, sideWallLeft];
 hallwayDownRoom.triggerList = [];
 hallwayDownRoom.toDrawOnTop = [lowerWallTransparent];
 
@@ -370,10 +398,12 @@ destroyedRoom.toDraw = [randomBattleNPC];
 destroyedRoom.toDrawOnTop = [];
 
 //This is so not the best way to do this but DNDC: don't know don't care!
-mainRoom.leftRoom = hallwayRoom;
+mainRoom.leftRoom = hallwayRoomLeft;
 mainRoom.rightRoom = hallwayRightRoom;
 mainRoom.downRoom = hallwayDownRoom;
-hallwayRoom.rightRoom = mainRoom;
+hallwayRoomLeft.rightRoom = mainRoom;
+hallwayRoomLeft.leftRoom = trainingRoom;
+trainingRoom.rightRoom = hallwayRoomLeft;
 hallwayRightRoom.leftRoom = mainRoom;
 hallwayRightRoom.rightRoom = destroyedRoom;
 hallwayDownRoom.upRoom = mainRoom;

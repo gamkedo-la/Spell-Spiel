@@ -35,6 +35,7 @@ var hallwayPic = document.createElement("img");
 var hallwayDownPic = document.createElement("img");
 var destroyedRoomPic = document.createElement("img");
 var libraryPic = document.createElement("img");
+var trainingPic = document.createElement("img");
 var lowerWallTransparentPic = document.createElement("img");
 
 //Spell VFX
@@ -106,6 +107,7 @@ function loadImages(){
         { varName: hallwayDownPic, theFile: "hallwayDown.png" },
         { varName: destroyedRoomPic, theFile: "destroyedRoom.png" },
         { varName: libraryPic, theFile: "library.png" },
+        { varName: trainingPic, theFile: "bigroom.png" },
         { varName: lowerWallTransparentPic, theFile: "lowerWallTransparent.png" },
 
         { varName: batPic, theFile: "bat.png" },
