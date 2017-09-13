@@ -281,7 +281,7 @@ Shield1 = function () {
     this.name = "Shield1";
     this.text = "Protect";
     this.type = "Shield";
-    this.maxPower = 100;
+    this.maxPower = 35;
     this.selfcast = true;
     this.isUnlocked = true;
 

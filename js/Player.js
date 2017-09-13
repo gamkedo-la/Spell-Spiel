@@ -187,6 +187,10 @@ function Character() { //"Character" == base class for anything that can fight
         this.maxHP += this.hpLadder[this.level];
         this.skillpoints++;
         //this.exp -= this.expNeeded;
+        if (this.level - 1 > this.expLadder.length) {
+            this.expNeeded = "Cap reached!";
+            levelCapReached = true;
+        }
         this.expNeeded = this.expLadder[this.level];
     };
     this.changeSpell = function (spell) {
@@ -265,13 +269,13 @@ function Player() { //Defines the player object
     this.picToChange = false;
     this.movingDirection = ""; //can be "up", "down", "left", "right"
     this.cycleDuration = 30;
-    this.skillpoints = 100;
+    this.skillpoints = 0;
     this.maxHP = 350;
     this.hp = this.maxHP;
     this.hp = 100;
-    this.hpLadder = [0, 0, 25, 50, 75]; //Hp upgrades for each level
+    this.hpLadder = [0, 0, 25, 25, 30, 30, 40, 30, 50, 75, 75, 80, 80]; //Hp upgrades for each level
     this.exp = 0;
-    this.expLadder = [0, 100, 200, 300];
+    this.expLadder = [0, 15, 50, 90, 145, 205, 285, 365, 465, 665, 965, 1265, 1565];
     this.expNeeded = this.expLadder[this.level];
 
     // TODO this must be refactored to use the json
@@ -285,7 +289,6 @@ function Player() { //Defines the player object
         "Toxic Cloud": toxicCloud,
         "Life Drain": lifeDrain,
         "Time to show this guy": getTilted,
-        "Za Warudo": zaWarudo,
         "DNDC: don't know don't care" : dndc,
         "Dispell": dispell,
     };

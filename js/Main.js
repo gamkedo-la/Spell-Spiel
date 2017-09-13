@@ -15,6 +15,8 @@ const ORIG_WORLD_W = 200;
 const ORIG_WORLD_H = 150;
 const PIXEL_SCALE_UP = 4;
 
+var levelCapReached = false;
+
 window.onload = function () {
 
     // FIXME: it is impolite to trigger sound right away...

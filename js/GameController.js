@@ -554,7 +554,7 @@ function BattleEndState() {
             this.win = true;
             player.exp += enemy.expGiven;
             console.log(player.exp, player.expNeeded);
-            if (player.exp >= player.expNeeded) {
+            if (player.exp >= player.expNeeded && !levelCapReached) {
                 player.levelUp(); //Awesome!
                 leveledUp = true;
             }

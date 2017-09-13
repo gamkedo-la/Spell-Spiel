@@ -197,73 +197,35 @@ var bat = new Enemy();
 bat.name = "Echo Mouse";
 bat.img = batPic;
 bat.maxHP = 300;
-bat.expGiven = 10;
+bat.expGiven = 15;
 bat.imgNumber = 2;
 bat.cycleImage = true;
 bat.weakAttacks = [poisonSpit];
 bat.mediumAttacks = [bite];
 bat.strongAttacks = [];
-bat.weakShields = [];
+bat.weakShields = [block];
 bat.combineAllAttacks();
 
 //2nd enemy in gauntlet
-var zombie = new Enemy();
-zombie.name = "Green Stroller";
-zombie.img = zombiePic;
-zombie.maxHP = 750;
-zombie.expGiven = 17
-zombie.imgNumber = 2;
-zombie.cycleImage = true;
-zombie.weakAttacks = [];
-zombie.mediumAttacks = [bite];
-zombie.strongAttacks = [];
-zombie.weakShields = [block];
-zombie.combineAllAttacks();
-
-//3rd enemy in gauntlet
-var lizard = new Enemy();
-lizard.name = "Rad Reptilian";
-lizard.expGiven = 23;
-lizard.img = lizardPic;
-lizard.imgNumber = 2;
-lizard.cycleImage = true;
-lizard.weakAttacks = [];
-lizard.mediumAttacks = [slash];
-lizard.strongAttacks = [];
-lizard.weakShields = [block];
-lizard.combineAllAttacks();
-
-//4th enemy in gauntlet
 var jellyfish = new Enemy();
 jellyfish.name = "Aerial Jelly";
 jellyfish.img = jellyfishPic;
-jellyfish.maxHP = 10;
+jellyfish.maxHP = 450;
+jellyfish.expGiven = 25;
 jellyfish.imgNumber = 2;
 jellyfish.cycleImage = true;
 jellyfish.weakAttacks = [sting];
 jellyfish.mediumAttacks = [];
 jellyfish.strongAttacks = [waterSquirt];
-jellyfish.weakShields = [];
+jellyfish.weakShields = [block];
 jellyfish.combineAllAttacks();
 
-//5th enemy in gauntlet
-var ghostChicken = new Enemy();
-ghostChicken.name = "Spooky Cacaw";
-ghostChicken.imgNumber = 2;
-ghostChicken.cycleImage = true;
-ghostChicken.img = ghostChickenPic;
-ghostChicken.weakAttacks = [sting];
-ghostChicken.mediumAttacks = [];
-ghostChicken.strongAttacks = [waterSquirt];
-ghostChicken.weakShields = [];
-ghostChicken.combineAllAttacks();
-
-//6th enemy in gauntlet
+//3rd enemy in gauntlet
 var eyeMonster = new Enemy();
 eyeMonster.name = "Wiggly Cornea";
 eyeMonster.imgNumber = 8;
-eyeMonster.maxHP = 350;
-eyeMonster.expGiven = 100;
+eyeMonster.maxHP = 600;
+eyeMonster.expGiven = 40;
 eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
@@ -274,17 +236,60 @@ eyeMonster.mediumAttacks = [slash];
 //eyeMonster.mediumDebuffs = [eerieLook];
 eyeMonster.combineAllAttacks();
 
+//4th enemy in gauntlet
+var ghostChicken = new Enemy();
+ghostChicken.name = "Spooky Cacaw";
+ghostChicken.imgNumber = 2;
+ghostChicken.maxHP = 850;
+ghostChicken.expGiven = 60;
+ghostChicken.cycleImage = true;
+ghostChicken.img = ghostChickenPic;
+ghostChicken.weakAttacks = [sting];
+ghostChicken.mediumAttacks = [];
+ghostChicken.strongAttacks = [waterSquirt];
+ghostChicken.weakShields = [block];
+ghostChicken.combineAllAttacks();
+
+//5th enemy in gauntlet
+var zombie = new Enemy();
+zombie.name = "Green Stroller";
+zombie.img = zombiePic;
+zombie.maxHP = 1333;
+zombie.expGiven = 85;
+zombie.imgNumber = 2;
+zombie.cycleImage = true;
+zombie.weakAttacks = [];
+zombie.mediumAttacks = [bite];
+zombie.strongAttacks = [];
+zombie.weakShields = [block];
+zombie.combineAllAttacks();
+
+//6th enemy in gauntlet
+var lizard = new Enemy();
+lizard.name = "Rad Reptilian";
+lizard.expGiven = 100;
+lizard.img = lizardPic;
+lizard.maxHP = 1600;
+lizard.imgNumber = 2;
+lizard.cycleImage = true;
+lizard.weakAttacks = [];
+lizard.mediumAttacks = [slash];
+lizard.strongAttacks = [];
+lizard.weakShields = [block];
+lizard.combineAllAttacks();
+
 //Dummy for training
 var dummy = new Enemy();
 dummy.name = "Training Dummy";
+dummy.maxHP = 750;
 dummy.img = dummyPic;
 dummy.chooseAttack = function () {
     this.chosenOne = new Spell();
-    this.chosenOne.name = "Lol";
+    this.chosenOne.name = "Pryoblast";
 }
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
-var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
+var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; 
 var gauntletProgress = 0;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles
