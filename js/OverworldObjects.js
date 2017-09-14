@@ -140,7 +140,7 @@ randomBattleNPC.name = "Robby";
 randomBattleNPC.currentMessage = 0;
 randomBattleNPC.position = {
     x: 120,
-    y: 110,
+    y: 100,
 };
 randomBattleNPC.img = stylishNPCPic;
 randomBattleNPC.onTrigger = function () {
@@ -159,6 +159,58 @@ randomBattleNPC.observer = new Observer();
 randomBattleNPC.observer.onNotify = function (entity, event) {
     gameController.startRandomBattle();
     pokebox.subject.removeObserver(randomBattleNPC.observer);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+var marine = new WorldObject();
+marine.name = "Marine";
+marine.currentMessage = 0;
+marine.position = {
+    x: 60,
+    y: 90,
+};
+marine.img = marinePic;
+marine.onTrigger = function () {
+    if (holdEnter && !messageActive && okToInteract) {
+        if (this.currentMessage === 0) {
+            pokebox.beginText(this.name + ": " + "Hey, Beam, my man! Don't worry bro, our club's got everything under control here. You go man the front door. \b Though if you want, we've been keepin' a few monsters on the side for ya. You know, if you wanna practice a lil' bit. Anyway, if you wanna try your hand at it, you just gimme the word.");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage >= 1) {
+            pokebox.subject.addObserver(marine.observer);
+            pokebox.beginText(this.name + ": " + "You wanna fight one of our spare targets? Come over here, we got a good one for ya!");
+        }
+    }
+}
+marine.observer = new Observer();
+marine.observer.onNotify = function (entity, event) {
+    //gameController.startRandomBattle();
+    pokebox.subject.removeObserver(marine.observer);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+var quitterie = new WorldObject();
+quitterie.name = "Robby";
+quitterie.currentMessage = 0;
+quitterie.position = {
+    x: 90,
+    y: 80,
+};
+quitterie.img = quitteriePic;
+quitterie.onTrigger = function () {
+    if (holdEnter && !messageActive && okToInteract) {
+        if (this.currentMessage === 0) {
+            pokebox.beginText(this.name + ": " + "Hey, Beam, my man! Don't worry bro, our club's got everything under control here. You go man the front door. \b Though if you want, we've been keepin' a few monsters on the side for ya. You know, if you wanna practice a lil' bit. Anyway, if you wanna try your hand at it, you just gimme the word.");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage >= 1) {
+            pokebox.subject.addObserver(quitterie.observer);
+            pokebox.beginText(this.name + ": " + "You wanna fight one of our spare targets? Come over here, we got a good one for ya!");
+        }
+    }
+}
+quitterie.observer = new Observer();
+quitterie.observer.onNotify = function (entity, event) {
+    gameController.startRandomBattle();
+    pokebox.subject.removeObserver(quitterie.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var libraryNPC = new WorldObject();
@@ -355,8 +407,9 @@ mainRoom.toDraw = [marieTartine, guideNPC1, noStyleNPC];
 hallwayRoomLeft = new Room();
 hallwayRoomLeft.name = "Hallway";
 hallwayRoomLeft.img = hallwayPic;
-hallwayRoomLeft.objectList = [upperWall, lowerWallTransparent];
-hallwayRoomLeft.triggerList = [];
+hallwayRoomLeft.objectList = [upperWall, lowerWallTransparent, marine];
+hallwayRoomLeft.triggerList = [marine];
+hallwayRoomLeft.toDraw = [marine];
 hallwayRoomLeft.toDrawOnTop = [lowerWallTransparent];
 
 libraryRoom = new Room();
@@ -370,9 +423,9 @@ libraryRoom.toDrawOnTop = [lowerWallTransparent];
 trainingRoom = new Room();
 trainingRoom.name = "Training Room";
 trainingRoom.img = trainingPic;
-trainingRoom.objectList = [upperWall, lowerWallTransparent, sideWallLeft];
-trainingRoom.triggerList = [];
-trainingRoom.toDraw = [];
+trainingRoom.objectList = [upperWall, lowerWallTransparent, sideWallLeft, quitterie];
+trainingRoom.triggerList = [quitterie];
+trainingRoom.toDraw = [quitterie];
 trainingRoom.toDrawOnTop = [lowerWallTransparent];
 
 hallwayRightRoom = new Room();

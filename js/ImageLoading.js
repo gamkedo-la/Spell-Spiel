@@ -16,6 +16,8 @@ var dummyPic = document.createElement("img");
 var eyeMonsterPic = document.createElement("img");
 
 var marieTartinePic = document.createElement("img");
+var marinePic = document.createElement("img");
+var quitteriePic = document.createElement("img");
 var guideNPC1Pic = document.createElement("img");
 var noStyleNPCPic = document.createElement("img");
 var stylishNPCPic = document.createElement("img");
@@ -91,6 +93,8 @@ function loadImages(){
         { varName: walkingRightPic, theFile: "beamWalkingRight.png" }, //spritesheet animation
 
         { varName: marieTartinePic, theFile: "marieTartine.png" },
+        { varName: quitteriePic, theFile: "quitterie.png" },
+        { varName: marinePic, theFile: "marine.png" },
         { varName: guideNPC1Pic, theFile: "guideNPC1.png" },
         { varName: noStyleNPCPic, theFile: "noStyleNPC.png" },
         { varName: stylishNPCPic, theFile: "stylishNPC.png" },
