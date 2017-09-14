@@ -172,12 +172,17 @@ marine.img = marinePic;
 marine.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText(this.name + ": " + "Hey, Beam, my man! Don't worry bro, our club's got everything under control here. You go man the front door. \b Though if you want, we've been keepin' a few monsters on the side for ya. You know, if you wanna practice a lil' bit. Anyway, if you wanna try your hand at it, you just gimme the word.");
+            pokebox.beginText(this.name + ": " + "Hummmm..... Should I start my long homework due in a week, or my short homework due tomorrow?");
             this.currentMessage++;
         }
-        else if (this.currentMessage >= 1) {
+        else if (this.currentMessage === 1) {
             pokebox.subject.addObserver(marine.observer);
-            pokebox.beginText(this.name + ": " + "You wanna fight one of our spare targets? Come over here, we got a good one for ya!");
+            pokebox.beginText(this.name + ": " + "Hummmm.... Should I continue resisting changing my shirt color just cause it fits with my name? \b ... \b I mean, I can't change my name....");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage === 2) {
+            pokebox.subject.addObserver(marine.observer);
+            pokebox.beginText(this.name + ": " + "Hummmm.... Should I consider talking to others instead of constantly thinking to myself all the the time?");
         }
     }
 }
