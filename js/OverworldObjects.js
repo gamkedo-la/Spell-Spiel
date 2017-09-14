@@ -182,7 +182,7 @@ marine.onTrigger = function () {
         }
         else if (this.currentMessage === 2) {
             pokebox.subject.addObserver(marine.observer);
-            pokebox.beginText(this.name + ": " + "Hummmm.... Should I consider talking to others instead of constantly thinking to myself all the the time?");
+            pokebox.beginText(this.name + ": " + "Hummmm.... Should I consider talking to others instead of constantly thinking to myself all the time?");
         }
     }
 }
@@ -193,7 +193,7 @@ marine.observer.onNotify = function (entity, event) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var quitterie = new WorldObject();
-quitterie.name = "Robby";
+quitterie.name = "Quitterie";
 quitterie.currentMessage = 0;
 quitterie.position = {
     x: 90,
@@ -203,18 +203,18 @@ quitterie.img = quitteriePic;
 quitterie.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText(this.name + ": " + "Hey, Beam, my man! Don't worry bro, our club's got everything under control here. You go man the front door. \b Though if you want, we've been keepin' a few monsters on the side for ya. You know, if you wanna practice a lil' bit. Anyway, if you wanna try your hand at it, you just gimme the word.");
+            pokebox.beginText(this.name + ": " + "Hi Beam! You're in luck, everyone's outside fighting monsters, so the training dummy's free! I've been hogging it a lot these days; why don't you give it a try?");
             this.currentMessage++;
         }
-        else if (this.currentMessage >= 1) {
+        else if (this.currentMessage === 1) {
             pokebox.subject.addObserver(quitterie.observer);
-            pokebox.beginText(this.name + ": " + "You wanna fight one of our spare targets? Come over here, we got a good one for ya!");
+            pokebox.beginText(this.name + ": " + "Here, have a shot at the dummy!");
         }
     }
 }
 quitterie.observer = new Observer();
 quitterie.observer.onNotify = function (entity, event) {
-    gameController.startRandomBattle();
+    gameController.startBattle(dummy);
     pokebox.subject.removeObserver(quitterie.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
