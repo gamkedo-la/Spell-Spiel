@@ -172,17 +172,17 @@ marine.img = marinePic;
 marine.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText(this.name + ": " + "Hummmm..... Should I start my long homework due in a week, or my short homework due tomorrow?");
+            pokebox.beginText(this.name + ": " + "(Hummmm..... Should I start my long homework due in a week, or my short homework due tomorrow?)");
             this.currentMessage++;
         }
         else if (this.currentMessage === 1) {
             pokebox.subject.addObserver(marine.observer);
-            pokebox.beginText(this.name + ": " + "Hummmm.... Should I continue resisting changing my shirt color just cause it fits with my name? \b ... \b I mean, I can't change my name....");
+            pokebox.beginText(this.name + ": " + "(Hummmm.... Should I continue resisting changing my shirt color just cause it fits with my name? \b ... \b I mean, I can't change my name....)");
             this.currentMessage++;
         }
         else if (this.currentMessage === 2) {
             pokebox.subject.addObserver(marine.observer);
-            pokebox.beginText(this.name + ": " + "Hummmm.... Should I consider talking to others instead of constantly thinking to myself all the time?");
+            pokebox.beginText(this.name + ": " + "(Hummmm.... Should I consider talking to others instead of constantly thinking to myself all the time?)");
         }
     }
 }
@@ -203,7 +203,7 @@ quitterie.img = quitteriePic;
 quitterie.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText(this.name + ": " + "Hi Beam! You're in luck, everyone's outside fighting monsters, so the training dummy's free! I've been hogging it a lot these days; why don't you give it a try?");
+            pokebox.beginText(this.name + ": " + "Hi Beam! Everyone's outside fighting monsters, so the training dummy's free to whack on! I've been hogging it a lot these days; why don't you give it a try?");
             this.currentMessage++;
         }
         else if (this.currentMessage === 1) {
@@ -229,12 +229,12 @@ libraryNPC.img = libraryNPCPic;
 libraryNPC.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText(this.name + ": " + "Again, monsters around school! It's a shame I have too many studies to go and help out! (hehe...) \b Besides, Robby and his gang would probably take all the glory anyway, no point in going. \b ... \b What? You say you're gonna fight them too? That's insane! \b I mean... now I really want to go...");
+            pokebox.beginText(this.name + ": " + "Once again, monsters around school! It's a shame I have too many studies to go and help out! (hehe...) \b Besides, Robby and his gang would probably take all the glory anyway, no point in going. \b ... \b What? You say you're gonna fight them too? That's insane! \b I mean... now I really want to go...");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
             pokebox.subject.addObserver(libraryNPC.observer);
-            pokebox.beginText(this.name + ": " + "Listen, if you're helping with school defense, I might as well show you what I've been working on around here. \b Have a look at that! It's a super powerful lightning spell, and the incantation is pretty long too. I'll show you, but first I need you to do me a favor. There's this... avian invader. A sort of Spectral Fowl. It haunts me every night, and it... disrupts my studies. Defeat it, and I'll show you that lightning I was talking to you about.");
+            pokebox.beginText(this.name + ": " + "Listen, if you're helping with school defense, I might as well show you what I've been working on around here. \b Have a look at this! It's a super powerful lightning spell, and the incantation is pretty long too. I'll show you, but first I need you to do me a favor. There's this... avian invader. A sort of Spectral Fowl. It haunts me every night, and it... disrupts my studies. Defeat it, and I'll show you that lightning I was talking to you about.");
             this.currentMessage++;
         }
         else if ((this.currentMessage == 2 && gauntletProgress >= 2 && !this.spellUnlocked)) {
@@ -302,6 +302,16 @@ sideWallLeft.position = {
 sideWallLeft.img = {
     width: 50,
     height: 165,
+};
+
+var wallCorner = new WorldObject();
+wallCorner.position = {
+    x: 170,
+    y: 50,
+};
+wallCorner.img = {
+    width: 60,
+    height: 80,
 };
 
 var lowerWallTransparent = new WorldObject();
@@ -411,7 +421,7 @@ mainRoom.toDraw = [marieTartine, guideNPC1, noStyleNPC];
 
 hallwayRoomLeft = new Room();
 hallwayRoomLeft.name = "Hallway";
-hallwayRoomLeft.img = hallwayPic;
+hallwayRoomLeft.img = leftHallwayPic;
 hallwayRoomLeft.objectList = [upperWall, lowerWallTransparent, marine];
 hallwayRoomLeft.triggerList = [marine];
 hallwayRoomLeft.toDraw = [marine];
@@ -435,7 +445,7 @@ trainingRoom.toDrawOnTop = [lowerWallTransparent];
 
 hallwayRightRoom = new Room();
 hallwayRightRoom.name = "Hallway Right";
-hallwayRightRoom.img = hallwayPic;
+hallwayRightRoom.img = rightHallwayPic;
 hallwayRightRoom.objectList = [upperWall, lowerWallTransparent];
 hallwayRightRoom.triggerList = [];
 hallwayRightRoom.toDrawOnTop = [lowerWallTransparent];
@@ -443,7 +453,7 @@ hallwayRightRoom.toDrawOnTop = [lowerWallTransparent];
 hallwayDownRoom = new Room();
 hallwayDownRoom.name = "Hallway Down";
 hallwayDownRoom.img = hallwayDownPic;
-hallwayDownRoom.objectList = [lowerWallTransparent, sideWallLeft];
+hallwayDownRoom.objectList = [lowerWallTransparent, sideWallLeft, wallCorner];
 hallwayDownRoom.triggerList = [];
 hallwayDownRoom.toDrawOnTop = [lowerWallTransparent];
 

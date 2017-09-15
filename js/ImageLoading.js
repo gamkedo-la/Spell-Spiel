@@ -34,7 +34,8 @@ var spellMenu2Pic = document.createElement("img");
 var creditsMenuPic = document.createElement("img");
 
 var mainRoomPic = document.createElement("img");
-var hallwayPic = document.createElement("img");
+var leftHallwayPic = document.createElement("img");
+var rightHallwayPic = document.createElement("img");
 var hallwayDownPic = document.createElement("img");
 var destroyedRoomPic = document.createElement("img");
 var libraryPic = document.createElement("img");
@@ -108,7 +109,8 @@ function loadImages(){
         { varName: battlePic, theFile: "canyon_of_the_castle.png" },
         { varName: lavaPic, theFile: "LavaBackground.png" }, 
         { varName: mainRoomPic, theFile: "mainRoom.png" },
-        { varName: hallwayPic, theFile: "mainHallway.png" },
+        { varName: leftHallwayPic, theFile: "hallwayLeft.png" },
+        { varName: rightHallwayPic, theFile: "hallwayRight.png" },
         { varName: hallwayDownPic, theFile: "hallwayDown.png" },
         { varName: destroyedRoomPic, theFile: "destroyedRoom.png" },
         { varName: libraryPic, theFile: "library.png" },

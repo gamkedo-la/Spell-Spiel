@@ -84,7 +84,6 @@ function Enemy() {
         }
             //The player is using a shield! No point in attacking; gonna buff
         else if (player.shieldHP >= player.maxHP * 0.1) {
-            console.log("!!!");
             this.chosenOne = this.pickRandom("Medium", "Buff");
         }
             //I have high HP, I can cast a strong attack safely

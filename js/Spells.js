@@ -192,7 +192,7 @@ Pyroblast = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        Sound.play("pyroblast");
+        Sound.play("pyroblast", false, 0.3);
         //this.spawnParticles();
         this.particle.party();
     };
@@ -213,7 +213,7 @@ Lightning = function () {
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        Sound.play("lightning");
+        Sound.play("lightning", false, 0.3);
         this.spawnParticles(this.particle);
     };
     this.reset();
@@ -232,7 +232,7 @@ IceSpike = function () {
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier);
         screenshake(5, durationInMS(this.particle.duration))
-        Sound.play("iceSpike");
+        Sound.play("iceSpike", false, 0.3);
         this.particle.party();
     };
     this.reset();
@@ -250,7 +250,7 @@ ToxicCloud = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
-        Sound.play("toxicCloud");
+        Sound.play("toxicCloud",false, 0.05);
         this.particle.party();
     };
     this.reset();
@@ -268,7 +268,7 @@ LifeDrain = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier, -this.particle.duration);
         screenshake(1, durationInMS(this.particle.duration));
-        Sound.play("lifeDrain");
+        Sound.play("lifeDrain", false, 0.6);
         this.particle.party();
         player.delayedDamage.push([durationInMS(this.particle.duration), -this.maxPower / 2]); //delayed healing
     };

@@ -53,7 +53,7 @@ function PoisonSpit() {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
         //target.isPoisoned();
-        Sound.play("waterSquirt");
+        Sound.play("waterSquirt", false, 0.3);
         this.spawnParticles(this.particle);
     }
 }
@@ -130,3 +130,4 @@ function EerieLook() {
 }
 EerieLook.prototype = new Spell();
 eerieLook = new EerieLook();
+
