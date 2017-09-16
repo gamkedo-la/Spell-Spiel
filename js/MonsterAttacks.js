@@ -78,6 +78,24 @@ function Sting() {
 Sting.prototype = new Spell();
 sting = new Sting();
 
+function Peck() {
+    this.name = "Peck";
+    this.type = "Attack";
+    this.particle = stingParty;
+    this.power = 35;
+    this.castTime = 115;
+    this.selfcast = false;
+
+    this.cast = function (target) {
+        this.basicCast(target, player.opponent.attackMultiplier);
+        screenshake(10, durationInMS(this.particle.duration));
+        this.playSound();
+        this.spawnParticles(this.particle);
+    }
+}
+Peck.prototype = new Spell();
+peck = new Peck();
+
 function WaterSquirt() {
     this.name = "Water Squirt";
     this.type = "Attack";

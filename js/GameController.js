@@ -225,10 +225,53 @@ function CreditsMenuState() {
         if (holdM && okToInteract) {
             gameController.changeState(mainMenuState);
         }
+        if (holdLeft && okToInteract) {
+            this.changePage("previous");
+        }
+        if (holdRight && okToInteract) {
+            this.changePage("next");
+        }
+    }
+    this.changePage = function (page) {
+        var toGo;
+        if (typeof page === "string") {
+            switch (page) {
+                case "next":
+                    toGo = this.currentPage.next;
+                    break;
+                case "previous":
+                    toGo = this.currentPage.previous;
+                    break;
+            }
+            if (typeof toGo === "undefined") {
+                console.log("There is no page there!");
+            }
+            else {
+                this.currentPage = toGo;
+                this.img = toGo.img;
+            }
+        }
+            //else, we assume "page" is an actual page object
+        else {
+            console.log("Not a string");
+            this.img = page.img;
+            this.currentPage = page;
+        }
+        didInteraction();
     }
     this.enter = function () {
+        this.changePage(creditsPage1);
     }
 }
+
+creditsPage1 = {
+    img : creditsMenuPic
+}
+creditsPage2 = {
+    img: creditsMenuPic2
+}
+creditsPage1.next = creditsPage2;
+creditsPage2.previous = creditsPage1;
 
 var interactDelay = 0;
 var interactDelayReset = 10;
@@ -596,7 +639,7 @@ function EndgameState() {
     };
 }
 
-allBackgrounds = [battlePic, lavaPic];
+allBackgrounds = [battlePic];
 
 var battleState = new BattleState();
 var overworldState = new OverworldState();

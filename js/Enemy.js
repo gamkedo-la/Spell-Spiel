@@ -245,10 +245,10 @@ ghostChicken.maxHP = 850;
 ghostChicken.expGiven = 60;
 ghostChicken.cycleImage = true;
 ghostChicken.img = ghostChickenPic;
-ghostChicken.weakAttacks = [sting];
-ghostChicken.mediumAttacks = [];
-ghostChicken.strongAttacks = [waterSquirt];
+ghostChicken.weakAttacks = [peck];
 ghostChicken.weakShields = [block];
+ghostChicken.mediumBuffs = [getAngry];
+ghostChicken.weakDebuffs = [eerieLook];
 ghostChicken.combineAllAttacks();
 
 //5th enemy in gauntlet
@@ -284,7 +284,7 @@ lizard.combineAllAttacks();
 //Dummy for training
 var dummy = new Enemy();
 dummy.name = "Training Dummy";
-dummy.maxHP = 750;
+dummy.maxHP = 400;
 dummy.img = dummyPic;
 dummy.chooseAttack = function () {
     this.chosenOne = new Spell();
@@ -293,6 +293,6 @@ dummy.chooseAttack = function () {
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; 
-var gauntletProgress = 2;
+var gauntletProgress = 3;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles
