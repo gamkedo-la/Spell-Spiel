@@ -50,7 +50,8 @@ function PoisonSpit() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        target.makePoisoned(3, 5);
+        //target.makePoisoned(3, 5);
+        target.delayedEffect.push([(durationInMS(this.particle.duration)), "poisonByEnemy"]);
         Sound.play("waterSquirt", false, 0.3);
         this.spawnParticles(this.particle);
     }

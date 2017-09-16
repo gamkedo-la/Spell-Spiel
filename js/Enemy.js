@@ -293,6 +293,6 @@ dummy.chooseAttack = function () {
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; 
-var gauntletProgress = 3;
+var gauntletProgress = 4;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles

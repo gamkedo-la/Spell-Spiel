@@ -110,6 +110,7 @@ function Spell() {
         if (this.type === "Attack") {
             var dmgToPush = this.power * multiplier;
             if (this.particle) {
+                //console.log("Pushed dmg", dmgToPush, this.particle.duration + extraDelayFrames);
                 target.delayedDamage.push([durationInMS(this.particle.duration+extraDelayFrames), dmgToPush]);
             }
             else { target.delayedDamage.push([0, dmgToPush]); }
@@ -244,13 +245,15 @@ ToxicCloud = function () {
     this.text = "Toxic Cloud";
     this.type = "Attack";
     this.maxPower = 25;
+    this.isUnlocked = true;
     this.particle = toxicCloudParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
         Sound.play("toxicCloud", false, 0.05);
-        target.makePoisoned(3+this.level*2, 5);
+        //target.makePoisoned(3+this.level*2, 5);
+        target.delayedEffect.push([(durationInMS(this.particle.duration)), "poisonByPlayer"]);
         this.particle.party();
     };
     this.reset();

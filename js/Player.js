@@ -110,6 +110,11 @@ function Character() { //"Character" == base class for anything that can fight
                         console.log("Caliss, c'est plate");
                         this.castFailed();
                         break;
+                    case "poisonByEnemy":
+                        this.makePoisoned(3, 5);
+                        break;
+                    case "poisonByPlayer":
+                        this.makePoisoned(3 + player.level * 2, 5);
                 }
                 this.delayedEffect.splice(i, 1);
             };
@@ -216,26 +221,25 @@ function Character() { //"Character" == base class for anything that can fight
       this.isPoisoned = true;
     };
     this.poisonUpdate = function (){
-      if (this.isPoisoned){
-        if (this.poisonTick < this.poisonTime *30 +1){
-          if ((this.poisonTick) % 30 == 0){
-            //console.log(this.poisonTick + "tickNumber");
-            if (this.shieldHP == 0) {
-                this.hp -= this.poisonDamage;
-                if (this.hp <= 0) { this.hp = 0;}
+        if (this.isPoisoned){
+            if (this.poisonTick < this.poisonTime *30 +1){
+                if ((this.poisonTick) % 27 == 0){
+                    console.log("Dmg by poison");
+                    if (this.shieldHP == 0) {
+                        this.hp -= this.poisonDamage;
+                        if (this.hp <= 0) { this.hp = 0;}
+                    }
+                    else {
+                        this.shieldHP -= this.poisonDamage;
+                    }
+                }
             }
-            else {
-              this.shieldHP -= this.poisonDamage;
+            else{
+              this.poisonTick = 0;
+              this.isPoisoned = false;
             }
-            screenshake(1, 0);
+            this.poisonTick ++
           }
-        }
-        else{
-          this.poisonTick = 0;
-          this.isPoisoned = false;
-        }
-        this.poisonTick ++
-      }
       else{
         this.poisonTick = 0;
       }
@@ -271,7 +275,7 @@ function Player() { //Defines the player object
     this.picToChange = false;
     this.movingDirection = ""; //can be "up", "down", "left", "right"
     this.cycleDuration = 30;
-    this.skillpoints = 12;
+    this.skillpoints = 0;
     this.maxHP = 350;
     this.hp = this.maxHP;
     this.hp = 100;

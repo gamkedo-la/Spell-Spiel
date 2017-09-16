@@ -93,7 +93,7 @@ function SpellMenuState() {
     this.img = spellMenuPic;
     this.music = "SpellSpiel_Battle";
     var firstTime = true;
-    var firstTime = false;
+    //var firstTime = false;
     this.currentPage = 0;
 
     //this is a workaround to catch mouseUp events
@@ -280,7 +280,7 @@ var okToInteract = true;
 function OverworldState() {
 
     var firstTime = true;
-    var firstTime = false;
+    //var firstTime = false;
     this.img = mainRoomPic;
     this.music = 'SpellSpiel_Music_Open';
     this.currentRoom = 0;
@@ -406,7 +406,6 @@ function OverworldState() {
         }
             //else, we assume "room" is an actual Room object
         else {
-            console.log("Not a string");
             this.img = room.img;
             this.currentRoom = room;
             player.position = this.currentRoom.spawnPoints.center;
@@ -418,12 +417,11 @@ function OverworldState() {
             if (firstTime || endingBattle) { player.setGraphics(walkingRightPic, 4, walkingCycleDuration); }
             if (typeof player.opponent != "undefined") { player.opponent.reset(); }
             player.position = this.currentRoom.spawnPoints.center;
-            player.collider.position = player.position;
+            //player.collider.position = player.position;
         }
-        console.log(this.currentRoom);
         if (endingBattle === true) { endingBattle = false; }
         if (firstTime) {
-            announceBox.beginText("Welcome to the Academy! \b To graduate, you must defeat every enemy outside the school grounds, through the big doorway near you. \b But first, take the time to chat with your classmates to prepare yourself!");
+            announceBox.beginText("Welcome to the Academy! \b The school is overrun by monsters! \b You must defeat every enemy outside the school grounds, through the big door. \b But first, take the time to chat with your classmates to prepare yourself!");
             firstTime = false;
         }
         document.removeEventListener("keypress", keyPressed);//keypress == only character keys!

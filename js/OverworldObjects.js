@@ -57,13 +57,12 @@ marieTartine.spellUnlocked = false;
 
 marieTartine.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
-        pokebox.subject.addObserver(this.observer);
         if (this.currentMessage == 0) {
-            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! We're getting overrun by monsters, and the teacher is late again! If you walk through that door over there, you can go help out by battling a monster! \b Battling is easy: just... incantate? Before that, though, you might want to review your spells. \b Open your book (with P, then S) and browse through the pages.");
+            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! We're surrounded by monsters, and the teacher is late again! If you walk through that door over there, you can go help out by battling a monster! \b Battling is easy: just... incantate? Before that, though, you might want to review your spells. \b Open your book (with P, then S) and browse through the pages.");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
-            pokebox.beginText(this.name + ": " + "Hi again! I forgot to mention... ummmmm.... \b Oh yeah! I think your friend Quitterie still has her practice dummy in the room on the left. Might wanna use it to practice casting spells.");
+            pokebox.beginText(this.name + ": " + "Hi again! I forgot to mention... ummmmm.... \b Oh yeah! I think your friend Quitterie still has her training dummy in the room on the left. Might wanna use it to practice casting spells.");
             this.currentMessage++;
         }
         else if (this.currentMessage == 2) {
@@ -71,6 +70,7 @@ marieTartine.onTrigger = function () {
             this.currentMessage++;
         }
         else if ((this.currentMessage == 3 && gauntletProgress >= 2 && !this.spellUnlocked)) {
+            pokebox.subject.addObserver(marieTartine.observer);
             pokebox.beginText(this.name + ": " + "Wow! You did it! Ok, then I'll show you the spell I've been working on. The words are 'Toxic Cloud'. It poisons any enemy that breathes it. Those are the secret words that I made myself though: don't go stealing them!");
             toxicCloud.isUnlocked = true;
             this.spellUnlocked = true;
@@ -85,7 +85,7 @@ marieTartine.onTrigger = function () {
 
 marieTartine.observer = new Observer();
 marieTartine.observer.onNotify = function (entity, event) {
-    //marieTartine.currentMessage++;
+    announceBox.beginText("Learned \n 'Toxic Cloud'!");
     pokebox.subject.removeObserver(marieTartine.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,6 +123,7 @@ noStyleNPC.onTrigger = function () {
             this.currentMessage++;
         }
         else if (this.currentMessage === 1 && gauntletProgress >= 3 && !this.spellUnlocked) {
+            pokebox.addObserver(noStyleNPC.observer);
             pokebox.beginText(this.name + ": " + "Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well.");
             this.currentMessage++;
             this.spellUnlocked = true;
@@ -135,6 +136,11 @@ noStyleNPC.onTrigger = function () {
             pokebox.beginText(this.name + ": " + "What do you mean it's spelled wrong? Whatever...");
         }
     }
+}
+noStyleNPC.observer = new Observer();
+noStyleNPC.observer.onNotify = function (entity, event) {
+    announceBox.beginText("Learned 'DNDC'!");
+    pokebox.subject.removeObserver(noStyleNPC.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var randomBattleNPC = new WorldObject();
@@ -178,19 +184,36 @@ marine.onTrigger = function () {
             this.currentMessage++;
         }
         else if (this.currentMessage === 1) {
-            pokebox.subject.addObserver(marine.observer);
-            pokebox.beginText(this.name + ": " + "(Hummmm.... Should I continue resisting changing my shirt color just cause it fits with my name? \b ... \b I mean, I can't change my name....)");
+            pokebox.beginText(this.name + ": " + "(Hummmm.... Should I keep studying magic history even if there's little to no job outlook?)");
             this.currentMessage++;
         }
         else if (this.currentMessage === 2) {
-            pokebox.subject.addObserver(marine.observer);
+            pokebox.beginText(this.name + ": " + "(Hummmm.... Should I continue resisting changing my shirt color just because it fits with my name?) \b (...) \b (I mean, I can't change my name....)");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage === 3) {
+            pokebox.beginText(this.name + ": " + "(Hummmm.... Should I tell my friend Carrie-Jane that she has bad bangs?)");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage === 4) {
             pokebox.beginText(this.name + ": " + "(Hummmm.... Should I consider talking to others instead of constantly thinking to myself all the time?)");
+            this.currentMessage++;
+        }
+        else if (this.currentMessage === 5) {
+            pokebox.subject.addObserver(marine.observer);
+            pokebox.beginText(this.name + ": " + "Hey! How long have you been here?! Leave me alone! Now! \b (*PSSSSSSHHHHH*)");
+            this.currentMessage++;
+            this.spellUnlocked = true;
+            dispell.isUnlocked = true;
+        }
+        else if (this.currentMessage === 6) {
+            pokebox.beginText(this.name + ": " + "*Remains stoic*");
         }
     }
 }
 marine.observer = new Observer();
 marine.observer.onNotify = function (entity, event) {
-    //gameController.startRandomBattle();
+    announceBox.beginText("Learned 'Dispell'!");
     pokebox.subject.removeObserver(marine.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,13 +258,12 @@ libraryNPC.onTrigger = function () {
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
-            pokebox.subject.addObserver(libraryNPC.observer);
             pokebox.beginText(this.name + ": " + "Listen, if you're helping with school defense, I might as well show you what I've been working on around here. \b Have a look at this! It's a super powerful lightning spell, and the incantation is pretty long too. I'll show you, but first I need you to do me a favor. There's this... avian invader. A sort of Spectral Fowl. It haunts me every night, and it... disrupts my studies. Defeat it, and I'll show you that lightning I was talking to you about.");
             this.currentMessage++;
         }
         else if ((this.currentMessage == 2 && gauntletProgress >= 2 && !this.spellUnlocked)) {
+            pokebox.addObserver(libraryNPC.observer);
             pokebox.beginText(this.name + ": " + "YOU DID IT! \b I mean... nice going! I can feel the ethereal pecking ceasing. The words for my super spell are 'XxX Lightning Smite Eternal XxX'. Look, I didn't come up with them. Don't judge, the author's probably a genius... \b Aaaaanyway, good luck!");
-            //unlockSpell(toxicCloud); //todo
             this.spellUnlocked = true;
             lightning.isUnlocked = true;
             this.currentMessage++;
@@ -256,7 +278,7 @@ libraryNPC.onTrigger = function () {
 }
 libraryNPC.observer = new Observer();
 libraryNPC.observer.onNotify = function (entity, event) {
-    //gameController.startRandomBattle();
+    announceBox.beginText("Learned \n 'XxX Lightning'!");
     pokebox.subject.removeObserver(libraryNPC.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,15 +412,12 @@ function Room() {
     }
     this.makeColliders = function () {
         if (!player.hasOwnProperty("collider") && player.img.width && player.img.height) {
-            console.log(player.position);
             player.collider = new Collider(player.position, player.img.width / player.imgNumber, player.img.height);
-            console.log(player.collider.position);
         }
         //Covers both triggers and triggers+colliders
         var toMake = this.objectList.concat(this.triggerList);
         toMake.forEach(function (obj) {
             if (!obj.hasOwnProperty("collider") && obj.img.width && obj.img.height) {
-                console.log("Made collider");
                 obj.collider = new Collider(obj.position, obj.img.width / obj.imgNumber, obj.img.height);
             }
         })
