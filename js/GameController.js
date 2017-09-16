@@ -115,7 +115,7 @@ function SpellMenuState() {
             }
             if (!clickedOn.isUnlocked) { announceBox.beginText("You gotta unlock spells by helping out in school first!");}
             else if (clickedOn.level < 5 && player.skillpoints > 0) {
-                player.levelUpSpell(clickedOn);
+                if (clickedOn.type == "Attack" || clickedOn.type == "Shield") { player.levelUpSpell(clickedOn); }
             }
         }
     }
@@ -179,22 +179,22 @@ function SpellMenuState() {
     }
     this.drawCheckmarks = function () {
         var spells = this.currentPage.spells;
-        if (spells[0].isUnlocked) {
+        if (spells[0].isUnlocked && spells[0].type == "Attack" || spells[0].type == "Shield") {
             for (i = 0; i < spells[0].level; i++) {
                 canvasContext.drawImage(checkmarkPic, 47 + i * 9, 59);
             };
         }
-        if (spells[1].isUnlocked) {
+        if (spells[1].isUnlocked && spells[1].type == "Attack" || spells[1].type == "Shield") {
             for (i = 0; i < spells[1].level; i++) {
                 canvasContext.drawImage(checkmarkPic, 147 + i * 9, 59);
             };
         }
-        if (spells[2].isUnlocked) {
+        if (spells[2].isUnlocked && spells[2].type == "Attack" || spells[2].type == "Shield") {
             for (i = 0; i < spells[2].level; i++) {
                 canvasContext.drawImage(checkmarkPic, 47 + i * 9, 133);
             };
         }
-        if (spells[3].isUnlocked) {
+        if (spells[3].isUnlocked && spells[3].type == "Attack" || spells[3].type == "Shield") {
             for (i = 0; i < spells[3].level; i++) {
                 canvasContext.drawImage(checkmarkPic, 147 + i * 9, 133);
             };

@@ -271,7 +271,7 @@ function Player() { //Defines the player object
     this.picToChange = false;
     this.movingDirection = ""; //can be "up", "down", "left", "right"
     this.cycleDuration = 30;
-    this.skillpoints = 0;
+    this.skillpoints = 12;
     this.maxHP = 350;
     this.hp = this.maxHP;
     this.hp = 100;

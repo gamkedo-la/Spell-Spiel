@@ -114,20 +114,22 @@ noStyleNPC.position = {
     x: 180,
     y: 90,
 };
-var completedTraining = true;
+
 noStyleNPC.img = noStyleNPCPic;
 noStyleNPC.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
-            pokebox.beginText(this.name + ": "+ "People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat an enemy in the training facility.");
+            pokebox.beginText(this.name + ": "+ "People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat the 3rd enemy through the big door.");
             this.currentMessage++;
         }
-        else if (this.currentMessage === 1 && completedTraining) {
+        else if (this.currentMessage === 1 && gauntletProgress >= 3 && !this.spellUnlocked) {
             pokebox.beginText(this.name + ": " + "Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well.");
             this.currentMessage++;
+            this.spellUnlocked = true;
+            dndc.isUnlocked = true;
         }
-        else if (this.currentMessage === 1 && !completedTraining) {
-            pokebox.beginText(this.name + ": " + "Come on! Just go for a quick training, it won't take long!");
+        else if (this.currentMessage === 1 && gauntletProgress<3 && !this.spellUnlocked) {
+            pokebox.beginText(this.name + ": " + "Come on! Go beat the 3rd enemy, it won't take long!");
         }
         else if (this.currentMessage === 2) {
             pokebox.beginText(this.name + ": " + "What do you mean it's spelled wrong? Whatever...");

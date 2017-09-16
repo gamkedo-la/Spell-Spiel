@@ -75,7 +75,7 @@ function Enemy() {
 
 
             //The player's low! Gonna use weak attacks to finish him!
-        if (player.hp < player.maxHP * 0.2 && player.shieldHP === 0) {
+        if (player.hp < player.maxHP * 0.4 && player.shieldHP === 0) {
             this.chosenOne = this.pickRandom("Weak", "Attack");
         }
             //I'm low! Gonna use a shield!
@@ -230,8 +230,8 @@ eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
 //eyeMonster.weakAttacks = [sting];
-//eyeMonster.mediumAttacks = [slash];
-eyeMonster.strongAttacks = [waterSquirt];
+eyeMonster.mediumAttacks = [waterSquirt];
+//eyeMonster.strongAttacks = [waterSquirt];
 eyeMonster.weakShields = [block];
 eyeMonster.mediumDebuffs = [eerieLook];
 eyeMonster.mediumBuffs = [getAngry];
@@ -293,6 +293,6 @@ dummy.chooseAttack = function () {
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; 
-var gauntletProgress = 5;
+var gauntletProgress = 2;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles

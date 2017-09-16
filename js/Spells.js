@@ -14,7 +14,7 @@ function Spell() {
     this.usedByAI = false; //TBD
     this.particle = null;
     this.isUnlocked = false;
-    this.isUnlocked = true;
+    //this.isUnlocked = true;
 
     this.maxPower = 100;
     this.power = this.maxPower;
@@ -208,7 +208,6 @@ Lightning = function () {
     this.particle = lightningParty;
     this.maxPower = 150;
     this.MAX_CAST_WINDOW = 6500;
-    this.isUnlocked = true;
 
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier);
@@ -251,7 +250,7 @@ ToxicCloud = function () {
         this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
         Sound.play("toxicCloud", false, 0.05);
-        target.makePoisoned(3, 5);
+        target.makePoisoned(3+this.level*2, 5);
         this.particle.party();
     };
     this.reset();
@@ -265,6 +264,7 @@ LifeDrain = function () {
     this.type = "Attack";
     this.maxPower = 50;
     this.particle = lifeDrainParty;
+    this.isUnlocked = true;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier, -this.particle.duration);
@@ -371,11 +371,11 @@ noSpell.untilNext = 0;
 
 //Page setups for menu
 var page1 = {
-    spells: [pyroblast, iceSpike, lightning, shield1],
+    spells: [pyroblast, iceSpike, lifeDrain, shield1],
     img : spellMenuPic
 }
 var page2 = {
-    spells: [lifeDrain, dispell, toxicCloud, dndc],
+    spells: [dndc, dispell, toxicCloud, lightning],
     img: spellMenu2Pic
 }
 page1.next = page2;
