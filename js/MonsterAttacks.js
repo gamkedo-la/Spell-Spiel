@@ -31,8 +31,6 @@ function Slash() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        //target.isPoisoned();
-        target.makePoisoned(3,5);
         Sound.play("slash");
         this.spawnParticles(this.particle);
     }
@@ -52,7 +50,7 @@ function PoisonSpit() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        //target.isPoisoned();
+        target.makePoisoned(3, 5);
         Sound.play("waterSquirt", false, 0.3);
         this.spawnParticles(this.particle);
     }
@@ -131,3 +129,19 @@ function EerieLook() {
 EerieLook.prototype = new Spell();
 eerieLook = new EerieLook();
 
+function GetAngry() {
+    this.name = "Get angry!";
+    this.type = "Buff";
+    this.power = 0;
+    this.castTime = 95;
+    this.particle = rageBuffParty;
+    this.selfcast = true;
+
+    this.cast = function (target) {
+        this.basicCast(target, 1, 0, "Buff Attack 1.2");
+        this.particle.party();
+        this.playSound();
+    }
+}
+GetAngry.prototype = new Spell();
+getAngry = new GetAngry();

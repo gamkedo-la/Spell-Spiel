@@ -200,6 +200,39 @@ dispellParty.startX = 155;
 dispellParty.startY = 110;
 dispellParty.init();
 
+attackBuffParty = new Particle();
+attackBuffParty.frameCount = 4;
+attackBuffParty.particleFPS = 4;
+attackBuffParty.isMoving = false;
+attackBuffParty.spritesheet = buffPic;
+attackBuffParty.spriteWidth = 64;
+attackBuffParty.spriteHeight = 64;
+attackBuffParty.startX = 38.5;
+attackBuffParty.startY = 101;
+attackBuffParty.init();
+
+defenseBuffParty = new Particle();
+defenseBuffParty.frameCount = 4;
+defenseBuffParty.particleFPS = 4;
+defenseBuffParty.isMoving = false;
+defenseBuffParty.spritesheet = buffPic;
+defenseBuffParty.spriteWidth = 64;
+defenseBuffParty.spriteHeight = 64;
+defenseBuffParty.startX = 38.5;
+defenseBuffParty.startY = 101;
+defenseBuffParty.init();
+
+rageBuffParty = new Particle();
+rageBuffParty.frameCount = 4;
+rageBuffParty.particleFPS = 4;
+rageBuffParty.isMoving = false;
+rageBuffParty.spritesheet = buffPic;
+rageBuffParty.spriteWidth = 64;
+rageBuffParty.spriteHeight = 64;
+rageBuffParty.startX = 153.5;
+rageBuffParty.startY = 101;
+rageBuffParty.init();
+
 //////////////////////////              Monster Attacks              //////////////////////////
 
 biteParty = new Particle();

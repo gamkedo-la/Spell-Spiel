@@ -399,6 +399,7 @@ function BattleState() {
         spellTimeLapse();
         rechargeAllExceptCurrent();
         player.poisonUpdate();
+        player.opponent.poisonUpdate();
         player.checkState();
         updateCycles();
         player.opponent.updateAttack();

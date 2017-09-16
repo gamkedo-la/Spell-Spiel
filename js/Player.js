@@ -13,10 +13,10 @@ function Character() { //"Character" == base class for anything that can fight
     this.level = 1;
     this.shieldHP = 0;
     this.attackMultiplier = 1; //fairly obvious. Buffs will not stack
-    this.defenseMultiplier = 1.8;
+    this.defenseMultiplier = 1;
     this.attackBuffRemaining = 0;
     this.defenseBuffRemaining = 0;
-    this.buffDuration = 1000;
+    this.buffDuration = 750;
 
     this.isCasting = false;
 
@@ -221,11 +221,13 @@ function Character() { //"Character" == base class for anything that can fight
           if ((this.poisonTick) % 30 == 0){
             //console.log(this.poisonTick + "tickNumber");
             if (this.shieldHP == 0) {
-              this.hp -= this.poisonDamage;
+                this.hp -= this.poisonDamage;
+                if (this.hp <= 0) { this.hp = 0;}
             }
             else {
               this.shieldHP -= this.poisonDamage;
             }
+            screenshake(1, 0);
           }
         }
         else{

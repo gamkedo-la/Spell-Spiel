@@ -83,20 +83,20 @@ function Enemy() {
             this.chosenOne = this.pickRandom("Strong", "Shield");
         }
             //The player is using a shield! No point in attacking; gonna buff
-        else if (player.shieldHP >= player.maxHP * 0.1) {
+        else if (player.shieldHP >= player.maxHP * 0.1 && this.attackMultiplier <=1 && this.defenseMultiplier <= 1) {
             this.chosenOne = this.pickRandom("Medium", "Buff");
         }
-            //I have high HP, I can cast a strong attack safely
+            //I have high HP, I can cast an attack safely
         else if (this.hp >= this.maxHP * 0.8) {
-            this.chosenOne = this.pickRandom("Strong", "Attack");
+            this.chosenOne = this.pickRandom("Weak", "Attack");
         }
-            //The player's health is high. Strong buffs/debuffs are worth investing in right now
+            //The player's health is high. Buffs/debuffs are worth investing in right now
         else if (player.hp > player.maxHP * 0.8) {
             if (this.attackMultiplier <= 1 && this.defenseMultiplier <= 1) {
-                this.chosenOne = this.pickRandom("Strong", "Buff");
+                this.chosenOne = this.pickRandom("Weak", "Buff");
             }
             else if (player.attackMultiplier >= 1 && player.defenseMultiplier >= 1) {
-                this.chosenOne = this.pickRandom("Strong", "Debuff");
+                this.chosenOne = this.pickRandom("Weak", "Debuff");
             }
         }
 
@@ -199,9 +199,9 @@ bat.maxHP = 300;
 bat.expGiven = 15;
 bat.imgNumber = 2;
 bat.cycleImage = true;
-bat.weakAttacks = [poisonSpit];
+//bat.weakAttacks = [bite];
 bat.mediumAttacks = [bite];
-bat.strongAttacks = [];
+bat.mediumBuffs = [getAngry];
 bat.weakShields = [block];
 bat.combineAllAttacks();
 
@@ -217,6 +217,7 @@ jellyfish.weakAttacks = [sting];
 jellyfish.mediumAttacks = [];
 jellyfish.strongAttacks = [waterSquirt];
 jellyfish.weakShields = [block];
+jellyfish.mediumBuffs[getAngry];
 jellyfish.combineAllAttacks();
 
 //3rd enemy in gauntlet
@@ -229,10 +230,11 @@ eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
 //eyeMonster.weakAttacks = [sting];
-eyeMonster.mediumAttacks = [slash];
-//eyeMonster.strongAttacks = [waterSquirt];
-//eyeMonster.weakShields = [block];
-//eyeMonster.mediumDebuffs = [eerieLook];
+//eyeMonster.mediumAttacks = [slash];
+eyeMonster.strongAttacks = [waterSquirt];
+eyeMonster.weakShields = [block];
+eyeMonster.mediumDebuffs = [eerieLook];
+eyeMonster.mediumBuffs = [getAngry];
 eyeMonster.combineAllAttacks();
 
 //4th enemy in gauntlet
@@ -259,7 +261,7 @@ zombie.imgNumber = 2;
 zombie.cycleImage = true;
 zombie.weakAttacks = [];
 zombie.mediumAttacks = [bite];
-zombie.strongAttacks = [];
+zombie.strongAttacks = [poisonSpit];
 zombie.weakShields = [block];
 zombie.combineAllAttacks();
 
@@ -272,9 +274,11 @@ lizard.maxHP = 1600;
 lizard.imgNumber = 2;
 lizard.cycleImage = true;
 lizard.weakAttacks = [];
-lizard.mediumAttacks = [slash];
-lizard.strongAttacks = [];
+lizard.mediumAttacks = [bite];
+lizard.strongAttacks = [slash]
 lizard.weakShields = [block];
+lizard.mediumBuffs = [getAngry];
+lizard.mediumDebuffs = [eerieLook];
 lizard.combineAllAttacks();
 
 //Dummy for training
@@ -289,6 +293,6 @@ dummy.chooseAttack = function () {
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; 
-var gauntletProgress = 0;
+var gauntletProgress = 5;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles

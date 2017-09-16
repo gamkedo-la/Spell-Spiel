@@ -250,7 +250,8 @@ ToxicCloud = function () {
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
-        Sound.play("toxicCloud",false, 0.05);
+        Sound.play("toxicCloud", false, 0.05);
+        target.makePoisoned(3, 5);
         this.particle.party();
     };
     this.reset();
@@ -316,7 +317,7 @@ GetTilted = function () {
     this.text = "Time to show this guy";
     this.type = "Buff";
     this.maxPower = 0;
-    this.particle = dispellParty;
+    this.particle = attackBuffParty;
     this.MAX_CAST_WINDOW = 6500;
     this.selfcast = true;
 
@@ -335,7 +336,7 @@ DNDC = function () {
     this.text = "DNDC: don't know don't care";
     this.type = "Buff";
     this.maxPower = 0;
-    this.particle = dispellParty;
+    this.particle = defenseBuffParty;
     this.MAX_CAST_WINDOW = 8500;
     this.selfcast = true;
 

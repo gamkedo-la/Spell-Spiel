@@ -59,15 +59,15 @@ marieTartine.onTrigger = function () {
     if (holdEnter && !messageActive && okToInteract) {
         pokebox.subject.addObserver(this.observer);
         if (this.currentMessage == 0) {
-            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! The Academy has a lot of creatures to take care of around here. If you walk through that door over there, you can fight your next opponent! \b Battling is easy: just... incantate? Try casting a Pyroblast to get a feel for it!");
+            pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! We're getting overrun by monsters, and the teacher is late again! If you walk through that door over there, you can go help out by battling a monster! \b Battling is easy: just... incantate? Before that, though, you might want to review your spells. \b Open your book (with P, then S) and browse through the pages.");
             this.currentMessage++;
         }
         else if (this.currentMessage == 1) {
-            pokebox.beginText(this.name + ": " + "Hi again! I forgot to mention... ummmmm.... \b Oh yeah! You can talk to that guy over there if you want to fight a random enemy. That way you can earn experience and practice casting spells.");
+            pokebox.beginText(this.name + ": " + "Hi again! I forgot to mention... ummmmm.... \b Oh yeah! I think your friend Quitterie still has her practice dummy in the room on the left. Might wanna use it to practice casting spells.");
             this.currentMessage++;
         }
         else if (this.currentMessage == 2) {
-            pokebox.beginText(this.name + ": " + "You sure are chatty! I'm not really a talkative type myself though... \b Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies, and I'll show you my special incantation! *slight smile*");
+            pokebox.beginText(this.name + ": " + "You sure are chatty! I'm not really a talkative type myself though... \b Oh yeah! I can teach you a new spell if you'd like! But first, you have to show me that you have what it takes. Defeat the first 2 enemies through the big door, and I'll show you my special incantation! *slight smile*");
             this.currentMessage++;
         }
         else if ((this.currentMessage == 3 && gauntletProgress >= 2 && !this.spellUnlocked)) {
