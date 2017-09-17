@@ -331,8 +331,8 @@ sideWallLeft.img = {
 
 var wallCorner = new WorldObject();
 wallCorner.position = {
-    x: 170,
-    y: 50,
+    x: 163,
+    y: 60,
 };
 wallCorner.img = {
     width: 60,

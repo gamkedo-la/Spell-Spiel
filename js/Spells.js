@@ -263,7 +263,7 @@ LifeDrain = function () {
     this.name = "Life Drain";
     this.text = "Life Drain";
     this.type = "Attack";
-    this.maxPower = 50;
+    this.maxPower = 25;
     this.particle = lifeDrainParty;
     this.isUnlocked = true;
 
@@ -305,6 +305,7 @@ Dispell = function () {
 
     this.cast = function (target) {
         this.basicCast(target, player.attackMultiplier, 0, "castFailed");
+        this.basicCast(target, player.attackMultiplier, 0, "cancelBuffs");
         this.particle.party();
         this.playSound();
     };
@@ -337,7 +338,6 @@ DNDC = function () {
     this.text = "DNDC: don't know don't care";
     this.type = "Buff";
     this.maxPower = 0;
-    this.isUnlocked = true;
     this.particle = defenseBuffParty;
     this.MAX_CAST_WINDOW = 8500;
     this.selfcast = true;

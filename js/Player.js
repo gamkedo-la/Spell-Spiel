@@ -107,6 +107,12 @@ function Character() { //"Character" == base class for anything that can fight
                         this.defenseMultiplier = 5;
                         this.defenseBuffRemaining = this.buffDuration / 15;
                         break;
+                    case "cancelBuffs":
+                        this.attackMultiplier = 1;
+                        this.defenseMultiplier = 1;
+                        this.attackBuffRemaining = 0;
+                        this.defenseBuffRemaining = 0;
+                        break;
                     case "castFailed":
                         console.log("Caliss, c'est plate");
                         this.castFailed();

@@ -87,6 +87,7 @@ function Enemy() {
             //The player is using a shield! No point in attacking; gonna buff
         else if (player.shieldHP >= player.maxHP * 0.1 && this.attackMultiplier <=1 && this.defenseMultiplier <= 1) {
             this.chosenOne = this.pickRandom("Medium", "Buff");
+            console.log("Chose buff");
         }
             //I have high HP, I can cast an attack safely
         else if (this.hp >= this.maxHP * 0.8) {
@@ -185,7 +186,6 @@ Enemy.prototype = new Character();
 
 castFailed = function (enemy) {
     if (typeof enemy.chosenOne === "undefined") {
-        console.log("Accessed");
         enemy.chooseAttack();
         enemy.untilAttack = enemy.chosenOne.castTime;
     }
