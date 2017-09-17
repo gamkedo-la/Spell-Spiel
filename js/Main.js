@@ -163,13 +163,14 @@ function resetBattle() {
     player.currentSpell = noSpell;
 }
 function resetSpellWindows() {
-    console.log("Resetting");
     for (var keyname in player.availableSpells) {
         toReset = player.availableSpells[keyname];
         toReset.currentCastWindow = toReset.MAX_CAST_WINDOW;
     }
 }
-
+function resetEnemyAttacks() {
+    if (player.opponent) { player.opponent.untilAttack = 200; }
+}
 function checkForRoomChange() {
     if (player.position.x <= 0) {
         overworldState.changeRoom("left");

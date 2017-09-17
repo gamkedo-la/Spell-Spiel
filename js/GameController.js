@@ -344,10 +344,6 @@ function OverworldState() {
             if (player.speedX === 0 && player.speedY === 0) {
                 player.resetTickAndImg();
             }
-
-            if (holdSpacebar) {
-                gameController.startBattle(dummy);
-            }
         }
         else {
             player.resetTickAndImg();
@@ -417,7 +413,7 @@ function OverworldState() {
             if (firstTime || endingBattle) { player.setGraphics(walkingRightPic, 4, walkingCycleDuration); }
             if (typeof player.opponent != "undefined") { player.opponent.reset(); }
             player.position = this.currentRoom.spawnPoints.center;
-            //player.collider.position = player.position;
+            if (player.collider) { player.collider.position = player.position; }
         }
         if (endingBattle === true) { endingBattle = false; }
         if (firstTime) {
@@ -486,11 +482,17 @@ function BattleState() {
 
         if (key.match(/[a-z ':, ]/i)) {
             var completion = spellTrie.autoComplete(this.currentSpell + key);
-            if (completion.length && player.availableSpells[completion[0]].isUnlocked) {
-                completion = completion[0];
+            var chosenByTrie = completion[0];
+            for (i = 0; i < completion.length; i++) {
+                if (!chosenByTrie.isUnlocked) {
+                    chosenByTrie = completion[i];
+                }
+                else break;
+            }
+            if (completion.length && player.availableSpells[chosenByTrie].isUnlocked) {
                 this.currentSpell += key;
                 var progress = player.currentSpell.progress;
-                player.changeSpell(player.availableSpells[completion]);
+                player.changeSpell(player.availableSpells[chosenByTrie]);
                 player.currentSpell.catchUp(progress);
                 player.currentSpell.updateResults(true);
                 resetKeypress();
@@ -498,7 +500,6 @@ function BattleState() {
                 // Play a sound, do not advance
                 if (player.currentSpell.name != "No spell") {
                     player.currentSpell.updateResults(false);
-                    console.log(player.currentSpell.numWrong);
                 }
             }
         } else {
@@ -536,6 +537,7 @@ function BattleState() {
 
         player.position.x = 40;
         player.position.y = 125;
+        Sound.play(player.opponent.introSound);
 
     };
 }
@@ -593,9 +595,9 @@ function BattleEndState() {
             announceBox.beginText("Beam was defeated! \b Gonna need more practice!");
         }
         else if (player.opponent.hp == 0) {
+            Sound.play(player.opponent.deathSound);
             this.win = true;
             player.exp += enemy.expGiven;
-            console.log(player.exp, player.expNeeded);
             if (player.exp >= player.expNeeded && !levelCapReached) {
                 player.levelUp(); //Awesome!
                 leveledUp = true;

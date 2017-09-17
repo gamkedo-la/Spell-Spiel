@@ -56,7 +56,7 @@ marieTartine.img = marieTartinePic;
 marieTartine.spellUnlocked = false;
 
 marieTartine.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage == 0) {
             pokebox.beginText(this.name + ": " + "Hi! Ummm... what was I gonna say.... \b Oh yeah! We're surrounded by monsters, and the teacher is late again! If you walk through that door over there, you can go help out by battling a monster! \b Battling is easy: just... incantate? Before that, though, you might want to review your spells. \b Open your book (with P, then S) and browse through the pages.");
             this.currentMessage++;
@@ -98,7 +98,7 @@ guideNPC1.position = {
 };
 guideNPC1.img = guideNPC1Pic;
 guideNPC1.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage == 0) {
             pokebox.beginText(this.name + ": " + "In battle, it's important to keep focusing on your spellcast. If you don't complete your incantation fast enough, it'll fail! Not only that, when you do cast your spell, you'll have less time for the next cast. You have to mix it up and let your spells recharge! \b If you want to practice, pretty sure the Academy has a training room somewhere around here...");
             this.currentMessage++;
@@ -117,29 +117,30 @@ noStyleNPC.position = {
 
 noStyleNPC.img = noStyleNPCPic;
 noStyleNPC.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
             pokebox.beginText(this.name + ": "+ "People tell me I don't have style, but I don't really pay them much attention. I've become so happy since I stopped listening and just wear and do what I like. I can teach you my secret technique for this, but first you have to defeat the 3rd enemy through the big door.");
             this.currentMessage++;
         }
         else if (this.currentMessage === 1 && gauntletProgress >= 3 && !this.spellUnlocked) {
-            pokebox.addObserver(noStyleNPC.observer);
-            pokebox.beginText(this.name + ": " + "Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well.");
+            pokebox.subject.addObserver(noStyleNPC.observer);
+            pokebox.beginText(this.name + ": " + "Hey, you did it! Here are the secret words I use to protect myself from mean comments. It's 'DNDC: Don't know don't care'. Might be useful against mean attacks as well. \b And when I want to boost my attack instead, I 'Silently Antagonize' my opponent. Passive agression is the best aggression (then you start making fireballs).");
             this.currentMessage++;
-            this.spellUnlocked = true;
             dndc.isUnlocked = true;
+            antagonize.isUnlocked = true;
+            this.spellUnlocked = true;
         }
         else if (this.currentMessage === 1 && gauntletProgress<3 && !this.spellUnlocked) {
             pokebox.beginText(this.name + ": " + "Come on! Go beat the 3rd enemy, it won't take long!");
         }
         else if (this.currentMessage === 2) {
-            pokebox.beginText(this.name + ": " + "What do you mean it's spelled wrong? Whatever...");
+            pokebox.beginText(this.name + ": " + "Every soul a battlefield!");
         }
     }
 }
 noStyleNPC.observer = new Observer();
 noStyleNPC.observer.onNotify = function (entity, event) {
-    announceBox.beginText("Learned 'DNDC'!");
+    announceBox.beginText("Learned 'DNDC'! \b Learned 'Silently \n Antagonize'!");
     pokebox.subject.removeObserver(noStyleNPC.observer);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,7 +153,7 @@ randomBattleNPC.position = {
 };
 randomBattleNPC.img = stylishNPCPic;
 randomBattleNPC.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
             pokebox.beginText(this.name + ": " + "Hey, Beam, my man! Don't worry bro, our club's got everything under control here. You go man the front door. \b Though if you want, we've been keepin' a few monsters on the side for ya. You know, if you wanna practice a lil' bit. Anyway, if you wanna try your hand at it, you just gimme the word.");
             this.currentMessage++;
@@ -178,7 +179,7 @@ marine.position = {
 };
 marine.img = marinePic;
 marine.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
             pokebox.beginText(this.name + ": " + "(Hummmm..... Should I start my long homework due in a week, or my short homework due tomorrow?)");
             this.currentMessage++;
@@ -226,7 +227,7 @@ quitterie.position = {
 };
 quitterie.img = quitteriePic;
 quitterie.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
             pokebox.beginText(this.name + ": " + "Hi Beam! Everyone's outside fighting monsters, so the training dummy's free to whack on! I've been hogging it a lot these days; why don't you give it a try?");
             this.currentMessage++;
@@ -252,7 +253,7 @@ libraryNPC.position = {
 };
 libraryNPC.img = libraryNPCPic;
 libraryNPC.onTrigger = function () {
-    if (holdEnter && !messageActive && okToInteract) {
+    if ((holdEnter || holdSpacebar) && !messageActive && okToInteract) {
         if (this.currentMessage === 0) {
             pokebox.beginText(this.name + ": " + "Once again, monsters around school! It's a shame I have too many studies to go and help out! (hehe...) \b Besides, Robby and his gang would probably take all the glory anyway, no point in going. \b ... \b What? You say you're gonna fight them too? That's insane! \b I mean... now I really want to go...");
             this.currentMessage++;
@@ -262,7 +263,7 @@ libraryNPC.onTrigger = function () {
             this.currentMessage++;
         }
         else if ((this.currentMessage == 2 && gauntletProgress >= 2 && !this.spellUnlocked)) {
-            pokebox.addObserver(libraryNPC.observer);
+            pokebox.subject.addObserver(libraryNPC.observer);
             pokebox.beginText(this.name + ": " + "YOU DID IT! \b I mean... nice going! I can feel the ethereal pecking ceasing. The words for my super spell are 'XxX Lightning Smite Eternal XxX'. Look, I didn't come up with them. Don't judge, the author's probably a genius... \b Aaaaanyway, good luck!");
             this.spellUnlocked = true;
             lightning.isUnlocked = true;
@@ -293,7 +294,7 @@ gauntletDoor.img = {
     height: 60
 };
 gauntletDoor.onTrigger = function () {
-    if (holdEnter && okToInteract) {
+    if ((holdEnter || holdSpacebar) && okToInteract) {
         gameController.startGauntletBattle();
     }
 }

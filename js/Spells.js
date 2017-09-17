@@ -207,7 +207,7 @@ Lightning = function () {
     this.text = "XxX Lightning Smite Eternal XxX";
     this.type = "Attack";
     this.particle = lightningParty;
-    this.maxPower = 150;
+    this.maxPower = 350;
     this.MAX_CAST_WINDOW = 6500;
 
     this.cast = function (target) {
@@ -245,14 +245,12 @@ ToxicCloud = function () {
     this.text = "Toxic Cloud";
     this.type = "Attack";
     this.maxPower = 25;
-    this.isUnlocked = true;
     this.particle = toxicCloudParty;
 
     this.cast = function (target) { //Notice: checkProgress casts this function
         this.basicCast(target, player.attackMultiplier);
         screenshake(1, durationInMS(this.particle.duration));
         Sound.play("toxicCloud", false, 0.05);
-        //target.makePoisoned(3+this.level*2, 5);
         target.delayedEffect.push([(durationInMS(this.particle.duration)), "poisonByPlayer"]);
         this.particle.party();
     };
@@ -315,9 +313,9 @@ Dispell = function () {
 Dispell.prototype = new Spell();
 dispell = new Dispell();
 
-GetTilted = function () {
-    this.name = "Get Tilted";
-    this.text = "Time to show this guy";
+Antagonize = function () {
+    this.name = "Silently Antagonize";
+    this.text = "Silently antagonize";
     this.type = "Buff";
     this.maxPower = 0;
     this.particle = attackBuffParty;
@@ -331,14 +329,15 @@ GetTilted = function () {
     };
     this.reset();
 }
-GetTilted.prototype = new Spell();
-getTilted = new GetTilted();
+Antagonize.prototype = new Spell();
+antagonize = new Antagonize();
 
 DNDC = function () {
     this.name = "DNDC";
     this.text = "DNDC: don't know don't care";
     this.type = "Buff";
     this.maxPower = 0;
+    this.isUnlocked = true;
     this.particle = defenseBuffParty;
     this.MAX_CAST_WINDOW = 8500;
     this.selfcast = true;

@@ -71,8 +71,6 @@ function Sting() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        //target.isStung();
-        this.playSound();
         this.spawnParticles(this.particle);
     }
 }
@@ -90,7 +88,6 @@ function Peck() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        this.playSound();
         this.spawnParticles(this.particle);
     }
 }
@@ -108,7 +105,7 @@ function WaterSquirt() {
     this.cast = function (target) {
         this.basicCast(target, player.opponent.attackMultiplier);
         screenshake(10, durationInMS(this.particle.duration));
-        Sound.play("waterSquirt");
+        Sound.play("waterSquirt", false, 0.3);
         this.spawnParticles(this.particle);
     }
 }

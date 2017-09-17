@@ -52,9 +52,9 @@ var spellList = `{
         "max_power": 0,
         "particles": ["dispell"]
 },
-    "GetTilted": {
-        "name": "Get Tilted",
-        "text": "Time to show this guy",
+    "Antagonize": {
+        "name": "Antagonize",
+        "text": "Silently antagonize",
         "type": "Buff",
         "max_power": 0,
         "particles": ["dispell"]

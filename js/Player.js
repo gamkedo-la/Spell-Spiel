@@ -55,6 +55,7 @@ function Character() { //"Character" == base class for anything that can fight
         this.delayedEffect = [];
         this.resetBuffs();
         resetSpellWindows();
+        resetEnemyAttacks();
     };
     this.dealDamage = function (amount) {
         var toDeal;
@@ -294,7 +295,7 @@ function Player() { //Defines the player object
         "Protect": shield1,
         "Toxic Cloud": toxicCloud,
         "Life Drain": lifeDrain,
-        "Time to show this guy": getTilted,
+        "Silently antagonize": antagonize,
         "DNDC: don't know don't care" : dndc,
         "Dispell": dispell,
     };

@@ -27,6 +27,9 @@ function Enemy() {
     this.expGiven = 0;
     this.chosenOne; //the attack that will be used, as determined by AI
 
+    this.introSound = "";
+    this.deathSound = "";
+
     this.untilAttack = 200; //frames
     //this.untilAttack = 10; //frames
     var lastAttack;
@@ -72,7 +75,6 @@ function Enemy() {
         var index = 0;
         this.goodChoiceMade = false;
         //if (typeof this.chosenOne !== "undefined") { lastTimer = this.chosenOne.castTime; } //for the countdown bar
-
 
             //The player's low! Gonna use weak attacks to finish him!
         if (player.hp < player.maxHP * 0.4 && player.shieldHP === 0) {
@@ -199,6 +201,8 @@ bat.maxHP = 300;
 bat.expGiven = 15;
 bat.imgNumber = 2;
 bat.cycleImage = true;
+bat.introSound = "DanaLovesVidya/Bat/Bat_intro";
+bat.deathSound = "DanaLovesVidya/Bat/Bat_death";
 //bat.weakAttacks = [bite];
 bat.mediumAttacks = [bite];
 bat.mediumBuffs = [getAngry];
@@ -213,6 +217,8 @@ jellyfish.maxHP = 450;
 jellyfish.expGiven = 25;
 jellyfish.imgNumber = 2;
 jellyfish.cycleImage = true;
+jellyfish.introSound = "DanaLovesVidya/SeaJelly/seaJelly_intro";
+jellyfish.deathSound = "DanaLovesVidya/SeaJelly/seaJelly_death";
 jellyfish.weakAttacks = [sting];
 jellyfish.mediumAttacks = [];
 jellyfish.strongAttacks = [waterSquirt];
@@ -229,6 +235,8 @@ eyeMonster.expGiven = 40;
 eyeMonster.cycleImage = true;
 eyeMonster.img = eyeMonsterPic;
 eyeMonster.cycleDuration = 5;
+eyeMonster.introSound = "DanaLovesVidya/Eye/eye_intro";
+eyeMonster.deathSound = "DanaLovesVidya/Eye/eye_death";
 //eyeMonster.weakAttacks = [sting];
 eyeMonster.mediumAttacks = [waterSquirt];
 //eyeMonster.strongAttacks = [waterSquirt];
@@ -245,6 +253,8 @@ ghostChicken.maxHP = 850;
 ghostChicken.expGiven = 60;
 ghostChicken.cycleImage = true;
 ghostChicken.img = ghostChickenPic;
+ghostChicken.introSound = "DanaLovesVidya/GhostChicken/ghostChicken_intro";
+ghostChicken.deathSound = "DanaLovesVidya/GhostChicken/ghostChicken_death";
 ghostChicken.weakAttacks = [peck];
 ghostChicken.weakShields = [block];
 ghostChicken.mediumBuffs = [getAngry];
@@ -259,6 +269,8 @@ zombie.maxHP = 1333;
 zombie.expGiven = 85;
 zombie.imgNumber = 2;
 zombie.cycleImage = true;
+zombie.introSound = "DanaLovesVidya/Zombie/zombie_intro";
+zombie.deathSound = "DanaLovesVidya/Zombie/zombie_death";
 zombie.weakAttacks = [];
 zombie.mediumAttacks = [bite];
 zombie.strongAttacks = [poisonSpit];
@@ -273,6 +285,8 @@ lizard.img = lizardPic;
 lizard.maxHP = 1600;
 lizard.imgNumber = 2;
 lizard.cycleImage = true;
+lizard.introSound = "DanaLovesVidya/Lizard/lizard_intro";
+lizard.deathSound = "DanaLovesVidya/Lizard/lizard_death";
 lizard.weakAttacks = [];
 lizard.mediumAttacks = [bite];
 lizard.strongAttacks = [slash]
@@ -293,6 +307,6 @@ dummy.chooseAttack = function () {
 
 //var gauntletOrder = [jellyfish, lizard, ghostChicken, jellyfish, bat, zombie]; //order changed: original order [lizard, ghostChicken, jellyfish, bat, zombie]
 var gauntletOrder = [bat, jellyfish, eyeMonster, ghostChicken, zombie, lizard]; 
-var gauntletProgress = 4;
+var gauntletProgress = 0;
 
 var allEnemies = [lizard, bat, zombie, jellyfish, ghostChicken, eyeMonster]; //to use in random battles

@@ -89,7 +89,7 @@ function MessageBox (x, y, options) {
                 this.drawWords();
                 this.getText();
                 delayTillNext--;
-                if (holdEnter && delayTillNext <= 0) {
+                if ((holdEnter || holdSpacebar) && delayTillNext <= 0) {
                     standbyForInput = false;
                     //our message is over, if we had an event system we would declare it there and call the appropriate function :P
                     if (messageDone) {
