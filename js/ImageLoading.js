@@ -69,6 +69,8 @@ var defenseBuffPic = document.createElement("img");
 var attackDebuffPic = document.createElement("img");
 var defenseDebuffPic = document.createElement("img");
 
+var endPic = document.createElement("img");
+
 var picsToLoad = 0; //set automatically in loadImages()
 
 function countLoadedImagesAndLaunchIfReady(){
@@ -150,7 +152,8 @@ function loadImages(){
         { varName: attackBuffPic, theFile: "attackBuff.png" },
         { varName: defenseBuffPic, theFile: "defenseBuff.png" },
         { varName: attackDebuffPic, theFile: "attackDebuff.png" },
-        { varName: defenseDebuffPic, theFile: "defenseDebuff.png" }
+        { varName: defenseDebuffPic, theFile: "defenseDebuff.png" },
+        { varName: endPic, theFile: "endScreen.png" }
     ]
 
     picsToLoad = imageList.length; //This method avoids a race condition

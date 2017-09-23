@@ -305,14 +305,14 @@ function OverworldState() {
     var walkingCycleDuration = 5;
     this.handleInput = function () {
         if (!messageActive) {
-            if (holdLeft) {
+            if (holdLeft || holdA) {
                 player.speedX = -MOVE_SPEED;
                 if (player.movingDirection != "left") {
                     player.movingDirection = "left";
                     player.setGraphics(walkingLeftPic, 4, walkingCycleDuration);
                 }
             }
-            else if (holdRight) {
+            else if (holdRight || holdD) {
                 player.speedX = MOVE_SPEED;
                 if (player.movingDirection != "right") {
                     player.movingDirection = "right";
@@ -323,14 +323,14 @@ function OverworldState() {
                 player.speedX = 0;
             }
 
-            if (holdUp) {
+            if (holdUp || holdW) {
                 player.speedY = -MOVE_SPEED;
                 if (player.movingDirection != "up") {
                     player.movingDirection = "up";
                     player.setGraphics(walkingUpPic, 4, walkingCycleDuration);
                 }
             }
-            else if (holdDown) {
+            else if (holdDown || holdS) {
                 player.speedY = MOVE_SPEED;
                 if (player.movingDirection != "down") {
                     player.movingDirection = "down";
@@ -618,24 +618,24 @@ function BattleEndState() {
 
 function EndgameState() {
 
-    this.img = null;
+    this.img = endPic;
 
     this.update = function () {
-
-        colorRect(0, 0, canvas.width, canvas.height, "black");
+        clearScreen();
+        this.handleInput();
         scaledContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaledCanvas.width, scaledCanvas.height); //Draw the mini canvas on the scaled canvas
-        this.drawOnScaled(); //This adds the text that can't be drawn on the mini canvas
     };
+    this.handleInput = function () {
+        if ((holdSpacebar || holdEnter) && okToInteract) {
+            gameController.changeState(mainMenuState);
+        }
+    }
 
     this.drawOnScaled = function () {
-        scaledContext.textAlign = "center";
-        colorText("Congratulations!", scaledCanvas.width / 2, 200, "white");
-        colorText("You've completed the game!", scaledCanvas.width / 2, 285, "white");
-        scaledContext.textAlign = "left";
     };
 
     this.enter = function () {
-        return;
+        gauntletProgress--;
     };
 }
 

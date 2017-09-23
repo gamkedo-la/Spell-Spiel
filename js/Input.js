@@ -12,6 +12,9 @@ const KEY_C = 67;
 const KEY_M = 77;
 const KEY_H = 72;
 const KEY_Q = 81;
+const KEY_W = 87;
+const KEY_A = 65;
+const KEY_D = 68;
 
 var holdLeft = false;
 var holdRight = false;
@@ -27,6 +30,9 @@ var holdP = false;
 var holdM = false;
 var holdH = false;
 var holdQ = false;
+var holdW = false;
+var holdA = false;
+var holdD = false;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -117,6 +123,15 @@ function setKeyHoldState(thisKey, setTo) {
     }
     if (thisKey === KEY_H) {
         holdH = setTo;
+    }
+    if (thisKey === KEY_W) {
+        holdW = setTo;
+    }
+    if (thisKey === KEY_A) {
+        holdA = setTo;
+    }
+    if (thisKey === KEY_D) {
+        holdD = setTo;
     }
     if (thisKey === KEY_Q) {
         holdQ = setTo;
