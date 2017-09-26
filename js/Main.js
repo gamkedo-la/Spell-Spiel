@@ -22,6 +22,7 @@ window.onload = function () {
     // FIXME: it is impolite to trigger sound right away...
     // maybe we should wait until one user click, like start game button
 
+    window.focus();
     //Prepping the game canvas. Strategy "borrowed" from the Roman's Adventure source code (ty Oasis Rim and co.)
     canvas = document.createElement("canvas");
     canvasContext = canvas.getContext("2d");
