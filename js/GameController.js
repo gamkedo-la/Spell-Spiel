@@ -63,7 +63,7 @@ function GameController() {
 
 function MainMenuState() {
     this.img = mainMenuPic;
-    this.music = "SpellSpiel_Battle";
+    this.music = "";
 
     this.update = function () {
         clearScreen(); //All this is drawn on the small canvas...
@@ -202,6 +202,7 @@ function SpellMenuState() {
     }
 
     this.enter = function () {
+        mainMenuState.music = "SpellSpiel_Battle";
         mouseUpSubject.addObserver(this.observer);
         this.changePage(page1);
         if (firstTime) {
@@ -260,6 +261,7 @@ function CreditsMenuState() {
         didInteraction();
     }
     this.enter = function () {
+        mainMenuState.music = "SpellSpiel_Battle";
         this.changePage(creditsPage1);
     }
 }

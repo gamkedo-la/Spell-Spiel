@@ -26,6 +26,7 @@ function Spell() {
         this.maxPower += this.powerLadder[this.level - 1];
         console.log("Level up! Now level: " + this.level);
         console.log(this.maxPower);
+        Sound.play("iceSpike", false, 0.3);
     }
 
     this.reset = function () {
